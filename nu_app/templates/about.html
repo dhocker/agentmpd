@@ -21,7 +21,14 @@
 {% endblock %}
 
 {% block body %}
+
     <h2>About NGINX-uWSGI-Flask App</h2>
+    <p>
+        The NGINX-uWSGI-Flask app is a sample web app that can be used to get a
+        new web project up and running. It can be forked or copied and modified
+        as necessary. The intent is to simply and accelerate the process of
+        creating a new web app.
+    </p>
     <p>
         This program is free software. You can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
@@ -34,4 +41,13 @@
         Contact: AtHomeX10@gmail.com
     </p>
 
+    <a href="http://nginx.org/"><img src="http://nginx.org/nginx.png" width="200"/></a>
+    &nbsp
+    <img src="{{ url_for('static', filename='dialog-more.png') }}" width="48"/>
+    &nbsp
+    <a href="https://uwsgi-docs.readthedocs.org/en/latest/"><img src="http://projects.unbit.it/images/logo_uWSGI.png" width="150"/></a>
+    &nbsp
+    <img src="{{ url_for('static', filename='dialog-more.png') }}" width="48"/>
+    &nbsp
+    <a href="http://flask.pocoo.org"><img src="http://flask.pocoo.org/docs/0.10/_static/flask.png" width="50"/></a>
 {% endblock %}

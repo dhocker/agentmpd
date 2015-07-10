@@ -1,3 +1,4 @@
+.DS_store
 secret_key
 *.pyc
 *.log*
