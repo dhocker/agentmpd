@@ -1,0 +1,7 @@
+secret_key
+*.pyc
+*.log*
+.idea/
+*.sqlite3
+*.conf
+*~

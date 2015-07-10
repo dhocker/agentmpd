@@ -1,0 +1,169 @@
+/*
+#
+# AHPS Web - web server for managing an AtHomePowerlineServer instance
+# Copyright (C) 2014, 2015  Dave Hocker (email: AtHomeX10@gmail.com)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the LICENSE file for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
+#
+*/
+
+body            { font-family: sans-serif; background: #eee; }
+a               { margin: 0 7px 0 0; }
+a, h1, h2       { color: #377BA8; }
+h1, h2          { font-family: 'Georgia', serif; margin: 0; }
+h1              { border-bottom: 2px solid #eee; }
+h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
+.page           { margin: 2em auto; width: 50em; border: 5px solid #ccc;
+                    padding: 0.8em; background: white; }
+.entries        { list-style: none; margin: 0; padding: 0; }
+.entries li     { margin: 0.8em 1.2em; }
+.entries li h2  { margin-left: -1em; }
+.add-entry      { font-size: 0.9em; border-bottom: 1px solid #ccc; }
+.add-entry dl   { font-weight: bold; }
+.metanav        { text-align: right; font-size: 0.8em; padding: 0.3em;
+                    margin-bottom: 1em; background: #EBF5FB; }
+.flash          { background: #CEE5F5; padding: 0.5em; margin-bottom: 0.5em;
+                    border: 1px solid #AACBE2; }
+.error          { background: #F0D6D6; padding: 0.5em; }
+.logo           { vertical-align: text-top }
+.room           { background: #CEE5F5; width: 15em; padding: 0.5em;
+                    color: #778E9E;
+                    border: 3px solid #778E9E;
+                    float: left; margin: 0.3em auto; }
+.module         { background: #CEE5F5; width: 15em; height: 20em; padding: 0.5em;
+                    border: 3px solid #AACBE2; float: left; margin: 0.3em auto; }
+.lamp-module    { background: #CEE5F5; width: 15em; padding: 0.5em;
+                    color: #667A88;
+                    border: 3px solid #667A88; float: left; margin: 0.3em auto;
+                    }
+.appliance-module { background: #97C897; width: 15em; padding: 0.5em;
+                    color: #316F31;
+                    border: 3px solid #316F31; float: left; margin: 0.3em auto;
+                    }
+.house-module   { background: #F0B2E0; width: 15em; padding: 0.5em;
+                    color: #316F31;
+                    border: 3px solid #66004C; float: left; margin: 0.3em auto;
+                    }
+.room-name      { width: 95%; font-size: 1em; color: #377BA8; }
+.room-description { width: 95%; }
+.name           { padding: 0.2em; color: #377BA8; background: #EBF5FB}
+.module-name    { width: 95%; }
+.description    { padding: 0.2em; color: #377BA8; background: #EBF5FB }
+.hdc            { margin: 0.2em; height: 25px; }
+.hdc-text       { margin: 0.3em auto; text-align: left; vertical-align: middle; padding-top: 3px; }
+.edit-button    { left: 2em; margin-top: 0.5em; padding: 0.2em; height: 2.5em; border-radius: 7px;
+                    cursor: pointer;
+                    background-color: #eee;
+                    font-size: 0.8em;
+                }
+.footer         { clear: both; margin-top: 2em; padding: 0.5em;
+                    background: #EBF5FB;
+                    color: #377BA8; font-size: 0.7em }
+.copyright      { float: right; }
+.clear          { clear: both }
+.input-form     { margin: 1em auto; }
+.input-text     { margin: 0.3em auto; }
+.input-select   { margin: 0.5em auto; }
+.module-type-select {margin: 0.3em auto; font-size: 1em; color: #377BA8; }
+.input-number   { margin: 0.3em auto; width: 2em; }
+.input-time     { margin: 0.3em auto; width: 5em; height: 1em; }
+.input-label    { margin: 0.3em auto; display: block }
+.input-program-name {
+                    width: 200px;
+                }
+
+/* Styling for anchor to make it look like a button */
+.a-button       { text-decoration: none; border: 1px solid #A0A0A0;
+                    padding: 5px 8px 5px 8px;
+                    text-align: center; border-radius: 7px;
+                    font-size: 0.7em; color: #000000;
+                    margin: 0; vertical-align: middle;
+                    display: inline-block;
+                    background-color: #eee;
+                    cursor: pointer;
+                }
+
+/* Common table styling for consistent looking tables */
+/* Based on: http://www.w3schools.com/css/tryit.asp?filename=trycss_table_fancy */
+.common-table       { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1em auto;
+                    }
+
+.common-table td, .common-table th {
+                    font-size: 1em;
+                    border: 1px solid #A5C4D8;
+                    padding: 3px 7px 3px 7px;
+                    height: 1.5em;
+                    }
+
+.common-table th    {
+                    font-size: 1.1em;
+                    text-align: left;
+                    padding-top: 5px;
+                    padding-bottom: 4px;
+                    background-color: #377BA8;
+                    color: #ffffff; }
+
+.common-table tr.alt td {
+                    color: #000000;
+                    background-color: #EBF5FB; }
+
+/* Styling for the program editing page */
+.days-of-week       {
+                    margin: 1em 1em 0.5em 0;
+                    width: 200px;
+                    float: left;
+                    }
+.start-action-group {
+                    margin: 0.5em 1em 1em 0;
+                    width: 90px;
+                    float: left;
+                    }
+.stop-action-group  {
+                    margin: 0.5em 1em 1em 0;
+                    width: 90px;
+                    float:left;
+                    }
+.start-trigger-group {
+                    margin: 1em 1em 1em 0;
+                    width: 230px;
+                    float:left;
+                    }
+.stop-trigger-group {
+                    margin: 1em 1em 1em 0;
+                    width: 230px;
+                    float:left;
+                    }
+.start-trigger-method {
+                    margin: 0.5em auto;
+                    }
+.stop-trigger-method {
+                    margin: 0.5em auto;
+                    }
+.program-trigger-group {
+                    margin: 0.5em auto;
+                    }
+.offset-time        {
+                    font-size: 0.8em;
+                    }
+.program-summary    {
+                    font-size: 0.9em;
+                    padding: 0;
+                    margin: 0;
+                    }
+
+/* This removes the closer X from jQuery UI dialog boxes */
+.ui-dialog-titlebar-close
+                { visibility: hidden; }

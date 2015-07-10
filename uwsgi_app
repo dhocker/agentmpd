@@ -1,0 +1,13 @@
+[uwsgi]
+socket = /tmp/uwsgi.sock
+;venv = /home/pi/Virtualenvs/flask273
+; This venv uses python 2.7.10. It requires uwsgi 2.0.11.
+venv = /home/pi/Virtualenvs/flask
+;chdir = /home/pi/rpi/hello
+chdir = /home/pi/rpi/nginx_uwsgi_app
+plugins = python
+wsgi-file = /home/pi/rpi/nginx_uwsgi_app/uwsgi.py
+;wsgi-file = /home/pi/rpi/hello/uwsgi.py
+;wsgi-file = /home/pi/Virtualenvs/flask/lib/python2.7/uwsgi_app.py
+callable = app
+process   = 3

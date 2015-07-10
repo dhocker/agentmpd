@@ -1,0 +1,61 @@
+{#
+# AHPS Web - web server for managing an AtHomePowerlineServer instance
+# Copyright (C) 2014, 2015  Dave Hocker (email: AtHomeX10@gmail.com)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the LICENSE file for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
+#}
+
+<!doctype html>
+<title>nginx-uwsgi app</title>
+
+<head class="page">
+    {# This uses the stock distribution of jQuery and jQueryUI #}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    {% block head %}
+    {% endblock %}
+</head>
+
+<div class="page">
+	<h1><img class="logo" src="{{ url_for('static', filename='app.png') }}" />NGINX-uWSGI-Flask App</h1>
+	<div class="metanav">
+	</div>
+
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="flash">{{ category | capitalize() }}: {{ message }}</div>
+    {% endfor %}
+
+    {% block body %}{% endblock %}
+
+    <div class="clear"></div>
+    <div class="footer">
+{#
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('house_summary') }}">Summary</a>
+#}
+        {% block footer_links %}{% endblock %}
+{#
+        <div class="copyright">
+            <a href="{{ url_for('about') }}">AtHomePowerlineServer Web {{ version }} -- Copyright 2014 by Dave Hocker</a>
+        </div>
+#}
+    </div>
+</div>
