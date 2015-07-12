@@ -1,6 +1,6 @@
 {#
-# AHPS Web - web server for managing an AtHomePowerlineServer instance
-# Copyright (C) 2014, 2015  Dave Hocker (email: AtHomeX10@gmail.com)
+# AgentMPD - web app for controlling an mpd instance
+# Copyright (C) 2015  Dave Hocker (email: AtHomeX10@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 #}
 
 <!doctype html>
-<title>nginx-uwsgi app</title>
+<title>AgentMPD</title>
 
 <head class="page">
     {# This uses the latest stable distribution of jQuery and jQueryUI #}
@@ -31,7 +31,9 @@
 </head>
 
 <div class="page">
-	<h1><img class="logo" src="{{ url_for('static', filename='app.png') }}"/>AgentMPD</h1>
+	<h1>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
+    </h1>
 	<div class="metanav">
 	</div>
 
@@ -48,7 +50,7 @@
     <div class="clear"></div>
     <div class="footer">
 
-        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
 
         {% block footer_links %}{% endblock %}
 

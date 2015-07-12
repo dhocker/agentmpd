@@ -1,6 +1,6 @@
 {#
-# AHPS Web - web server for managing an AtHomePowerlineServer instance
-# Copyright (C) 2014, 2015  Dave Hocker (email: AtHomeX10@gmail.com)
+# AgentMPD - web app for controlling an mpd instance
+# Copyright (C) 2015  Dave Hocker (email: AtHomeX10@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,8 @@
 
     <h2>About AgentMPD</h2>
     <p>
-        AgentMPD is a simple web app that can manage an instance of the Music Player Daemon (mpd).
+        AgentMPD is a simple web app that can manage an instance of the
+        <a href="http://www.musicpd.org">Music Player Daemon (mpd).</a>
     </p>
     <p>
         This program is free software. You can redistribute it and/or modify
@@ -38,13 +39,6 @@
         Contact: AtHomeX10@gmail.com
     </p>
 
-    <a href="http://nginx.org/"><img src="http://nginx.org/nginx.png" width="200"/></a>
-    &nbsp
-    <img src="{{ url_for('static', filename='dialog-more.png') }}" width="48"/>
-    &nbsp
-    <a href="https://uwsgi-docs.readthedocs.org/en/latest/"><img src="http://projects.unbit.it/images/logo_uWSGI.png" width="150"/></a>
-    &nbsp
-    <img src="{{ url_for('static', filename='dialog-more.png') }}" width="48"/>
-    &nbsp
-    <a href="http://flask.pocoo.org"><img src="http://flask.pocoo.org/docs/0.10/_static/flask.png" width="50"/></a>
+    <a href="http://www.musicpd.org"><img src="http://www.musicpd.org/logo.png"/></a>
+
 {% endblock %}
