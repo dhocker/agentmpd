@@ -36,24 +36,28 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
                     border: 1px solid #AACBE2; }
 .error          { background: #F0D6D6; padding: 0.5em; }
 .logo           { vertical-align: text-top }
-.room           { background: #CEE5F5; width: 15em; padding: 0.5em;
+
+.transport      { background: #EBF5FB; padding: 0.5em;
                     color: #778E9E;
                     border: 3px solid #778E9E;
-                    float: left; margin: 0.3em auto; }
-.module         { background: #CEE5F5; width: 15em; height: 20em; padding: 0.5em;
-                    border: 3px solid #AACBE2; float: left; margin: 0.3em auto; }
-.lamp-module    { background: #CEE5F5; width: 15em; padding: 0.5em;
-                    color: #667A88;
-                    border: 3px solid #667A88; float: left; margin: 0.3em auto;
-                    }
-.appliance-module { background: #97C897; width: 15em; padding: 0.5em;
-                    color: #316F31;
-                    border: 3px solid #316F31; float: left; margin: 0.3em auto;
-                    }
-.house-module   { background: #F0B2E0; width: 15em; padding: 0.5em;
-                    color: #316F31;
-                    border: 3px solid #66004C; float: left; margin: 0.3em auto;
-                    }
+                    margin: 0.3em auto; }
+
+.now-playing    { padding: 0.5em;
+                    color: #778E9E;
+                    border: 3px solid #778E9E;
+                    margin: 0.3em auto; }
+
+.playlist       { padding: 0.5em;
+                    color: #778E9E;
+                    border: 3px solid #778E9E;
+                    margin: 0.3em auto; }
+
+.artist-name    { font-size: 1em; color: #377BA8; }
+
+.album          { font-size: 1em; color: #377BA8; }
+
+.song-title     { font-size: 1.3em; color: #377BA8; }
+
 .room-name      { width: 95%; font-size: 1em; color: #377BA8; }
 .room-description { width: 95%; }
 .name           { padding: 0.2em; color: #377BA8; background: #EBF5FB}

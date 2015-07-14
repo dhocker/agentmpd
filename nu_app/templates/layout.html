@@ -16,47 +16,60 @@
 #}
 
 <!doctype html>
-<title>AgentMPD</title>
+<html>
+    <title>AgentMPD</title>
 
-<head class="page">
-    {# This uses the latest stable distribution of jQuery and jQueryUI #}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <head class="page">
+        {# This uses the latest stable distribution of jQuery and jQueryUI #}
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js" type="text/javascript"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
-    {% block head %}
-    {% endblock %}
-</head>
+        {% block head %}
+        {% endblock %}
+    </head>
 
-<div class="page">
-	<h1>
-        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
-    </h1>
-	<div class="metanav">
-	</div>
-
-    {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-    {% endif %}
-
-    {% for category, message in get_flashed_messages(with_categories=true) %}
-        <div class="flash">{{ category | capitalize() }}: {{ message }}</div>
-    {% endfor %}
-
-    {% block body %}{% endblock %}
-
-    <div class="clear"></div>
-    <div class="footer">
-
-        <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
-
-        {% block footer_links %}{% endblock %}
-
-        <div class="copyright">
-            <a href="{{ url_for('about') }}">About AgentMPD -- Copyright 2015 by Dave Hocker</a>
+    <body class="page">
+        {# This produces a common page title. #}
+        <h1>
+            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
+        </h1>
+        <div class="metanav">
         </div>
 
-    </div>
-</div>
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}</p>
+        {% endif %}
+
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="flash">{{ category | capitalize() }}: {{ message }}</div>
+        {% endfor %}
+
+        {% block body %}
+            {# The meat of the page goes here. For angularjs pages, this is the app. #}
+        {% endblock %}
+    </body>
+
+    <footer>
+        <div class="clear"></div>
+        <div class="footer">
+
+            <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
+
+            {% block footer_links %}{% endblock %}
+
+            <div class="copyright">
+                <a href="{{ url_for('about') }}">About AgentMPD -- Copyright 2015 by Dave Hocker</a>
+            </div>
+
+        </div>
+    </footer>
+
+    {% block angularjs%}
+        {# Include angularjs scripts here #}
+    {% endblock %}
+
+</html>
