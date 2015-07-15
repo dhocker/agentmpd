@@ -29,43 +29,76 @@ app.config(function($interpolateProvider) {
 });
 
 app.controller('homeController', function($scope, $http, $interval) {
+    // Initialization
+
     $scope.title = "AgentMPD";
 
-    // AJAX calls for transport functions
-
-    translate_state = {};
+    var translate_state = {};
     translate_state['play'] = 'Playing...';
     translate_state['pause'] = 'Paused';
     translate_state['stop'] = 'Stopped';
 
-    $scope.get_current_status = function() {
-        $http.post('/home/current_status', {}).
+    var status_update_interval = 10 * 1000; // 10 seconds
+
+    $scope.playing = false;
+
+    function update_status() {
+        // Remove existing marking. Note there is only one element
+        // with the playlist-active class.
+        $(".playlist-entry").removeClass("playlist-active");
+        if ($(".xalt"))
+        {
+            // Restore alt class
+            $(".xalt").removeClass("xalt").addClass("alt");
+        }
+
+        // Mark current song in playlist
+        var active = $("#" + String($scope.currently_playing.song));
+        // If the target element has the alt class, it must be removed.
+        // For whatever reason, it cannot coexist with the active class.
+        if (active.hasClass("alt"))
+        {
+            // Change alt to xalt so we can find it later
+            active.removeClass("alt").addClass("xalt");
+        }
+        active.addClass("playlist-active");
+
+        // Update transport controls status
+        // TODO Refactor/improve this constant
+        $scope.playing = ($scope.status == 'Playing...');
+    };
+
+    function get_current_status() {
+        $http.get('/home/current_status', {}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
+                // Update current marking
+                update_status();
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "unknown";
             });
     };
 
+    // AJAX calls for transport functions
+
     $scope.get_current_playlist = function() {
-        $http.post('/home/current_playlist', {}).
+        $http.get('/home/current_playlist', {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "unknown";
             });
     };
 
-    $scope.playing = false;
     $scope.toggle_playing = function() {
         $scope.playing = !$scope.playing;
         $http.post('/home/toggle_play', {msg:'play'}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
@@ -76,7 +109,7 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
-                $scope.playing = false;
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
@@ -87,7 +120,7 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
-                $scope.playing = false;
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
@@ -98,7 +131,7 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
-                $scope.playing = false;
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
@@ -109,7 +142,7 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
-                $scope.playing = false;
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
@@ -120,16 +153,30 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 $scope.status = translate_state[data['state']];
-                $scope.playing = false;
+                update_status();
+            }).
+            error(function(data, status, headers, config) {
+            });
+    };
+
+    $scope.play_song = function(pos) {
+        $http.post('/home/play_song/' + pos).
+            success(function(data, status, headers, config) {
+                $scope.currently_playing = data;
+                $scope.status = translate_state[data['state']];
+                // Update current marking
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
     };
 
     // Initialize current status
-    $scope.get_current_status();
     $scope.get_current_playlist();
+    get_current_status();
 
     // Polled status update every 10 seconds
-    $interval($scope.get_current_status, 10 * 1000)
+    // This isn't very efficient, but for now it will have to do.
+    // We'll need to figure out how to use the MPD idle
+    $interval(get_current_status, status_update_interval)
 });

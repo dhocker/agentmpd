@@ -63,7 +63,7 @@ def home():
     return render_template('home.html', current_song=current_song)
 
 
-@app.route("/home/current_playlist", methods=['POST'])
+@app.route("/home/current_playlist", methods=['GET'])
 def get_current_playlist():
     connect_to_mpd()
     info = client.playlistinfo()
@@ -72,7 +72,7 @@ def get_current_playlist():
     return jsonify(**playlist)
 
 
-@app.route("/home/current_status", methods=['POST'])
+@app.route("/home/current_status", methods=['GET'])
 def get_current_status():
     connect_to_mpd()
     current_status = get_current_player_status()
@@ -84,6 +84,15 @@ def get_current_song():
     connect_to_mpd()
     current_song = get_current_player_status()
     return jsonify(**current_song)
+
+@app.route("/home/play_song/<int:pos>", methods=['POST'])
+def play_song(pos):
+    connect_to_mpd()
+
+    client.play(pos)
+
+    current_status = get_current_player_status()
+    return jsonify(**current_status)
 
 @app.route("/home/toggle_play", methods=['POST'])
 def toggle_play():

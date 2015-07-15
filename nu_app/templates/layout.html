@@ -28,18 +28,35 @@
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
+        {# This produces a common page title. #}
+        <h1>
+            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
+        </h1>
+
+        {#
+        <ul id="menu">
+                <li>Playlists
+                    <ul>
+                        <li>Edit playlist</li>
+                        <li>Create playlist</li>
+                    </ul>
+                </li>
+                <li>Library</li>
+        </ul>
+
+        <script>
+            $( document ).ready(function() {
+                // Handler for .ready() called.
+                $( "#menu" ).menu();
+            });
+        </script>
+        #}
+
         {% block head %}
         {% endblock %}
     </head>
 
     <body class="page">
-        {# This produces a common page title. #}
-        <h1>
-            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
-        </h1>
-        <div class="metanav">
-        </div>
-
         {% if error %}
             <p class="error"><strong>Error:</strong> {{ error }}</p>
         {% endif %}

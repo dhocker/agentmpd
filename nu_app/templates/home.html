@@ -24,48 +24,54 @@
     <div ng-app="home" ng-controller="homeController">
         <div class="transport">
             {# Note we are using {= =} for the angularjs interpolation tag #}
-            <button ng-click="play_first()" title="Play first">
+            <button class="transport-control" ng-click="play_first()" title="Play first">
                 <img src="{{ url_for('static', filename='playback-first.png') }}"/>
             </button>
-            <button ng-click="play_previous()" title="Play previous">
+            <button class="transport-control" ng-click="play_previous()" title="Play previous">
                 <img src="{{ url_for('static', filename='playback-previous.png') }}"/>
             </button>
-            <button ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
+            <button class="transport-control" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
                 <img src="{{ url_for('static', filename='playback-start.png') }}"/>
             </button>
-            <button ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
+            <button class="transport-control" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
                 <img src="{{ url_for('static', filename='playback-pause.png') }}"/>
             </button>
-            <button ng-click="play_stop()"  title="Stop playing">
+            <button class="transport-control" ng-click="play_stop()"  title="Stop playing">
                 <img src="{{ url_for('static', filename='playback-stop.png') }}"/>
             </button>
-            <button ng-click="play_next()"  title="Play next">
+            <button class="transport-control" ng-click="play_next()"  title="Play next">
                 <img src="{{ url_for('static', filename='playback-next.png') }}"/>
             </button>
-            <button ng-click="play_last()" title="Play last">
+            <button class="transport-control" ng-click="play_last()" title="Play last">
                 <img src="{{ url_for('static', filename='playback-last.png') }}"/>
             </button>
             <span>{= status =}</span>
         </div>
 
         <div class="now-playing">
-            <p>
-                <span class="song-title">{= currently_playing.title =}</span></br>
-                <span class="album">{= currently_playing.album =}</span></br>
-                <span class="artist-name">{= currently_playing.artist =}</span>
-            </p>
+            <span class="song-title">[{= currently_playing.song =}] {= currently_playing.title =}</span></br>
+            <span class="album">{= currently_playing.album =}</span></br>
+            <span class="artist-name">{= currently_playing.artist =}</span>
 
 
 
         </div>
 
-        <div class="playlist">
-            Playlist
-            <ul>
-                <li ng-repeat="x in current_playlist.playlist">
-                  {= x.title =}
-                </li>
-            </ul>
+        <div>
+            <table class="common-table">
+                <tr>
+                    <th>Song</th>
+                    <th>Title</th>
+                    <th>Album</th>
+                    <th>Artist</th>
+                </tr>
+                <tr id="{= x.pos =}" class="playlist-entry" ng-class-odd="'alt'" ng-repeat="x in current_playlist.playlist">
+                    <td><button ng-click="play_song(x.pos)" title="Click to play">{= x.pos =}</button></td>
+                    <td>{= x.title =}</td>
+                    <td>{= x.album =}</td>
+                    <td>{= x.artist =}</td>
+                </tr>
+            </table>
         </div>
     </div>
 {% endblock %}
