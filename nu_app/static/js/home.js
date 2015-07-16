@@ -73,6 +73,8 @@ app.controller('homeController', function($scope, $http, $interval) {
                 }
             }
         }
+
+        $scope.playing = ($scope.status == translate_state['play']);
     };
 
     function get_current_status() {
