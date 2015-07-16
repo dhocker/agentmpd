@@ -61,11 +61,11 @@
             <table class="common-table">
                 <tr>
                     <th>Play</th>
-                    <th>Title/Name</th>
+                    <th>Title/Name/Stream</th>
                     <th>Album</th>
                     <th>Artist</th>
                 </tr>
-                <tr id="{= x.pos =}" class="playlist-entry" ng-class-odd="'alt'" ng-repeat="x in current_playlist.playlist">
+                <tr id="{= x.pos =}" class="playlist-entry" ng-class="x.class" ng-repeat="x in current_playlist.playlist">
                     <td><button ng-click="play_song(x.pos)" title="Play">{= x.pos =}</button></td>
                     <td>{= x.track =}</td>
                     <td>{= x.album =}</td>

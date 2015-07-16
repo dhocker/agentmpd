@@ -28,6 +28,9 @@ app.config(function($interpolateProvider) {
     $interpolateProvider.endSymbol('=}');
 });
 
+/*
+    Home page app controller
+*/
 app.controller('homeController', function($scope, $http, $interval) {
     // Initialization
 
@@ -41,31 +44,35 @@ app.controller('homeController', function($scope, $http, $interval) {
     var status_update_interval = 10 * 1000; // 10 seconds
 
     $scope.playing = false;
+    $scope.current_playlist = {"playlist": []};
 
+    // Update the status of each playlist entry by assigning it a CSS
+    // class that properly styles it
     function update_status() {
-        // Remove existing marking. Note there is only one element
-        // with the playlist-active class.
-        $(".playlist-entry").removeClass("playlist-active");
-        if ($(".xalt"))
+        for (var i = 0; i < $scope.current_playlist.playlist.length; i++)
         {
-            // Restore alt class
-            $(".xalt").removeClass("xalt").addClass("alt");
+            var pe = $scope.current_playlist.playlist[i];
+            if (pe.pos == $scope.currently_playing.song)
+            {
+                // Active styling overrides odd/even styling
+                // And, a lot of trial and error proved you can't apply both.
+                pe["class"] = "playlist-active";
+            }
+            else
+            {
+                if (i % 2)
+                {
+                    // Odd rows
+                    // Only mark alt row if it is not the current playlist entry
+                    pe["class"] = "alt";
+                }
+                else
+                {
+                    // Even rows
+                    pe["class"] = "";
+                }
+            }
         }
-
-        // Mark current song in playlist
-        var active = $("#" + String($scope.currently_playing.song));
-        // If the target element has the alt class, it must be removed.
-        // For whatever reason, it cannot coexist with the active class.
-        if (active.hasClass("alt"))
-        {
-            // Change alt to xalt so we can find it later
-            active.removeClass("alt").addClass("xalt");
-        }
-        active.addClass("playlist-active");
-
-        // Update transport controls status
-        // TODO Refactor/improve this constant
-        $scope.playing = ($scope.status == 'Playing...');
     };
 
     function get_current_status() {
@@ -85,22 +92,14 @@ app.controller('homeController', function($scope, $http, $interval) {
         $http.get('/home/current_playlist', {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
-                console.log("Get current playlist success");
+                update_status();
             }).
             error(function(data, status, headers, config) {
             });
     };
 
     function update_view() {
-        // This just doesn't work because of race conditions.
-        // The call to get_current_playlist returns before the
-        // http call completes. Therefore we actually exit this
-        // function before the http request completes.
-        // Candidate solution: Mark the playlist entry with a
-        // class that indicates if the entry is/isnot the current entry.
         get_current_playlist();
-        update_status();
-        console.log("Update view exiting");
     };
 
     // AJAX calls for transport functions
@@ -185,12 +184,16 @@ app.controller('homeController', function($scope, $http, $interval) {
     };
 
     // Initialize current status
-    get_current_playlist();
     get_current_status();
+    get_current_playlist();
 
     // Polled status update every 10 seconds
     // This isn't very efficient, but for now it will have to do.
     // We'll need to figure out how to use the MPD idle API.
     $interval(get_current_status, status_update_interval);
+    // Update the playlist every 30 sec. This is here strictly to
+    // catch changes to the playlist made by MPD or by another
+    // MPD client app (e.g. Theremin). MPD changes the playlist
+    // when it contains radio stations.
     $interval(update_view, 30 * 1000);
 });

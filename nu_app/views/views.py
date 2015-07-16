@@ -62,7 +62,7 @@ def get_current_playlist():
         elif "title" in i:
             pe["track"] = i["title"]
         else:
-            pe["track"] = "N/A"
+            pe["track"] = i["file"]
         if "album" in i:
             pe["album"] = i["album"]
         else:
