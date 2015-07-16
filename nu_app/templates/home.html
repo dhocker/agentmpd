@@ -60,14 +60,14 @@
         <div>
             <table class="common-table">
                 <tr>
-                    <th>Song</th>
-                    <th>Title</th>
+                    <th>Play</th>
+                    <th>Title/Name</th>
                     <th>Album</th>
                     <th>Artist</th>
                 </tr>
                 <tr id="{= x.pos =}" class="playlist-entry" ng-class-odd="'alt'" ng-repeat="x in current_playlist.playlist">
-                    <td><button ng-click="play_song(x.pos)" title="Click to play">{= x.pos =}</button></td>
-                    <td>{= x.title =}</td>
+                    <td><button ng-click="play_song(x.pos)" title="Play">{= x.pos =}</button></td>
+                    <td>{= x.track =}</td>
                     <td>{= x.album =}</td>
                     <td>{= x.artist =}</td>
                 </tr>

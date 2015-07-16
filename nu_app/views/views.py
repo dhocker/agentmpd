@@ -44,6 +44,45 @@ def get_current_player_status():
 
     return s
 
+
+def get_current_playlist():
+    connect_to_mpd()
+    info = client.playlistinfo()
+
+    # Normalize playlist entries. The data returned from
+    # MPD varies according to what is playing (radio stations
+    # and records).
+    pl = []
+    for i in info:
+        pe = {}
+        pe["id"] = i["id"]
+        pe["pos"] = i["pos"]
+        if "name" in i:
+            pe["track"] = i["name"]
+        elif "title" in i:
+            pe["track"] = i["title"]
+        else:
+            pe["track"] = "N/A"
+        if "album" in i:
+            pe["album"] = i["album"]
+        else:
+            pe["album"] = "."
+        if "artist" in i:
+            pe["artist"] = i["artist"]
+        else:
+            pe["artist"] = "."
+        if "time" in i:
+            pe["time"] = i["time"]
+        else:
+            pe["time"] = ""
+        pe["file"] = i["file"]
+        pl.append(pe)
+
+    playlist = {}
+    playlist["playlist"] = pl
+    return playlist
+
+
 @app.route("/")
 def root():
     return redirect(url_for('home'))
@@ -64,11 +103,8 @@ def home():
 
 
 @app.route("/home/current_playlist", methods=['GET'])
-def get_current_playlist():
-    connect_to_mpd()
-    info = client.playlistinfo()
-    playlist = {}
-    playlist["playlist"] = info
+def current_playlist():
+    playlist = get_current_playlist()
     return jsonify(**playlist)
 
 

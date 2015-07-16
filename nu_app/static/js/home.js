@@ -81,16 +81,29 @@ app.controller('homeController', function($scope, $http, $interval) {
             });
     };
 
-    // AJAX calls for transport functions
-
-    $scope.get_current_playlist = function() {
+    function get_current_playlist() {
         $http.get('/home/current_playlist', {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
+                console.log("Get current playlist success");
             }).
             error(function(data, status, headers, config) {
             });
     };
+
+    function update_view() {
+        // This just doesn't work because of race conditions.
+        // The call to get_current_playlist returns before the
+        // http call completes. Therefore we actually exit this
+        // function before the http request completes.
+        // Candidate solution: Mark the playlist entry with a
+        // class that indicates if the entry is/isnot the current entry.
+        get_current_playlist();
+        update_status();
+        console.log("Update view exiting");
+    };
+
+    // AJAX calls for transport functions
 
     $scope.toggle_playing = function() {
         $scope.playing = !$scope.playing;
@@ -172,11 +185,12 @@ app.controller('homeController', function($scope, $http, $interval) {
     };
 
     // Initialize current status
-    $scope.get_current_playlist();
+    get_current_playlist();
     get_current_status();
 
     // Polled status update every 10 seconds
     // This isn't very efficient, but for now it will have to do.
-    // We'll need to figure out how to use the MPD idle
-    $interval(get_current_status, status_update_interval)
+    // We'll need to figure out how to use the MPD idle API.
+    $interval(get_current_status, status_update_interval);
+    $interval(update_view, 30 * 1000);
 });
