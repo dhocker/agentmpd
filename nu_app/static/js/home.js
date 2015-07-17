@@ -85,7 +85,7 @@ app.controller('homeController', function($scope, $http, $interval) {
                 update_status();
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "unknown";
+                $scope.status = "Host communication error";
             });
     };
 
@@ -96,6 +96,7 @@ app.controller('homeController', function($scope, $http, $interval) {
                 update_status();
             }).
             error(function(data, status, headers, config) {
+                $scope.status = "Host communication error";
             });
     };
 
@@ -112,11 +113,11 @@ app.controller('homeController', function($scope, $http, $interval) {
                 update_status();
             }).
             error(function(data, status, headers, config) {
+                $scope.status = "Host communication error";
             });
     };
 
     $scope.toggle_playing = function() {
-        $scope.playing = !$scope.playing;
         post_transport('/home/toggle_play', 'play');
     };
 
