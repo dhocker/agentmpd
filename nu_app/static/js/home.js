@@ -74,6 +74,7 @@ app.controller('homeController', function($scope, $http, $interval) {
             }
         }
 
+        $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
     };
 
@@ -81,8 +82,6 @@ app.controller('homeController', function($scope, $http, $interval) {
         $http.get('/home/current_status', {}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                // Update current marking
                 update_status();
             }).
             error(function(data, status, headers, config) {
@@ -106,83 +105,43 @@ app.controller('homeController', function($scope, $http, $interval) {
 
     // AJAX calls for transport functions
 
-    $scope.toggle_playing = function() {
-        $scope.playing = !$scope.playing;
-        $http.post('/home/toggle_play', {msg:'play'}).
+    function post_transport(url, msg) {
+        $http.post(url, {'msg':msg}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
                 update_status();
             }).
             error(function(data, status, headers, config) {
             });
+    };
+
+    $scope.toggle_playing = function() {
+        $scope.playing = !$scope.playing;
+        post_transport('/home/toggle_play', 'play');
     };
 
     $scope.play_stop = function() {
-        $http.post('/home/stop_play', {msg:'stop'}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/stop_play', 'stop');
     };
 
     $scope.play_first = function() {
-        $http.post('/home/play_first', {msg:'first'}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/play_first', 'first');
     };
 
     $scope.play_previous = function() {
-        $http.post('/home/play_previous', {msg:'previous'}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/play_previous', 'previous');
     };
 
     $scope.play_next = function() {
-        $http.post('/home/play_next', {msg:'next'}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/play_next', 'next');
     };
 
     $scope.play_last = function() {
-        $http.post('/home/play_last', {msg:'last'}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/play_last', 'last');
     };
 
     $scope.play_song = function(pos) {
-        $http.post('/home/play_song/' + pos).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                $scope.status = translate_state[data['state']];
-                // Update current marking
-                update_status();
-            }).
-            error(function(data, status, headers, config) {
-            });
+        post_transport('/home/play_song/' + pos, 'play');
     };
 
     // Initialize current status

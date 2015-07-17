@@ -22,7 +22,6 @@ import mpd
 # use_unicode will enable the utf-8 mode for python2
 # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
 client = None
-status = ""
 
 def connect_to_mpd():
     global client
@@ -91,7 +90,6 @@ def root():
 @app.route("/home", methods=['GET'])
 def home():
     global client
-    global status
 
     connect_to_mpd()
 
@@ -123,6 +121,7 @@ def get_current_song():
 
 @app.route("/home/play_song/<int:pos>", methods=['POST'])
 def play_song(pos):
+    global client
     connect_to_mpd()
 
     client.play(pos)
@@ -132,6 +131,7 @@ def play_song(pos):
 
 @app.route("/home/toggle_play", methods=['POST'])
 def toggle_play():
+    global client
     connect_to_mpd()
     current_status = get_current_player_status()
     if current_status['state'] == 'play':
@@ -147,7 +147,7 @@ def toggle_play():
 
 @app.route("/home/stop_play", methods=['POST'])
 def stop_play():
-    global status
+    global client
     connect_to_mpd()
     client.stop()
     current_status = get_current_player_status()
@@ -156,34 +156,52 @@ def stop_play():
 
 @app.route("/home/play_first", methods=['POST'])
 def play_first():
-    global status
+    global client
     connect_to_mpd()
     client.play(0)
     current_status = get_current_player_status()
     return jsonify(**current_status)
 
+#
+# Note on play previous and play last.
+# The client.previous() and client.next() methods
+# only work IF MPD is playing or paused. If MPD is
+# stopped, neither method seems to work. As a result,
+# we have chosen to implement the logical actions
+# of play previous and play next so that they play
+# the previous/next playlist entry regardless of the
+# current state of MPD
+#
 
 @app.route("/home/play_previous", methods=['POST'])
 def play_previous():
-    global status
+    global client
     connect_to_mpd()
-    client.previous()
+    current_status = client.status()
+    playlist_len = int(current_status[u'playlistlength'])
+    song = int(current_status[u'song']);
+    if song > 0:
+        client.play(song - 1)
     current_status = get_current_player_status()
     return jsonify(**current_status)
 
 
 @app.route("/home/play_next", methods=['POST'])
 def play_next():
-    global status
+    global client
     connect_to_mpd()
-    client.next()
+    current_status = client.status()
+    playlist_len = int(current_status[u'playlistlength'])
+    song = int(current_status[u'song']);
+    if (song + 1) < playlist_len:
+        client.play(song + 1)
     current_status = get_current_player_status()
     return jsonify(**current_status)
 
 
 @app.route("/home/play_last", methods=['POST'])
 def play_last():
-    global status
+    global client
     connect_to_mpd()
     current_status = client.status()
     client.play(int(current_status[u'playlistlength']) - 1)
