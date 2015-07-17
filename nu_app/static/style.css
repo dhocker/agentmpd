@@ -42,7 +42,7 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
 
 .transport-control { background: #E8EDF6 }
 
-.now-playing    { background: #E8EDF6; padding: 0.5em;
+.now-playing    { background: #E8EDF6; padding: 0;
                     color: #1947A3;
                     border: 3px solid #1947A3;
                     margin: 0.3em auto; }
@@ -56,19 +56,18 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
                     color: #E8EDF6;
                 }
 
+.now-playing-hdr { font-size: 1.6em;
+                    color: #FFF;
+                    background: #1947A3;
+                    width: 20%;
+                    }
+
 .artist-name    { font-size: 1em; }
 
 .album          { font-size: 1em; }
 
 .song-title     { font-size: 1.3em; }
 
-.room-name      { width: 95%; font-size: 1em; color: #377BA8; }
-.room-description { width: 95%; }
-.name           { padding: 0.2em; color: #377BA8; background: #EBF5FB}
-.module-name    { width: 95%; }
-.description    { padding: 0.2em; color: #377BA8; background: #EBF5FB }
-.hdc            { margin: 0.2em; height: 25px; }
-.hdc-text       { margin: 0.3em auto; text-align: left; vertical-align: middle; padding-top: 3px; }
 .edit-button    { left: 2em; margin-top: 0.5em; padding: 0.2em; height: 2.5em; border-radius: 7px;
                     cursor: pointer;
                     background-color: #eee;
@@ -82,7 +81,6 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
 .input-form     { margin: 1em auto; }
 .input-text     { margin: 0.3em auto; }
 .input-select   { margin: 0.5em auto; }
-.module-type-select {margin: 0.3em auto; font-size: 1em; color: #377BA8; }
 .input-number   { margin: 0.3em auto; width: 2em; }
 .input-time     { margin: 0.3em auto; width: 5em; height: 1em; }
 .input-label    { margin: 0.3em auto; display: block }
@@ -128,48 +126,18 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
                     color: #000000;
                     background-color: #E8EDF6; }
 
-/* Styling for the program editing page */
-.days-of-week       {
-                    margin: 1em 1em 0.5em 0;
-                    width: 200px;
-                    float: left;
+/* Now playing */
+.now-playing-table  { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 0; padding: 0;
                     }
-.start-action-group {
-                    margin: 0.5em 1em 1em 0;
-                    width: 90px;
-                    float: left;
-                    }
-.stop-action-group  {
-                    margin: 0.5em 1em 1em 0;
-                    width: 90px;
-                    float:left;
-                    }
-.start-trigger-group {
-                    margin: 1em 1em 1em 0;
-                    width: 230px;
-                    float:left;
-                    }
-.stop-trigger-group {
-                    margin: 1em 1em 1em 0;
-                    width: 230px;
-                    float:left;
-                    }
-.start-trigger-method {
-                    margin: 0.5em auto;
-                    }
-.stop-trigger-method {
-                    margin: 0.5em auto;
-                    }
-.program-trigger-group {
-                    margin: 0.5em auto;
-                    }
-.offset-time        {
-                    font-size: 0.8em;
-                    }
-.program-summary    {
-                    font-size: 0.9em;
-                    padding: 0;
-                    margin: 0;
+
+.now-playing-table td, .common-table th {
+                    /* font-size: 1.2em; */
+                    border: 1px solid #A5C4D8;
+                    padding: 3px 7px 3px 7px;
+                    height: 1.5em;
                     }
 
 /* This removes the closer X from jQuery UI dialog boxes */

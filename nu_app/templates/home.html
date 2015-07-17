@@ -49,9 +49,16 @@
         </div>
 
         <div class="now-playing">
-            <span class="song-title">[{= currently_playing.song =}] {= currently_playing.title =}</span></br>
-            <span class="album">{= currently_playing.album =}</span></br>
-            <span class="artist-name">{= currently_playing.artist =}</span>
+            <table class="now-playing-table">
+                <tr>
+                    <td class="now-playing-hdr">Now Playing</td>
+                    <td>
+                        <span class="song-title">[{= currently_playing.song =}] {= currently_playing.title =}</span></br>
+                        <span class="album">{= currently_playing.album =}</span></br>
+                        <span class="artist-name">{= currently_playing.artist =}</span>
+                    </td>
+                </tr>
+            </table>
 
 
 
