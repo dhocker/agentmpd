@@ -36,6 +36,8 @@ app.controller('homeController', function($scope, $http, $interval) {
 
     $scope.title = "AgentMPD";
 
+    $("#menu-player").hide();
+
     var translate_state = {};
     translate_state['play'] = 'Playing...';
     translate_state['pause'] = 'Paused';

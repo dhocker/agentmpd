@@ -56,7 +56,7 @@ app = Flask(__name__)
 
 # All views must be imported after the app is defined
 from views import views
-#from views import login_views
+from views import settings
 
 #logger = logging.getLogger("app")
 

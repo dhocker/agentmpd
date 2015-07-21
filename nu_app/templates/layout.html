@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {#
 # AgentMPD - web app for controlling an mpd instance
 # Copyright (C) 2015  Dave Hocker (email: AtHomeX10@gmail.com)
@@ -15,7 +16,6 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #}
 
-<!doctype html>
 <html>
     <title>AgentMPD</title>
 
@@ -39,6 +39,9 @@
         <div>
             <ul class="sf-menu" id="menu">
                 <li>
+                    <a id="menu-player" href="{{ url_for('home') }}">Player</a>
+                </li>
+                <li>
                     <a>Playlist</a>
                     <ul>
                         <li><a href="#">Load</a></li>
@@ -50,7 +53,7 @@
                     <a href="#">Library</a>
                 </li>
                 <li>
-                    <a href="#">Settings</a>
+                    <a id="menu-settings" href="{{ url_for('settings_page') }}">Settings</a>
                 </li>
             </ul>
         </div>
