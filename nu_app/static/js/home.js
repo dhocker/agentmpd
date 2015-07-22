@@ -31,7 +31,7 @@ app.config(function($interpolateProvider) {
 /*
     Home page app controller
 */
-app.controller('homeController', function($scope, $http, $interval) {
+app.controller('homeController', function($scope, $http, $interval, $timeout) {
     // Initialization
 
     $scope.title = "AgentMPD";
@@ -44,6 +44,7 @@ app.controller('homeController', function($scope, $http, $interval) {
     translate_state['stop'] = 'Stopped';
 
     var status_update_interval = 10 * 1000; // 10 seconds
+    var playlist_update_interval = 30 * 1000; // 30 seconds
 
     $scope.playing = false;
     $scope.current_playlist = {"playlist": []};
@@ -85,6 +86,23 @@ app.controller('homeController', function($scope, $http, $interval) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
+            }).
+            error(function(data, status, headers, config) {
+                $scope.status = "Host communication error";
+            });
+    };
+
+    function idle() {
+        $http.get('/home/idle', {}).
+            success(function(data, status, headers, config) {
+                if (data == 'player')
+                {
+                }
+                else if (data == 'playlist')
+                {
+                }
+                // Restart idle. Is this accidentally recursive???
+                idle();
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "Host communication error";
@@ -159,5 +177,6 @@ app.controller('homeController', function($scope, $http, $interval) {
     // catch changes to the playlist made by MPD or by another
     // MPD client app (e.g. Theremin). MPD changes the playlist
     // when it contains radio stations.
-    $interval(update_view, 30 * 1000);
+    $interval(update_view, playlist_update_interval);
+    //idle();
 });

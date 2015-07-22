@@ -14,27 +14,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from nu_app import app
-from nu_app.models.settings import Settings
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, jsonify
-import json
 
-
-@app.route("/settings_page", methods=['GET'])
-def settings_page():
-    if request.method == 'GET':
-        return render_template("settings.html", host="raspberrypi-fs")
-    return ""
-
-
-@app.route("/settings", methods=['GET', 'POST'])
-def settings():
-    if request.method == 'GET':
-        # Return current settings
-        return jsonify(Settings.get())
-    elif request.method == 'POST':
-        # Save settings
-        args = json.loads(request.data.decode())
-        Settings.save(args)
-        return ""

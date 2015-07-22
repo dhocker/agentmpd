@@ -79,11 +79,11 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
 .copyright      { float: right; }
 .clear          { clear: both }
 .input-form     { margin: 1em auto; }
-.input-text     { margin: 0.3em auto; font-size: 1em; }
+.input-text     { margin: 0.2em auto; font-size: 1em; }
 .input-select   { margin: 0.5em auto; }
-.input-number   { margin: 0.3em auto; width: 3em; font-size: 1em; }
-.input-time     { margin: 0.3em auto; width: 5em; height: 1em; }
-.input-label    { margin: 0.3em auto; display: block; font-size: 1.2em }
+.input-number   { margin: 0.2em auto; width: 3em; font-size: 1em; }
+.input-time     { margin: 0.2em auto; width: 5em; height: 1em; }
+.input-label    { margin: 0.5em 0.3em 0 0; display: block; font-size: 1.2em }
 .input-program-name {
                     width: 200px;
                 }

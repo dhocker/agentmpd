@@ -37,6 +37,8 @@ app.controller('settingsController', function($scope, $http) {
     $scope.title = "AgentMPD";
     $scope.host = "";
     $scope.port = "";
+    $scope.status_update_interval = 10;
+    $scope.playlist_update_interval = 30;
 
     $("#menu-settings").hide();
 
@@ -44,13 +46,19 @@ app.controller('settingsController', function($scope, $http) {
         success(function(data, status, headers, config) {
             $scope.host = data["host"];
             $scope.port = data["port"];
+            $scope.status_update_interval = data["status_update_interval"];
+            $scope.playlist_update_interval = data["playlist_update_interval"];
         }).
         error(function(data, status, headers, config) {
             $scope.status = "Host communication error";
         });
 
     $scope.save_settings = function() {
-        $http.post("/settings", {'host': $scope.host, 'port': $scope.port}).
+        $http.post("/settings",
+                {'host': $scope.host,
+                'port': $scope.port,
+                'status_update_interval': $scope.status_update_interval,
+                'playlist_update_interval': $scope.playlist_update_interval}).
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {

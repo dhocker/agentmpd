@@ -15,6 +15,7 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
 from nu_app import app
+from nu_app.models.key_value_store import KVStore
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import mpd
@@ -27,7 +28,9 @@ def connect_to_mpd():
     global client
     if not client:
         client = mpd.MPDClient(use_unicode=True)
-        client.connect("raspberrypi-fs", 6600)
+        host = KVStore.get("mpd", "host", "localhost")
+        port = KVStore.get("mpd", "port", "6600")
+        client.connect(host, int(port))
 
 
 def get_current_player_status():
@@ -207,6 +210,15 @@ def play_last():
     client.play(int(current_status[u'playlistlength']) - 1)
     current_status = get_current_player_status()
     return jsonify(**current_status)
+
+
+@app.route("/home/idle", methods=['GET'])
+def idle():
+    global client
+    print "Idling..."
+    connect_to_mpd()
+    response = client.idle()
+    return response
 
 
 @app.route("/about")

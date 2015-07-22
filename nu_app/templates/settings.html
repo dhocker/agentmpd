@@ -24,12 +24,20 @@
     <div ng-app="settings" ng-controller="settingsController">
         <h2>Settings</h2>
         <div>
-            <span class="input-label">MPD Host Name or IP Address</span>
+            <span class="input-label">MPD host name or IP Address</span>
             <input type="text" class="input-text" ng-model="host">
         </div>
         <div>
             <span class="input-label">Port</span>
             <input type="text" class="input-number" ng-model="port">
+        </div>
+        <div>
+            <span class="input-label">Status update interval (seconds)</span>
+            <input type="text" class="input-number" ng-model="status_update_interval">
+        </div>
+        <div>
+            <span class="input-label">Playlist update interval (seconds)</span>
+            <input type="text" class="input-number" ng-model="playlist_update_interval">
         </div>
         <div>
             <button class="edit-button" ng-click="save_settings()">Save</button>
