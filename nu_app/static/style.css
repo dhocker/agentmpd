@@ -56,6 +56,8 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
                     color: #E8EDF6;
                 }
 
+.playlist-entry { cursor: default; }
+
 .now-playing-hdr { font-size: 1.6em;
                     color: #FFF;
                     background: #1947A3;
@@ -122,9 +124,13 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
                     background-color: #1947A3;
                     color: #ffffff; }
 
-.common-table tr.alt td {
+.common-table tr.alt {
                     color: #000000;
                     background-color: #E8EDF6; }
+
+.playlist-entry:hover, .common-table tr:hover.alt { background-color: #BDD2FF;
+                    color: #000000;
+                }
 
 /* Now playing */
 .now-playing-table  { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
