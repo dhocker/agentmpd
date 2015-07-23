@@ -53,7 +53,7 @@
                 <tr>
                     <td class="now-playing-hdr">Now Playing</td>
                     <td>
-                        <span class="song-title">[{= currently_playing.song =}] {= currently_playing.title =}</span></br>
+                        <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span></br>
                         <span class="album">{= currently_playing.album =}</span></br>
                         <span class="artist-name">{= currently_playing.artist =}</span>
                     </td>
@@ -70,7 +70,7 @@
                     <th>Artist</th>
                 </tr>
                 <tr id="{= x.pos =}" class="playlist-entry" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
-                    <td><button ng-click="play_song(x.pos)" title="Play">{= x.pos =}</button></td>
+                    <td><button ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
                     <td>{= x.track =}</td>
                     <td>{= x.album =}</td>
                     <td>{= x.artist =}</td>

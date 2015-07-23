@@ -59,6 +59,7 @@ def get_current_playlist():
         pe = {}
         pe["id"] = i["id"]
         pe["pos"] = i["pos"]
+        pe["pos1"] = int(i["pos"]) + 1
         if "name" in i:
             pe["track"] = i["name"]
         elif "title" in i:
@@ -82,6 +83,7 @@ def get_current_playlist():
 
     playlist = {}
     playlist["playlist"] = pl
+    # TODO Figure out how to get current playlist name and add it to dict
     return playlist
 
 
@@ -113,6 +115,7 @@ def current_playlist():
 def get_current_status():
     connect_to_mpd()
     current_status = get_current_player_status()
+    current_status["pos1"] = int(current_status["pos"]) + 1
     return jsonify(**current_status)
 
 
