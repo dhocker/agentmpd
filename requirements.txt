@@ -3,5 +3,5 @@ itsdangerous==0.24
 Jinja2==2.7.3
 MarkupSafe==0.23
 python-mpd2==0.5.4
-uWSGI==2.0.11
+uWSGI==2.0.11 ; sys_platform != 'win32'
 Werkzeug==0.10.4
