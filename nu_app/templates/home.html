@@ -21,7 +21,8 @@
 {% endblock %}
 
 {% block body %}
-    <div ng-app="home" ng-controller="homeController">
+    <div>
+        <h2>Player</h2>
         <div class="transport">
             {# Note we are using {= =} for the angularjs interpolation tag #}
             <button class="transport-control" ng-click="play_first()" title="Play first">

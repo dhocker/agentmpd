@@ -16,26 +16,14 @@
 */
 
 /*
-    AgentMPD home page app
-*/
-
-var app = angular.module('home', []);
-
-// Change the interpolation marker from {{ }} to {= =} to avoid
-// collision with the Jinga2 template system.
-app.config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('{=');
-    $interpolateProvider.endSymbol('=}');
-});
-
-/*
     Home page app controller
 */
-app.controller('homeController', function($scope, $http, $interval, $timeout) {
+app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", function($scope, $http, $interval, $timeout) {
     // Initialization
 
     $scope.title = "AgentMPD";
 
+    // Menu customization
     $("#menu-player").hide();
 
     var translate_state = {};
@@ -48,6 +36,7 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
 
     $scope.playing = false;
     $scope.current_playlist = {"playlist": []};
+    $scope.error = "";
 
     // Update the status of each playlist entry by assigning it a CSS
     // class that properly styles it
@@ -86,10 +75,17 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
+                $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.status = "Server communication error";
+                $scope.error = "Server communication error";
             });
+    };
+
+    $scope.show_error = function() {
+        // How do you clone this string???
+        return $scope.error;
     };
 
     function idle() {
@@ -105,7 +101,7 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
                 idle();
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.status = "Server communication error";
             });
     };
 
@@ -114,9 +110,11 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 update_status();
+                $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.status = "Server communication error";
+                $scope.error = "Server communication error";
             });
     };
 
@@ -131,9 +129,11 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
+                $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.status = "Server communication error";
+                $scope.error = "Server communication error";
             });
     };
 
@@ -179,4 +179,4 @@ app.controller('homeController', function($scope, $http, $interval, $timeout) {
     // when it contains radio stations.
     $interval(update_view, playlist_update_interval);
     //idle();
-});
+}]);

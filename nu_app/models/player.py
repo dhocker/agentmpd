@@ -14,32 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from key_value_store import KVStore
-import mpd
+from mpd_model import MPDModel
 
 
-class Player:
+class Player(MPDModel):
     """
-    Model class representing the MPD interface
+    Model class representing the MPD player interface
     """
 
     def __init__(self):
-        self.client = None
-
-    def connect_to_mpd(self):
-        if not self.client:
-            # use_unicode will enable the utf-8 mode for python2
-            # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
-            self.client = mpd.MPDClient(use_unicode=True)
-            host = KVStore.get("mpd", "host", "localhost")
-            port = KVStore.get("mpd", "port", "6600")
-            try:
-                self.client.connect(host, int(port))
-                return True
-            except Exception as ex:
-                print ex
-            return False
-        return True
+        MPDModel.__init__(self)
 
     def get_current_player_status(self):
         s = {}
@@ -48,9 +32,9 @@ class Player:
             current_song = self.client.currentsong()
 
             # Translate the status and song info to a single status dict
-            s['state'] = current_status['state']
-            s['song'] = current_status['song']
             # Translate keys/values from unicode to ascii
+            for k, v in current_status.iteritems():
+                s[k.encode('ascii','ignore')] = v.encode('ascii','ignore')
             for k, v in current_song.iteritems():
                 s[k.encode('ascii','ignore')] = v.encode('ascii','ignore')
 

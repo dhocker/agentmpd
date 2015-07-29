@@ -16,19 +16,6 @@
 */
 
 /*
-    AgentMPD home page app
-*/
-
-var app = angular.module('settings', []);
-
-// Change the interpolation marker from {{ }} to {= =} to avoid
-// collision with the Jinga2 template system.
-app.config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('{=');
-    $interpolateProvider.endSymbol('=}');
-});
-
-/*
     Settings page app controller
 */
 app.controller('settingsController', function($scope, $http) {

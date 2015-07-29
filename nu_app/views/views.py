@@ -35,7 +35,7 @@ def home():
     current_song = player.get_current_player_status()
     status = current_song["state"]
 
-    return render_template('home.html', current_song=current_song)
+    return render_template('home.html', current_song=current_song, ngapp="agentmpd", ngcontroller="homeController")
 
 
 @app.route("/home/current_playlist", methods=['GET'])
@@ -47,7 +47,10 @@ def current_playlist():
 @app.route("/home/current_status", methods=['GET'])
 def get_current_status():
     current_status = player.get_current_player_status()
-    current_status["pos1"] = int(current_status["pos"]) + 1
+    if "pos" in current_status:
+        current_status["pos1"] = int(current_status["pos"]) + 1
+    else:
+        current_status["pos1"] = ""
     return jsonify(**current_status)
 
 
