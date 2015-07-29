@@ -71,4 +71,7 @@ class KVStore:
             return "/var/mpd_web_client/kvstore.json"
         if osname == "Linux":
             return "/var/mpd_web_client/kvstore.json"
+        if osname == "Windows":
+            import os
+            return os.path.expanduser("~\\mpd_web_client\\kvstore.json")
         return "other"
