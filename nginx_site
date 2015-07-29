@@ -27,6 +27,9 @@ server {
 	# Make site accessible from http://localhost/
 	server_name localhost;
 
+    # This serves only a single uWsgi app. All page requests are routed
+    # to the same uWsgi app. This needs to be improved (possibly by
+    # using uWsgi emperor mode and vassals.
 	location / { try_files $uri @yourapplication; }
  		location @yourapplication {
                 include uwsgi_params;

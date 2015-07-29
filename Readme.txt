@@ -16,3 +16,10 @@ uwsgi_app - uwsgi configuration file for the app. This file should go in /etc/uw
     Edit this file based on how you set up your virtualenv.
 runserver.py - useful for testing the app, particularly under PyCharm. This will run the app without
     involving either nginx or uwsgi.
+
+uWSGI
+-----
+
+The stock version of uWSGI that is currently installed under Raspbian Wheezy is out of date. It is recommended
+that you install the most current version of uWSGI (as identified in the requirements.txt file) and modify the init.d
+script to use the version you install in a virtualenv.

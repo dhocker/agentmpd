@@ -1,11 +1,11 @@
 [uwsgi]
 socket = /tmp/uwsgi.sock
 ; Change this line for your virtualenv
-venv = /home/pi/Virtualenvs/flask_mpd
+venv = /home/pi/Virtualenvs/mpd_web_client
 ; Change this line according to where to put the source code
-chdir = /home/pi/rpi/nginx_uwsgi_app
+chdir = /home/pi/rpi/mpd_web_client
 plugins = python
 ; Change this line according to where to put the source code
-wsgi-file = /home/pi/rpi/nginx_uwsgi_app/uwsgi.py
+wsgi-file = /home/pi/rpi/mpd_web_client/uwsgi.py
 callable = app
 process   = 3
