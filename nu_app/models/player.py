@@ -84,19 +84,25 @@ class Player(MPDModel):
         return playlist
 
     def status(self):
-        return self.client.status()
+        if self.connect_to_mpd():
+            return self.client.status()
 
     def play(self, pos):
-        self.client.play(pos)
+        if self.connect_to_mpd():
+            self.client.play(pos)
 
     def pause(self, pos):
-        self.client.pause(pos)
+        if self.connect_to_mpd():
+            self.client.pause(pos)
 
     def stop(self):
-        self.client.stop()
+        if self.connect_to_mpd():
+            self.client.stop()
 
     def setvol(self, level):
-        self.client.setvol(level)
+        if self.connect_to_mpd():
+            self.client.setvol(level)
 
     def idle(self):
-        self.client.idle()
+        if self.connect_to_mpd():
+            self.client.idle()

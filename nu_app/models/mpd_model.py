@@ -16,6 +16,7 @@
 #
 from key_value_store import KVStore
 import mpd
+from datetime import datetime, timedelta
 
 
 class MPDModel:
@@ -25,8 +26,19 @@ class MPDModel:
 
     def __init__(self):
         self.client = None
+        self.last_use = datetime.now()
 
     def connect_to_mpd(self):
+        # Restart the connection periodically because eventually the connection will drop
+        delta = datetime.now() - self.last_use
+        if (delta.total_seconds() > 60) and self.client:
+            try:
+                self.client.close()
+            except:
+                pass
+            print "Restarting connection to mpd"
+            self.client = None
+
         if not self.client:
             # use_unicode will enable the utf-8 mode for python2
             # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
@@ -35,8 +47,12 @@ class MPDModel:
             port = KVStore.get("mpd", "port", "6600")
             try:
                 self.client.connect(host, int(port))
+                self.last_use = datetime.now()
                 return True
             except Exception as ex:
                 print ex
+                self.client = None
             return False
+
+        self.last_use = datetime.now()
         return True
