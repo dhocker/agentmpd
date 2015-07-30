@@ -35,7 +35,9 @@ h2              { font-size: 1.2em;  margin: 0.5em 0 0.5em 0; }
 .error          { background: #F0D6D6; padding: 0.5em; }
 .logo           { vertical-align: text-top }
 
-.transport      { background: #E8EDF6; padding: 0.5em;
+.transport      { position: relative;
+                    overflow: auto;
+                    background: #E8EDF6; padding: 0.5em;
                     color: #1947A3;
                     border: 3px solid #1947A3;
                     margin: 0.3em auto; }

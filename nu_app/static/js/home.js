@@ -38,6 +38,20 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     $scope.current_playlist = {"playlist": []};
     $scope.error = "";
 
+    var volumebar = $( "#volumebar" );
+    var volumeLabel = $( ".volume-label" );
+
+    volumebar.progressbar({
+      max: 100,
+      value: 50,
+      change: function() {
+        progressLabel.text( volumebar.progressbar( "value" ) + "%" );
+      },
+      complete: function() {
+        volumeLabel.text( "Complete!" );
+      }
+    });
+
     // Update the status of each playlist entry by assigning it a CSS
     // class that properly styles it
     function update_status() {
@@ -68,6 +82,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
         $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
+        volumebar.progressbar("value", parseInt($scope.currently_playing['volume']))
     };
 
     function get_current_status() {
