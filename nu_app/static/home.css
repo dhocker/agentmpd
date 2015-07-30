@@ -1,0 +1,122 @@
+/*
+# AgentMPD - web app for controlling an mpd instance
+# Copyright (C) 2015  Dave Hocker (email: AtHomeX10@gmail.com)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the LICENSE file for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+.transport  {
+    position: static;
+    float: left;
+    width: 65%;
+    background: #E8EDF6;
+    padding: 0.5em;
+    color: #1947A3;
+    border: 3px solid #1947A3;
+    margin: 0.3em 0.3em 0.3em 0em;
+}
+
+.transport-control {
+    background: #E8EDF6;
+}
+
+.tx-control-img {
+    width: 48px;
+    height: 48px
+}
+
+.volume-control {
+    position: static;
+    float: left;
+    background: #E8EDF6;
+    padding: 0.5em;
+    color: #1947A3;
+    border: 3px solid #1947A3;
+    margin: 0.3em 0.3em 0.3em 0em;
+}
+
+.vol-control-img {
+    width: 16px;
+    height: 16px
+}
+
+.now-playing    {
+    background: #E8EDF6;
+    padding: 0;
+    color: #1947A3;
+    border: 3px solid #1947A3;
+    margin: 0.3em auto;
+}
+
+/* Now playing */
+.now-playing-table  {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0; padding: 0;
+}
+
+.now-playing-table td, .common-table th {
+    /* font-size: 1.2em; */
+    border: 1px solid #A5C4D8;
+    padding: 3px 7px 3px 7px;
+    height: 1.5em;
+}
+
+.playlist-active {
+    background-color: #1947A3;
+    color: #E8EDF6;
+}
+
+.playlist-entry {
+    cursor: default;
+}
+
+.now-playing-hdr {
+    font-size: 1.6em;
+    color: #FFF;
+    background: #1947A3;
+    width: 20%;
+}
+
+.artist-name {
+    font-size: 1em;
+}
+
+.album {
+    font-size: 1em;
+}
+
+.song-title {
+    font-size: 1.3em;
+}
+
+.ui-progressbar {
+    position: static;
+    float: left;
+    /*margin: 1em 15em 1em 0;*/
+    width: 8.25em;
+    height: 1.3em;
+}
+.progress-label {
+    position: relative;
+    text-align: center;
+    float:left;
+    left: 35%;
+    font-weight: bold;
+    font-size: .75em;
+    color: #fff;
+}
+.ui-widget-header {
+    background: #1947A3;
+}

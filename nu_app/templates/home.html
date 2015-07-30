@@ -18,65 +18,53 @@
 {% extends "layout.html" %}
 
 {% block head %}
-  <style>
-      /* This kind of positioning is a hack and will likely break constantly */
-      .ui-progressbar {
-      position: absolute;
-      top: 68%;
-      left: 75%;
-      float: right;
-      /*margin: 1em 15em 1em 0;*/
-      width: 8em;
-      height: 1em;
-      }
-      .progress-label {
-      position: relative;
-      text-align: center;
-      float:left;
-      left: 25%;
-      font-weight: normal;
-      font-size: .75em;
-      text-shadow: 1px 1px 0 #fff;
-      }
-  </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
 {% endblock %}
 
 {% block body %}
     <div>
         <h2>Player</h2>
         <div class="transport">
-            <div style="float:left">
+            <div>
                 {# Note we are using {= =} for the angularjs interpolation tag #}
                 <button class="transport-control" ng-click="play_first()" title="Play first">
-                    <img src="{{ url_for('static', filename='playback-first.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="play_previous()" title="Play previous">
-                    <img src="{{ url_for('static', filename='playback-previous.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-previous.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
-                    <img src="{{ url_for('static', filename='playback-start.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-start.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
-                    <img src="{{ url_for('static', filename='playback-pause.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-pause.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="play_stop()"  title="Stop playing">
-                    <img src="{{ url_for('static', filename='playback-stop.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-stop.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="play_next()"  title="Play next">
-                    <img src="{{ url_for('static', filename='playback-next.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-next.png') }}"/>
                 </button>
                 <button class="transport-control" ng-click="play_last()" title="Play last">
-                    <img src="{{ url_for('static', filename='playback-last.png') }}"/>
+                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-last.png') }}"/>
                 </button>
-            </div>
-            <div style="float:left">
                 <span>{= status =}</span>
             </div>
+        </div>
+        <div class="volume-control">
+            <button class="transport-control" style="float:left;" ng-click="" title="Decrease">
+                <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
+            </button>
             {# Volume bar is a jquery ui progressbar #}
             <div id="volumebar" class="transport-control">
-                <div class="progress-label">Volume</div>
+                <div class="progress-label">{= volume =}</div>
             </div>
+            <button class="transport-control" style="float:left;" ng-click="" title="Increase">
+                <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
+            </button>
         </div>
+
+        <div class="clear"></div>
 
         <div class="now-playing">
             <table class="now-playing-table">

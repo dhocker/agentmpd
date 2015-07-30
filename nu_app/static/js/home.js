@@ -82,7 +82,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
         $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
-        volumebar.progressbar("value", parseInt($scope.currently_playing['volume']))
+        $scope.volume = parseInt($scope.currently_playing['volume']);
+        volumebar.progressbar("value", $scope.volume);
     };
 
     function get_current_status() {
@@ -93,7 +94,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Server communication error";
+                $scope.status = "";
                 $scope.error = "Server communication error";
             });
     };
@@ -116,7 +117,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 idle();
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Server communication error";
+                $scope.status = "";
+                $scope.error = "Server communication error";
             });
     };
 
@@ -128,7 +130,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Server communication error";
+                $scope.status = "";
                 $scope.error = "Server communication error";
             });
     };
@@ -147,7 +149,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Server communication error";
+                $scope.status = "";
                 $scope.error = "Server communication error";
             });
     };
