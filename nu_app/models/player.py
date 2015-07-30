@@ -95,5 +95,8 @@ class Player(MPDModel):
     def stop(self):
         self.client.stop()
 
+    def setvol(self, level):
+        self.client.setvol(level)
+
     def idle(self):
         self.client.idle()

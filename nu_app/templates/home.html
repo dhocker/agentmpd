@@ -52,14 +52,14 @@
             </div>
         </div>
         <div class="volume-control">
-            <button class="transport-control" style="float:left;" ng-click="" title="Decrease">
+            <button class="transport-control" style="float:left;" ng-click="volume_down()" title="Decrease">
                 <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
             </button>
             {# Volume bar is a jquery ui progressbar #}
             <div id="volumebar" class="transport-control">
                 <div class="progress-label">{= volume =}</div>
             </div>
-            <button class="transport-control" style="float:left;" ng-click="" title="Increase">
+            <button class="transport-control" style="float:left;" ng-click="volume_up()" title="Increase">
                 <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
             </button>
         </div>

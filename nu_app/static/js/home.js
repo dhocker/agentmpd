@@ -45,7 +45,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
       max: 100,
       value: 50,
       change: function() {
-        progressLabel.text( volumebar.progressbar( "value" ) + "%" );
+        volumeLabel.text( volumebar.progressbar( "value" ) + "%" );
       },
       complete: function() {
         volumeLabel.text( "Complete!" );
@@ -141,8 +141,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
     // AJAX calls for transport functions
 
-    function post_transport(url, msg) {
-        $http.post(url, {'msg':msg}).
+    function post_transport(url, data) {
+        $http.post(url, data).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
@@ -155,31 +155,39 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     $scope.toggle_playing = function() {
-        post_transport('/home/toggle_play', 'play');
+        post_transport('/home/toggle_play', {'msg':'play'});
     };
 
     $scope.play_stop = function() {
-        post_transport('/home/stop_play', 'stop');
+        post_transport('/home/stop_play', {'msg':'stop'});
     };
 
     $scope.play_first = function() {
-        post_transport('/home/play_first', 'first');
+        post_transport('/home/play_first', {'msg':'first'});
     };
 
     $scope.play_previous = function() {
-        post_transport('/home/play_previous', 'previous');
+        post_transport('/home/play_previous', {'msg':'previous'});
     };
 
     $scope.play_next = function() {
-        post_transport('/home/play_next', 'next');
+        post_transport('/home/play_next', {'msg':'next'});
     };
 
     $scope.play_last = function() {
-        post_transport('/home/play_last', 'last');
+        post_transport('/home/play_last', {'msg':'last'});
     };
 
     $scope.play_song = function(pos) {
-        post_transport('/home/play_song/' + pos, 'play');
+        post_transport('/home/play_song/' + pos, {'msg':'play'});
+    };
+
+    $scope.volume_up = function() {
+        post_transport('/home/volume_change', {'amount':'5'});
+    };
+
+    $scope.volume_down = function() {
+        post_transport('/home/volume_change', {'amount':'-5'});
     };
 
     // Initialize current status

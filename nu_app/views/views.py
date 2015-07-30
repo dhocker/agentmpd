@@ -19,7 +19,7 @@ from nu_app import app
 from nu_app.models.player import Player
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
-import mpd
+import json
 
 #  MPD music player model instance
 player = Player()
@@ -131,6 +131,21 @@ def play_next():
 def play_last():
     current_status = player.status()
     player.play(int(current_status[u'playlistlength']) - 1)
+    current_status = player.get_current_player_status()
+    return jsonify(**current_status)
+
+
+@app.route("/home/volume_change", methods=['POST'])
+def volume_change():
+    args = json.loads(request.data)
+    vol_change = int(args["amount"])
+    current_status = player.status()
+    new_volume = int(current_status["volume"]) + vol_change
+    if new_volume > 100:
+        new_volume = 100
+    elif new_volume < 0:
+        new_volume = 0
+    player.setvol(new_volume)
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
 
