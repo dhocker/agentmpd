@@ -23,7 +23,7 @@
 
 {% block body %}
     <div>
-        <h2>Player ({= host =}:{= port =})</h2>
+        <h2>MPD Player on {= host =}:{= port =}</h2>
         <div class="transport">
             <div>
                 {# Note we are using {= =} for the angularjs interpolation tag #}
@@ -80,7 +80,7 @@
         </div>
 
         <div>
-            <table class="common-table">
+            <table class="common-table playlist-table">
                 <tr>
                     <th>Play</th>
                     <th>Title/Name/Stream</th>

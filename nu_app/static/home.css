@@ -66,6 +66,13 @@
     margin: 0; padding: 0;
 }
 
+.now-playing-hdr {
+    font-size: 1.6em;
+    color: #FFF;
+    background: #1947A3;
+    width: 20%;
+}
+
 .now-playing-table td, .common-table th {
     /* font-size: 1.2em; */
     border: 1px solid #A5C4D8;
@@ -82,13 +89,6 @@
     cursor: default;
 }
 
-.now-playing-hdr {
-    font-size: 1.6em;
-    color: #FFF;
-    background: #1947A3;
-    width: 20%;
-}
-
 .artist-name {
     font-size: 1em;
 }
@@ -99,6 +99,37 @@
 
 .song-title {
     font-size: 1.3em;
+}
+
+.playlist-table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em auto;
+}
+.playlist-table td,
+.playlist-table th {
+    font-size: 0.9em;
+    border: 1px solid #A5C4D8;
+    padding: 3px 7px 3px 7px;
+    height: 1.5em;
+}
+.playlist-table th {
+    font-size: 1.1em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #1947A3;
+    color: #ffffff;
+}
+.playlist-table tr.alt {
+    color: #000000;
+    background-color: #E8EDF6;
+}
+.playlist-entry:hover,
+.playlist-table tr:hover.alt {
+    background-color: #BDD2FF;
+    color: #000000;
 }
 
 .ui-progressbar {
