@@ -22,6 +22,7 @@ app.controller('settingsController', function($scope, $http) {
     // Initialization
 
     $scope.title = "AgentMPD";
+    $scope.error = "";
     $scope.host = "";
     $scope.port = "";
     $scope.status_update_interval = 10;
@@ -37,7 +38,7 @@ app.controller('settingsController', function($scope, $http) {
             $scope.playlist_update_interval = data["playlist_update_interval"];
         }).
         error(function(data, status, headers, config) {
-            $scope.status = "Host communication error";
+            $scope.error = "Host communication error";
         });
 
     $scope.save_settings = function() {
@@ -49,7 +50,7 @@ app.controller('settingsController', function($scope, $http) {
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.error = "Host communication error";
             });
     };
 
