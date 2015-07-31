@@ -38,7 +38,7 @@
 .volume-control {
     position: static;
     float: left;
-    background: #E8EDF6;
+    background: #;
     padding: 0.5em;
     color: #1947A3;
     border: 3px solid #1947A3;
@@ -48,6 +48,17 @@
 .vol-control-img {
     width: 16px;
     height: 16px;
+}
+
+.volume-icon {
+    background: #E8EDF6;
+    margin: 3px auto;
+    float: left;
+}
+
+.volume-value {
+    vertical-align: middle;
+    margin: 3px;
 }
 
 .now-playing    {
@@ -141,7 +152,6 @@
 }
 .progress-label {
     position: relative;
-    text-align: center;
     float:left;
     left: 35%;
     font-weight: bold;

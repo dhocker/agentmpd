@@ -57,7 +57,10 @@
             </button>
             {# Volume bar is a jquery ui progressbar #}
             <div id="volumebar" class="transport-control">
-                <div class="progress-label">{= volume =}</div>
+                <div class="progress-label">
+                    <img class="volume-icon" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/>
+                    <span class="volume-value">{= volume =}</span>
+                </div>
             </div>
             <button class="transport-control" style="float:left;" ng-click="volume_up()" title="Increase">
                 <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
