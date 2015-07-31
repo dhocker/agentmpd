@@ -99,6 +99,20 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             });
     };
 
+    function get_settings() {
+        $http.get("/settings").
+            success(function(data, status, headers, config) {
+                $scope.host = data["host"];
+                $scope.port = data["port"];
+                $scope.status_update_interval = data["status_update_interval"];
+                $scope.playlist_update_interval = data["playlist_update_interval"];
+                $scope.volume_increment = data["volume_increment"];
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Host communication error";
+            });
+    }
+
     $scope.show_error = function() {
         // How do you clone this string???
         return $scope.error;
@@ -183,14 +197,15 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     $scope.volume_up = function() {
-        post_transport('/home/volume_change', {'amount':'5'});
+        post_transport('/home/volume_change', {'amount': $scope.volume_increment});
     };
 
     $scope.volume_down = function() {
-        post_transport('/home/volume_change', {'amount':'-5'});
+        post_transport('/home/volume_change', {'amount': -$scope.volume_increment});
     };
 
     // Initialize current status
+    get_settings();
     get_current_status();
     get_current_playlist();
 

@@ -27,6 +27,7 @@ app.controller('settingsController', function($scope, $http) {
     $scope.port = "";
     $scope.status_update_interval = 10;
     $scope.playlist_update_interval = 30;
+    $scope.volume_increment = 5;
 
     $("#menu-settings").hide();
 
@@ -36,6 +37,7 @@ app.controller('settingsController', function($scope, $http) {
             $scope.port = data["port"];
             $scope.status_update_interval = data["status_update_interval"];
             $scope.playlist_update_interval = data["playlist_update_interval"];
+            $scope.volume_increment = data["volume_increment"];
         }).
         error(function(data, status, headers, config) {
             $scope.error = "Host communication error";
@@ -46,7 +48,8 @@ app.controller('settingsController', function($scope, $http) {
                 {'host': $scope.host,
                 'port': $scope.port,
                 'status_update_interval': $scope.status_update_interval,
-                'playlist_update_interval': $scope.playlist_update_interval}).
+                'playlist_update_interval': $scope.playlist_update_interval,
+                'volume_increment': $scope.volume_increment}).
             success(function(data, status, headers, config) {
             }).
             error(function(data, status, headers, config) {

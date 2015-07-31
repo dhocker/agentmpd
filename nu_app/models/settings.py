@@ -27,7 +27,14 @@ class Settings:
         port = KVStore.get("mpd", "port", "6600")
         status_update_interval = KVStore.get("player", "status_update_interval", "10")
         playlist_update_interval = KVStore.get("player", "playlist_update_interval", "30")
-        s = {'host': host, 'port': port, 'status_update_interval': status_update_interval, 'playlist_update_interval': playlist_update_interval}
+        volume_increment = KVStore.get("player", "volume_increment", "5")
+        s = {
+            'host': host,
+            'port': port,
+            'status_update_interval': status_update_interval,
+            'playlist_update_interval': playlist_update_interval,
+            'volume_increment': volume_increment
+        }
         return s
 
 
@@ -37,3 +44,4 @@ class Settings:
         KVStore.set("mpd", "port", s["port"])
         KVStore.set("player", "status_update_interval", s["status_update_interval"])
         KVStore.set("player", "playlist_update_interval", s["playlist_update_interval"])
+        KVStore.set("player", "volume_increment", s["volume_increment"])
