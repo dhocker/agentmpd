@@ -39,6 +39,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     $scope.error = "";
 
     var volumebar = $( "#volumebar" );
+/*
     var volumeLabel = $( ".volume-label" );
 
     volumebar.progressbar({
@@ -51,6 +52,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         volumeLabel.text( "Complete!" );
       }
     });
+*/
 
     // Update the status of each playlist entry by assigning it a CSS
     // class that properly styles it
@@ -62,7 +64,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             {
                 // Active styling overrides odd/even styling
                 // And, a lot of trial and error proved you can't apply both.
-                pe["class"] = "playlist-active";
+                pe["class"] = "success";
             }
             else
             {
@@ -70,7 +72,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 {
                     // Odd rows
                     // Only mark alt row if it is not the current playlist entry
-                    pe["class"] = "alt";
+                    pe["class"] = "";
                 }
                 else
                 {
@@ -83,7 +85,15 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
         $scope.volume = parseInt($scope.currently_playing['volume']);
-        volumebar.progressbar("value", $scope.volume);
+        //volumebar.progressbar("value", $scope.volume);
+        update_volume_bar($scope.volume);
+    };
+
+    function update_volume_bar(value) {
+        var label = value.toString() + "%";
+        volumebar.attr("style", "width:" + label);
+        volumebar.attr("aria-valuenow", value.toString());
+        volumebar.html(label);
     };
 
     function get_current_status() {

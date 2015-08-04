@@ -16,11 +16,28 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #}
 
-<html ng-app="{{ ngapp }}">
+<html ng-app="{{ ngapp }}" lang="en">
     <title>AgentMPD</title>
 
     <head class="page">
-        {# This uses the latest stable distribution of jQuery and jQueryUI #}
+        {# This uses the latest stable distribution of Bootstrap, jQuery and AngularJS #}
+        {# This project uses private copies of angularJS and jQuery mainly because the CDN's
+        performance is somewhat random and negatively affected development. #}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap-custom.css') }}">
+
+        {#<script src="http://code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>#}
+        <script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}" type="text/javascript"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        {#<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js" type="text/javascript"></script>#}
+        <script src="{{ url_for('static', filename='js/angular.min.js') }}" type="text/javascript"></script>
+
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+{#
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.11.3.js" type="text/javascript"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js" type="text/javascript"></script>
@@ -30,6 +47,7 @@
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='superfish.css') }}">
+#}
 
         {# This produces a common page title. #}
         <h1>
@@ -64,7 +82,7 @@
         <script>
             $( document ).ready(function() {
                 // Handler for .ready() called.
-                $( "#menu" ).superfish();
+                // $( "#menu" ).superfish();
             });
         </script>
 
@@ -85,17 +103,19 @@
     </body>
 
     <footer>
-        <div class="clear"></div>
-        <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
 
-            <a href="{{ url_for('home') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
+                    {% block footer_links %}{% endblock %}
+                </div>
 
-            {% block footer_links %}{% endblock %}
+                <div class="col-md-4 text-right">
+                    <a href="{{ url_for('about') }}">About AgentMPD -- Copyright 2015 by Dave Hocker</a>
+                </div>
 
-            <div class="copyright">
-                <a href="{{ url_for('about') }}">About AgentMPD -- Copyright 2015 by Dave Hocker</a>
             </div>
-
         </div>
     </footer>
 

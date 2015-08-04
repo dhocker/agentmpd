@@ -22,55 +22,59 @@
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h2>MPD Player on {= host =}:{= port =}</h2>
-        <div class="transport">
-            <div>
+    <div class="container">
+        <div class="row">
+        <h2 class="col-md-12">MPD Player on {= host =}:{= port =}</h2>
+        </div>
+        <div class="row" style="margin-bottom: 20px;">
+            <div class="col-md-9">
                 {# Note we are using {= =} for the angularjs interpolation tag #}
-                <button class="transport-control" ng-click="play_first()" title="Play first">
+                <button class="btn btn-default btn-md" ng-click="play_first()" title="Play first">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="play_previous()" title="Play previous">
+                <button class="btn btn-default btn-md" ng-click="play_previous()" title="Play previous">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-previous.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
+                <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-start.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
+                <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-pause.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="play_stop()"  title="Stop playing">
+                <button class="btn btn-default btn-md" ng-click="play_stop()"  title="Stop playing">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-stop.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="play_next()"  title="Play next">
+                <button class="btn btn-default btn-md" ng-click="play_next()"  title="Play next">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-next.png') }}"/>
                 </button>
-                <button class="transport-control" ng-click="play_last()" title="Play last">
+                <button class="btn btn-default btn-md" ng-click="play_last()" title="Play last">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-last.png') }}"/>
                 </button>
                 <span>{= status =}</span>
             </div>
-        </div>
-        <div class="volume-control">
-            <button class="transport-control" style="float:left;" ng-click="volume_down()" title="Decrease">
-                <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
-            </button>
-            {# Volume bar is a jquery ui progressbar #}
-            <div id="volumebar" class="transport-control">
-                <div class="progress-label">
-                    <img class="volume-icon" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/>
-                    <span class="volume-value">{= volume =}</span>
+            <div class="col-md-3">
+                <button class="btn btn-default btn-sm" style="float:left;" ng-click="volume_down()" title="Decrease">
+                    <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
+                </button>
+
+                <img class="" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/>
+
+                <button class="btn btn-default btn-sm" style="float:right;" ng-click="volume_up()" title="Increase">
+                    <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
+                </button>
+
+                {# Volume bar is a Bootstrap progressbar #}
+                <div class="progress">
+                    <div id="volumebar" class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                      20%
+                    </div>
                 </div>
             </div>
-            <button class="transport-control" style="float:left;" ng-click="volume_up()" title="Increase">
-                <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
-            </button>
         </div>
 
-        <div class="clear"></div>
-
-        <div class="now-playing">
-            <table class="now-playing-table">
+        <div class="row">
+            <div class="col-md-12">
+            <table class="table table-bordered">
                 <tr>
                     <td class="now-playing-hdr">Now Playing</td>
                     <td>
@@ -80,23 +84,26 @@
                     </td>
                 </tr>
             </table>
+            </div>
         </div>
 
-        <div>
-            <table class="common-table playlist-table">
+        <div class="row">
+            <div class="col-md-12">
+            <table class="table table-condensed table-striped table-bordered table-hover">
                 <tr>
                     <th>Play</th>
                     <th>Title/Name/Stream</th>
                     <th>Album</th>
                     <th>Artist</th>
                 </tr>
-                <tr id="{= x.pos =}" class="playlist-entry" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
-                    <td><button ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
+                <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
+                    <td><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
                     <td>{= x.track =}</td>
                     <td>{= x.album =}</td>
                     <td>{= x.artist =}</td>
                 </tr>
             </table>
+            </div>
         </div>
     </div>
 {% endblock %}

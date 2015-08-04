@@ -15,34 +15,9 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-.transport  {
-    position: static;
-    float: left;
-    width: 65%;
-    background: #E8EDF6;
-    padding: 0.5em;
-    color: #1947A3;
-    border: 3px solid #1947A3;
-    margin: 0.3em 0.3em 0.3em 0em;
-}
-
-.transport-control {
-    background: #E8EDF6;
-}
-
 .tx-control-img {
     width: 48px;
     height: 48px
-}
-
-.volume-control {
-    position: static;
-    float: left;
-    background: #;
-    padding: 0.5em;
-    color: #1947A3;
-    border: 3px solid #1947A3;
-    margin: 0.3em 0.3em 0.3em 0em;
 }
 
 .vol-control-img {
@@ -56,48 +31,11 @@
     float: left;
 }
 
-.volume-value {
-    vertical-align: middle;
-    margin: 3px;
-}
-
-.now-playing    {
-    background: #E8EDF6;
-    padding: 0;
-    color: #1947A3;
-    border: 3px solid #1947A3;
-    margin: 0.3em auto;
-}
-
-/* Now playing */
-.now-playing-table  {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0; padding: 0;
-}
-
 .now-playing-hdr {
     font-size: 1.6em;
     color: #FFF;
     background: #1947A3;
     width: 20%;
-}
-
-.now-playing-table td, .common-table th {
-    /* font-size: 1.2em; */
-    border: 1px solid #A5C4D8;
-    padding: 3px 7px 3px 7px;
-    height: 1.5em;
-}
-
-.playlist-active {
-    background-color: #1947A3;
-    color: #E8EDF6;
-}
-
-.playlist-entry {
-    cursor: default;
 }
 
 .artist-name {
@@ -112,52 +50,6 @@
     font-size: 1.3em;
 }
 
-.playlist-table {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1em auto;
-}
-.playlist-table td,
-.playlist-table th {
-    font-size: 0.9em;
-    border: 1px solid #A5C4D8;
-    padding: 3px 7px 3px 7px;
-    height: 1.5em;
-}
-.playlist-table th {
-    font-size: 1.1em;
-    text-align: left;
-    padding-top: 5px;
-    padding-bottom: 4px;
-    background-color: #1947A3;
-    color: #ffffff;
-}
-.playlist-table tr.alt {
-    color: #000000;
-    background-color: #E8EDF6;
-}
-.playlist-entry:hover,
-.playlist-table tr:hover.alt {
-    background-color: #BDD2FF;
-    color: #000000;
-}
-
-.ui-progressbar {
-    position: static;
-    float: left;
-    /*margin: 1em 15em 1em 0;*/
-    width: 8.25em;
-    height: 1.3em;
-}
-.progress-label {
-    position: relative;
-    float:left;
-    left: 35%;
-    font-weight: bold;
-    font-size: .75em;
-    color: #00ff00;
-}
 .ui-widget-header {
     background: #1947A3;
 }
