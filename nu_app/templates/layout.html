@@ -49,35 +49,37 @@
         <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='superfish.css') }}">
 #}
 
-        {# This produces a common page title. #}
-        <h1>
-            <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/></a>AgentMPD
-        </h1>
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/> AgentMPD</a>
+                </div>
 
-        <div ng-controller="menuController">
-            <ul class="sf-menu" id="menu">
-                <li>
-                    <a id="menu-player" href="{{ url_for('home') }}">Player</a>
-                </li>
-                <li>
-                    <a id="menu-playlist">Playlist</a>
-                    <ul>
-                        <li><a id="menu-playlist-clear" ng-click="menu_playlist_clear()">Clear</a></li>
-                        <li><a id="menu-playlist-load" ng-click="menu_playlist_load()">Load/Append</a></li>
-                        <li><a id="menu-playlist-edit" ng-click="menu_playlist_edit()">Edit</a></li>
-                        <li><a id="menu-playlist-save" ng-click="menu_playlist_save()">Save</a></li>
-                        <li><a id="menu-playlist-rename" ng-click="menu_playlist_rename()">Rename</a></li>
+                <div ng-controller="menuController">
+                    <ul class="nav navbar-nav" id="menu">
+                        <li>
+                            <a id="menu-player" href="{{ url_for('home') }}">Player</a>
+                        </li>
+                        <li class="dropdown">
+                            <a id="menu-playlist" class="dropdown-toggle" data-toggle="dropdown" href="#">Playlist <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="menu-playlist-clear" ng-click="menu_playlist_clear()">Clear</a></li>
+                                <li><a id="menu-playlist-load" ng-click="menu_playlist_load()">Load/Append</a></li>
+                                <li><a id="menu-playlist-edit" ng-click="menu_playlist_edit()">Edit</a></li>
+                                <li><a id="menu-playlist-save" ng-click="menu_playlist_save()">Save</a></li>
+                                <li><a id="menu-playlist-rename" ng-click="menu_playlist_rename()">Rename</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="menu-database" href="#">Music Database</a>
+                        </li>
+                        <li>
+                            <a id="menu-settings" href="{{ url_for('settings_page') }}">Settings</a>
+                        </li>
                     </ul>
-                </li>
-                <li>
-                    <a id="menu-database" href="#">Music Database</a>
-                </li>
-                <li>
-                    <a id="menu-settings" href="{{ url_for('settings_page') }}">Settings</a>
-                </li>
-            </ul>
-        </div>
-        <div class="clear"></div>
+                </div>
+            </div>
+        </nav>
 
         <script>
             $( document ).ready(function() {

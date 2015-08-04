@@ -15,13 +15,13 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Bootstrap override */
+/* Bootstrap override for color */
 .btn-primary {
     color: #FFF;
     background: #1947A3;
 }
 
-/* Bootstrap override */
+/* Bootstrap override for color */
 .progress-bar {
     color: #FFF;
     background: #1947A3;
@@ -30,4 +30,13 @@
 /* Bootstrap override to change vertical alignment of text in cells. */
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     vertical-align: middle;
+}
+
+/* Bootstrap override to keep graphics with text on navbar  */
+.navbar-brand > img {
+    display: inline;
+}
+
+.dropdown-menu > li > a {
+    cursor: pointer;
 }
