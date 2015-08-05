@@ -44,22 +44,68 @@ app.controller('settingsController', function($scope, $http) {
         });
 
     $scope.save_settings = function() {
-        $http.post("/settings",
-                {'host': $scope.host,
-                'port': $scope.port,
-                'status_update_interval': $scope.status_update_interval,
-                'playlist_update_interval': $scope.playlist_update_interval,
-                'volume_increment': $scope.volume_increment}).
-            success(function(data, status, headers, config) {
-            }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Host communication error";
-            });
+        if (validate_settings($scope)) {
+            $http.post("/settings",
+                    {'host': $scope.host,
+                    'port': $scope.port,
+                    'status_update_interval': $scope.status_update_interval,
+                    'playlist_update_interval': $scope.playlist_update_interval,
+                    'volume_increment': $scope.volume_increment}).
+                success(function(data, status, headers, config) {
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.error = "Host communication error";
+                });
+        }
     };
 
     $scope.cancel = function() {
         // goto home
         window.location.replace("/home");
+    };
+
+    $scope.show_error = function() {
+        // How do you clone this string???
+        return $scope.error;
+    };
+
+    function validate_settings($scope) {
+        $scope.error = '';
+        if ($scope.host.length == 0) {
+            // host error
+            $scope.error = "Invalid host address";
+            $("#host").focus();
+            return false;
+        }
+        var port = parseInt($scope.port);
+        if (isNaN(port)) {
+            // port error
+            $scope.error = "Invalid port number";
+            $("#port").focus();
+            return false;
+        }
+        var interval = parseInt($scope.status_update_interval);
+        if (isNaN(interval) || interval <= 0) {
+            // status_update_interval error
+            $scope.error = "Invalid status update interval. It must be a number greater than zero.";
+            $("#status-update-interval").focus();
+            return false;
+        }
+        interval = parseInt($scope.playlist_update_interval);
+        if (isNaN(interval) || interval <= 0) {
+            // playlist_update_interval error
+            $scope.error = "Invalid playlist update interval. It must be a number greater than zero.";
+            $("#playlist-update-interval").focus();
+            return false;
+        }
+        var increment = parseInt($scope.volume_increment);
+        if (isNaN(increment) || increment <= 0 || increment > 50) {
+            // volume incrementl error
+            $scope.error = "Invalid volume increment value. It must be a number between 0 and 50.";
+            $("#volume-increment").focus();
+            return false;
+        }
+        return true;
     };
 
 });

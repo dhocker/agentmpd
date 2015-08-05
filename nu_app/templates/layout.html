@@ -93,7 +93,12 @@
     </head>
 
     <body class="page" ng-controller="{{ ngcontroller }}">
-        <p class="error" ng-if="error != ''"><strong>Error:</strong> {= show_error() =}</p>
+        <div class="container">
+            <div class="panel panel-danger" ng-if="error != ''">
+                <div class="panel-heading">Error</div>
+                <div class="panel-body">{= show_error() =}</div>
+            </div>
+        </div>
 
         {% for category, message in get_flashed_messages(with_categories=true) %}
             <div class="flash">{{ category | capitalize() }}: {{ message }}</div>
