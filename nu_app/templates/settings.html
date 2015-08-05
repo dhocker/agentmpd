@@ -21,32 +21,34 @@
 {% endblock %}
 
 {% block body %}
-    <div>
+    <div class="container">
         <h2>Settings</h2>
-        <div>
-            <span class="input-label">MPD host name or IP Address</span>
-            <input type="text" class="input-text" ng-model="host">
-        </div>
-        <div>
-            <span class="input-label">Port</span>
-            <input type="text" class="input-number" ng-model="port">
-        </div>
-        <div>
-            <span class="input-label">Status update interval (seconds)</span>
-            <input type="text" class="input-number" ng-model="status_update_interval">
-        </div>
-        <div>
-            <span class="input-label">Playlist update interval (seconds)</span>
-            <input type="text" class="input-number" ng-model="playlist_update_interval">
-        </div>
-        <div>
-            <span class="input-label">Volume increment</span>
-            <input type="text" class="input-number" ng-model="volume_increment">
-        </div>
-        <div>
-            <button class="edit-button" ng-click="save_settings()">Save</button>
-            <button class="edit-button" ng-click="cancel()">Cancel</button>
-        </div>
+        <form role="form">
+            <div class="form-group">
+                <label for="host">MPD host name or IP Address</label>
+                <input id="host" type="text" class="form-control" ng-model="host" placeholder="Enter host address">
+            </div>
+            <div class="form-group">
+                <label for="port">Port</label>
+                <input id="port" type="text" class="form-control" ng-model="port">
+            </div>
+            <div class="form-group">
+                <label for="status-update-interval">Status update interval (seconds)</label>
+                <input id="status-update-interval" type="text" class="form-control" ng-model="status_update_interval">
+            </div>
+            <div class="form-group">
+                <label for="playlist-update-interval">Playlist update interval (seconds)</label>
+                <input id="playlist-update-interval" type="text" class="form-control" ng-model="playlist_update_interval">
+            </div>
+            <div class="form-group">
+                <label for="volume-increment">Volume increment</label>
+                <input id="volume-increment" type="text" class="form-control" ng-model="volume_increment">
+            </div>
+            <div>
+                <button class="edit-button" ng-click="save_settings()">Save</button>
+                <button class="edit-button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
     </div>
 
 {% endblock %}

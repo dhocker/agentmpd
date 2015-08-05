@@ -37,6 +37,17 @@
     display: inline;
 }
 
+/* Use the pointer cursor for all menu items */
 .dropdown-menu > li > a {
     cursor: pointer;
+}
+
+/* Provide some air space between form and footer */
+form {
+    margin-bottom: 20px;
+}
+
+/* Bootstrap defaults form controls to full page width. This just resets the size to the default. */
+.form-control {
+    width: auto;
 }
