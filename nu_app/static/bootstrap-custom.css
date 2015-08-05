@@ -15,7 +15,11 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Bootstrap override for color */
+/*
+Bootstrap customizations
+*/
+
+/* Bootstrap override for button background color */
 .btn-primary {
     color: #FFF;
     background: #1947A3;
@@ -31,6 +35,17 @@
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     vertical-align: middle;
 }
+
+/* Custom styles for fixed-header, fixed-size, scrollable table */
+table.table-fixed {
+    table-layout:fixed;
+}
+
+.table-fixed-content {
+  height:400px; /* Vertical size of the table body*/
+  overflow-y:auto;
+}
+
 
 /* Bootstrap override to keep graphics with text on navbar  */
 .navbar-brand > img {

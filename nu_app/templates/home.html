@@ -90,20 +90,30 @@
 
         <div class="row">
             <div class="col-md-12">
-            <table class="table table-condensed table-striped table-bordered table-hover">
-                <tr>
-                    <th>Play</th>
-                    <th>Title/Name/Stream</th>
-                    <th>Album</th>
-                    <th>Artist</th>
-                </tr>
-                <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
-                    <td><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
-                    <td>{= x.track =}</td>
-                    <td>{= x.album =}</td>
-                    <td>{= x.artist =}</td>
-                </tr>
-            </table>
+                <div class="panel panel-default">
+                    <table class="table table-condensed table-striped table-hover table-fixed">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-1">Play</th>
+                                <th>Title/Name/Stream</th>
+                                <th>Album</th>
+                                <th>Artist</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="table-fixed-content">
+                        <table class="table table-condensed table-striped table-hover table-fixed">
+                            <tbody>
+                                <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
+                                    <td class="col-xs-1"><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
+                                    <td>{= x.track =}</td>
+                                    <td>{= x.album =}</td>
+                                    <td>{= x.artist =}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
