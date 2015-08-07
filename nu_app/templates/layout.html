@@ -77,7 +77,29 @@
                             <a id="menu-settings" href="{{ url_for('settings_page') }}">Settings</a>
                         </li>
                     </ul>
+
+                    <!-- Modal messagebox -->
+                    <div class="modal fade" id="menu-messagebox" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">{= messagebox_header =}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{= messagebox_body =}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </nav>
 

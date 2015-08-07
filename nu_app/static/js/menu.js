@@ -11,11 +11,13 @@ app.controller('menuController', function($scope, $http) {
     $scope.menu_playlist_clear = function() {
         $http.put('/playlist/clear', {}).
             success(function(data, status, headers, config) {
-                get_current_status();
-                get_current_playlist();
+                // These functions are out of scope
+                //get_current_status();
+                //get_current_playlist();
+                showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
             }).
             error(function(data, status, headers, config) {
-                $scope.status = "Host communication error";
+                $scope.error = "Host communication error";
             });
     };
 
@@ -33,5 +35,11 @@ app.controller('menuController', function($scope, $http) {
 
     $scope.menu_playlist_rename = function() {
         alert("Rename has been invoked");
+    };
+
+    function showMessagebox($scope, header, body) {
+        $scope.messagebox_header = header;
+        $scope.messagebox_body = body;
+        $("#menu-messagebox").modal('show');
     };
 });
