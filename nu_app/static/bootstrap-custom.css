@@ -19,6 +19,11 @@
 Bootstrap customizations
 */
 
+/* Bootstrap menu background color */
+.navbar-inverse {
+    background: #1947A3;
+}
+
 /* Bootstrap override for button background color */
 .btn-primary {
     color: #FFF;

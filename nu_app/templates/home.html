@@ -75,16 +75,18 @@
 
         <div class="row">
             <div class="col-md-12">
-            <table class="table table-bordered">
-                <tr>
-                    <td class="now-playing-hdr">Now Playing</td>
-                    <td>
-                        <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span></br>
-                        <span class="album">{= currently_playing.album =}</span></br>
-                        <span class="artist-name">{= currently_playing.artist =}</span>
-                    </td>
-                </tr>
-            </table>
+                <div class="panel panel-default">
+                <table class="table">
+                    <tr>
+                        <td class="now-playing-hdr">Now Playing</td>
+                        <td>
+                            <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span></br>
+                            <span class="album">{= currently_playing.album =}</span></br>
+                            <span class="artist-name">{= currently_playing.artist =}</span>
+                        </td>
+                    </tr>
+                </table>
+                </div>
             </div>
         </div>
 
