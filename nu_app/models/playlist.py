@@ -45,3 +45,7 @@ class Playlist(MPDModel):
     def load_playlist(self, pl):
         if self.connect_to_mpd():
             self.client.load(pl)
+
+    def remove_by_songid(self, songid):
+        if self.connect_to_mpd():
+            self.client.deleteid(songid)

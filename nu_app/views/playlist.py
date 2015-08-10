@@ -47,3 +47,11 @@ def playlist_load_selected():
     for pl in args["playlists"]:
         playlist.load_playlist(pl)
     return ""
+
+
+@app.route("/playlist/remove_selected", methods=['POST'])
+def playlist_remove_selected():
+    args = json.loads(request.data.decode())
+    for songid in args["songids"]:
+        playlist.remove_by_songid(songid)
+    return ""

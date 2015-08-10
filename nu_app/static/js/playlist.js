@@ -71,6 +71,7 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     };
 
     $scope.remove_selected = function () {
+        // Build a list of songids to be removed (those entries that are checked)
         var ids = [];
         $.each($("[id^='check-']"), function (index, x) {
             if (x.checked) {
@@ -79,7 +80,16 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
         });
 
         // If anything was checked, remove it with a delete
-        console.log(ids);
+        if (ids.length > 0) {
+            $http.post('/playlist/remove_selected', {"songids" : ids}).
+                success(function(data, status, headers, config) {
+                    $scope.error = "";
+                    get_current_playlist();
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.error = "Remove songs failed due to server communication error";
+                });
+        }
     };
 
     function get_current_playlist() {
