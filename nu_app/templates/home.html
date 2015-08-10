@@ -33,7 +33,7 @@
                         <a id="menu-playlist" class="dropdown-toggle" data-toggle="dropdown" href="#">Playlist <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a id="menu-playlist-clear" ng-click="menu_playlist_clear()">Clear</a></li>
-                            <li><a id="menu-playlist-load" ng-click="menu_playlist_load()">Load/Append</a></li>
+                            <li><a href="{{ url_for('playlist_load') }}">Load/Append</a></li>
                             <li><a id="menu-playlist-edit" ng-click="menu_playlist_edit()">Edit</a></li>
                             <li><a id="menu-playlist-save" ng-click="menu_playlist_save()">Save</a></li>
                             <li><a id="menu-playlist-rename" ng-click="menu_playlist_rename()">Rename</a></li>

@@ -28,3 +28,20 @@ class Playlist(MPDModel):
     def clear(self):
         if self.connect_to_mpd():
             self.client.clear()
+
+    def get_playlists(self):
+        lst = []
+
+        if self.connect_to_mpd():
+            pd_list = self.client.listplaylists()
+            for p in pd_list:
+                lst.append(p["playlist"])
+
+            # Case insensitive sort for default ordering
+            lst.sort(key=lambda s: s.lower())
+
+        return lst
+
+    def load_playlist(self, pl):
+        if self.connect_to_mpd():
+            self.client.load(pl)

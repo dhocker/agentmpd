@@ -18,6 +18,7 @@ from nu_app import app
 from nu_app.models.playlist import Playlist
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
+import json
 
 #  MPD music player model instance
 playlist = Playlist()
@@ -26,4 +27,23 @@ playlist = Playlist()
 @app.route("/playlist/clear", methods=['PUT'])
 def playlist_clear():
     playlist.clear()
+    return ""
+
+
+@app.route("/playlist/load", methods=['GET'])
+def playlist_load():
+    return render_template("playlist_load.html", ngapp="agentmpd", ngcontroller="playlistController")
+
+
+@app.route("/playlist/all", methods=['GET'])
+def playlist_all():
+    all_playlists = playlist.get_playlists()
+    return jsonify({"playlists": all_playlists})
+
+
+@app.route("/playlist/load_selected", methods=['POST'])
+def playlist_load_selected():
+    args = json.loads(request.data.decode())
+    for pl in args["playlists"]:
+        playlist.load_playlist(pl)
     return ""
