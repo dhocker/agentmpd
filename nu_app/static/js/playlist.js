@@ -23,9 +23,13 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     $scope.error = "";
     $scope.playlists = ["one"];
     $("#load-button").prop("disabled", true);
+    $("#load-albums-button").prop("disabled", true);
+    $("#load-tracks-button").prop("disabled", true);
+    $("#load-all-tracks-button").prop("disabled", true);
 
     get_playlists();
     get_current_playlist();
+    get_albums();
 
     function get_playlists() {
         $http.get('/playlist/all', {}).
@@ -39,12 +43,60 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
             });
     };
 
-    $scope.enable_load = function () {
+    function get_albums() {
+        $http.get('/playlist/albums', {}).
+            success(function(data, status, headers, config) {
+                $scope.albums = data.albums;
+                $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Server communication error";
+            });
+    };
+
+    $scope.playlist_selected = function () {
         if ($("#available-playlists option:selected").length > 0) {
             $("#load-button").prop("disabled", false);
         }
         else {
             $("#load-button").prop("disabled", true);
+        }
+    };
+
+    $scope.album_selected = function () {
+        if ($("#available-albums option:selected").length > 0) {
+            $("#load-albums-button").prop("disabled", false);
+            // Get tracks for selected albums
+            var arg_list = $("#available-albums").val() || [];
+            var c = arg_list.length;
+
+            $http.post('/playlist/album_tracks', {"albums" : arg_list}).
+                success(function(data, status, headers, config) {
+                    $scope.error = "";
+                    $scope.tracks = data.tracks;
+                    $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
+                    if ($scope.tracks.length > 0) {
+                        $("#load-all-tracks-button").prop("disabled", false);
+                    }
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.error = "Album tracks query failed due to server communication error";
+                });
+        }
+        else {
+            $("#load-albums-button").prop("disabled", true);
+            $("#load-all-tracks-button").prop("disabled", true);
+            $scope.tracks = [];
+        }
+    };
+
+    $scope.track_selected = function () {
+        if ($("#available-tracks option:selected").length > 0) {
+            $("#load-tracks-button").prop("disabled", false);
+        }
+        else {
+            $("#load-tracks-button").prop("disabled", true);
         }
     };
 
@@ -59,6 +111,37 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
             }).
             error(function(data, status, headers, config) {
                 $scope.error = "Loading of playlists failed due to server communication error";
+            });
+
+    };
+
+    $scope.load_selected_tracks = function() {
+        var arg_list = $("#available-tracks").val() || [];
+        var c = arg_list.length;
+
+        $http.post('/playlist/load_tracks', {"tracks" : arg_list}).
+            success(function(data, status, headers, config) {
+                $scope.error = "";
+                get_current_playlist();
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Loading of tracks failed due to server communication error";
+            });
+
+    };
+
+    $scope.load_all_tracks = function() {
+        var all_tracks = []
+        for (i = 0; i < $scope.tracks.length; i++) {
+            all_tracks.push($scope.tracks[i].uri)
+        }
+        $http.post('/playlist/load_tracks', {"tracks" : all_tracks}).
+            success(function(data, status, headers, config) {
+                $scope.error = "";
+                get_current_playlist();
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Loading of tracks failed due to server communication error";
             });
 
     };
@@ -132,6 +215,11 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
         $scope.messagebox_header = header;
         $scope.messagebox_body = body;
         $("#menu-messagebox").modal('show');
+    };
+
+    $scope.show_error = function() {
+        // How do you clone this string???
+        return $scope.error;
     };
 
 }]);

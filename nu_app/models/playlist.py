@@ -49,3 +49,19 @@ class Playlist(MPDModel):
     def remove_by_songid(self, songid):
         if self.connect_to_mpd():
             self.client.deleteid(songid)
+
+    def get_albums(self):
+        albums = None
+        if self.connect_to_mpd():
+            albums = self.client.list("album")
+        return albums
+
+    def get_album_tracks(self, title):
+        tracks = None
+        if self.connect_to_mpd():
+            tracks = self.client.search("album", title)
+        return tracks
+
+    def add_track(self, uri):
+        if self.connect_to_mpd():
+            self.client.add(uri)

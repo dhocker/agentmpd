@@ -30,8 +30,8 @@ def playlist_clear():
     return ""
 
 
-@app.route("/playlist/load", methods=['GET'])
-def playlist_load():
+@app.route("/playlist/build", methods=['GET'])
+def playlist_build():
     return render_template("playlist_load.html", ngapp="agentmpd", ngcontroller="playlistController")
 
 
@@ -51,7 +51,36 @@ def playlist_load_selected():
 
 @app.route("/playlist/remove_selected", methods=['POST'])
 def playlist_remove_selected():
+    # args is a list of songids to be removed from the current playlist
     args = json.loads(request.data.decode())
     for songid in args["songids"]:
         playlist.remove_by_songid(songid)
+    return ""
+
+
+@app.route("/playlist/albums", methods=['GET'])
+def playlist_get_albums():
+    all_albums = playlist.get_albums()
+    all_albums.sort()
+    return jsonify({"albums": all_albums})
+
+
+@app.route("/playlist/album_tracks", methods=['POST'])
+def playlist_get_album_tracks():
+    all_tracks = []
+    # args is a list of album titles
+    args = json.loads(request.data.decode())
+    for album_title in args["albums"]:
+        album_tracks = playlist.get_album_tracks(album_title)
+        for t in album_tracks:
+            all_tracks.append({"title":t["title"], "uri":t["file"]})
+    return jsonify({"tracks": all_tracks})
+
+
+@app.route("/playlist/load_tracks", methods=['POST'])
+def playlist_add_tracks():
+    # args is a list of uri's to be added to the current playlist
+    args = json.loads(request.data.decode())
+    for uri in args["tracks"]:
+        playlist.add_track(uri)
     return ""
