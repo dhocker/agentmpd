@@ -27,6 +27,8 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     $("#load-albums-button").prop("disabled", true);
     $("#load-tracks-button").prop("disabled", true);
     $("#load-all-tracks-button").prop("disabled", true);
+    $("#add-uri-button").prop("disabled", true);
+    $("#remove-button").prop("disabled", true);
 
     get_playlists();
     get_current_playlist();
@@ -101,6 +103,15 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
         }
     };
 
+    $scope.manual_uri_change = function () {
+        if ($scope.manual_uri.length > 0) {
+            $("#add-uri-button").prop("disabled", false);
+        }
+        else {
+            $("#add-uri-button").prop("disabled", true);
+        }
+    };
+
     $scope.load_playlists = function() {
         var arg_list = $("#available-playlists").val() || [];
         var c = arg_list.length;
@@ -147,21 +158,34 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
 
     };
 
+    $scope.add_manual_uri = function() {
+        $http.post('/playlist/load_tracks', {"tracks" : [$scope.manual_uri]}).
+            success(function(data, status, headers, config) {
+                $scope.error = "";
+                get_current_playlist();
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Loading of tracks failed due to server communication error";
+            });
+
+    };
+
     $scope.select_all = function () {
         // Invert selection
         $.each($("[id^='check-']"), function (index, x) {
             x.checked = !x.checked;
         });
+        $scope.selected_changed();
+    };
+
+    $scope.selected_changed = function () {
+        var ids = get_selected_playlist_ids();
+        $("#remove-button").prop("disabled", ids.length == 0);
     };
 
     $scope.remove_selected = function () {
         // Build a list of songids to be removed (those entries that are checked)
-        var ids = [];
-        $.each($("[id^='check-']"), function (index, x) {
-            if (x.checked) {
-                ids.push($(x).attr('songid'));
-            }
-        });
+        var ids = get_selected_playlist_ids();
 
         // If anything was checked, remove it with a delete
         if (ids.length > 0) {
@@ -174,6 +198,16 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
                     $scope.error = "Remove songs failed due to server communication error";
                 });
         }
+    };
+
+    function get_selected_playlist_ids() {
+        var ids = [];
+        $.each($("[id^='check-']"), function (index, x) {
+            if (x.checked) {
+                ids.push($(x).attr('songid'));
+            }
+        });
+        return ids;
     };
 
     // Launches modal dialog to save the current playlist as a named playlist
@@ -213,6 +247,15 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 $scope.error = "";
+                if ($scope.current_playlist.playlist.length > 0) {
+                    $("#save-button").prop("disabled", false);
+                    $("#clear-button").prop("disabled", false);
+                }
+                else {
+                    $("#save-button").prop("disabled", true);
+                    $("#clear-button").prop("disabled", true);
+                }
+                $("#remove-button").prop("disabled", true);
             }).
             error(function(data, status, headers, config) {
                 $scope.error = "Server communication error";
@@ -221,7 +264,7 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
 
     // Menu functions
 
-    $scope.menu_playlist_clear = function() {
+    $scope.clear_playlist = function() {
         $http.put('/playlist/clear', {}).
             success(function(data, status, headers, config) {
                 get_current_playlist();

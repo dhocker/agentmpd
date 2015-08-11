@@ -34,7 +34,7 @@
                         <ul class="dropdown-menu">
                             <li><a id="menu-playlist-clear" ng-click="menu_playlist_clear()">Clear</a></li>
                             <li><a id="menu-playlist-edit" ng-click="menu_playlist_edit()">Edit</a></li>
-                            <li><a id="menu-playlist-save" ng-click="menu_playlist_save()">Save</a></li>
+                            <li><a id="menu-playlist-save" ng-click="save_playlist()">Save</a></li>
                             <li><a id="menu-playlist-rename" ng-click="menu_playlist_rename()">Rename</a></li>
                         </ul>
                     </li>
@@ -89,33 +89,40 @@
         <div class="row">
             <div class="panel panel-default">
                 <div class="panel-body">
-                <div class="col-md-4">
-                    <h3>Playlists</h3>
-                        <select id="available-playlists" class="form-control" multiple="multiple" size="{= playlist_size =}">
-                            <option ng-click="playlist_selected()" value="{= p =}" ng-repeat="p in playlists">{= p =}</option>
-                        </select>
+                    <div class="col-md-4">
+                        <h3>Playlists</h3>
+                            <select id="available-playlists" class="form-control" multiple="multiple" size="{= playlist_size =}">
+                                <option ng-click="playlist_selected()" value="{= p =}" ng-repeat="p in playlists">{= p =}</option>
+                            </select>
 
-                        <button type="button" id="load-button" class="btn btn-primary btn-md" ng-click="load_playlists()" title="Add selected playlist(s)">Add Selected Playlist(s)</button>
-                </div>
+                            <button type="button" id="load-button" class="btn btn-primary btn-md" ng-click="load_playlists()" title="Add selected playlist(s)">Add Selected Playlist(s)</button>
+                    </div>
 
-                <div class="col-md-4">
-                    <h3>Albums</h3>
-                        <select id="available-albums" class="form-control" multiple="multiple" size="{= albums_size =}" style="width:300px">
-                            <option ng-click="album_selected()" value="{= a =}" ng-repeat="a in albums">{= a =}</option>
-                        </select>
+                    <div class="col-md-4">
+                        <h3>Albums</h3>
+                            <select id="available-albums" class="form-control" multiple="multiple" size="{= albums_size =}" style="width:300px">
+                                <option ng-click="album_selected()" value="{= a =}" ng-repeat="a in albums">{= a =}</option>
+                            </select>
 
-                        <button id="load-albums-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add selected album(s)">Add Selected Album(s)</button>
-                </div>
+                            <button id="load-albums-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add selected album(s)">Add Selected Album(s)</button>
+                    </div>
 
-                <div class="col-md-4">
-                    <h3>Tracks in Selected Album(s)</h3>
-                        <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}">
-                            <option ng-click="track_selected()" value="{= p.uri =}" ng-repeat="p in tracks">{= p.title =}</option>
-                        </select>
+                    <div class="col-md-4">
+                        <h3>Tracks in Selected Album(s)</h3>
+                            <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}">
+                                <option ng-click="track_selected()" value="{= p.uri =}" ng-repeat="p in tracks">{= p.title =}</option>
+                            </select>
 
-                        <button id="load-tracks-button" class="btn btn-primary btn-md" ng-click="load_selected_tracks()" title="Add selected track(s)">Add Selected Track(s)</button>
-                        <button id="load-all-tracks-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add all tracks">Add All Tracks</button>
-                </div>
+                            <button id="load-tracks-button" class="btn btn-primary btn-md" ng-click="load_selected_tracks()" title="Add selected track(s)">Add Selected Track(s)</button>
+                            <button id="load-all-tracks-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add all tracks">Add All Tracks</button>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="manual-uri">URI</label>
+                        <input type="text" id="manual-uri" ng-model="manual_uri" style="width:50%" ng-change="manual_uri_change()">
+                        <button id="add-uri-button" class="btn btn-primary btn-md" ng-click="add_manual_uri()"
+                                title="Add manually entered URI (good for Internet radio stations)">Add</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,7 +130,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h3>Current Playlist</h3>
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="margin-bottom: 0">
                     <table class="table table-condensed table-striped table-hover table-fixed">
                         <thead>
                             <tr>
@@ -141,7 +148,8 @@
                         <table class="table table-condensed table-striped table-hover table-fixed">
                             <tbody>
                                 <tr id="{= x.pos =}" ng-repeat="x in current_playlist.playlist">
-                                    <td style="width: 5%"><input type="checkbox" id="check-{= x.pos =}" songid="{= x.id =}"></td>
+                                    <td style="width: 5%"><input type="checkbox" id="check-{= x.pos =}"
+                                                                 songid="{= x.id =}" ng-change="selected_changed()" ng-model="entry_selected"></td>
                                     <td style="width: 5%">{= x.pos1 =}</td>
                                     <td>{= x.track =}</td>
                                     <td>{= x.album =}</td>
@@ -158,7 +166,7 @@
             <div class="col-md-4">
                 <button id="remove-button" class="btn btn-primary btn-md" ng-click="remove_selected()" title="Remove selected playlist entries">Remove Selected</button>
                 <button id="save-button" class="btn btn-primary btn-md" ng-click="save_playlist()" title="Save current playlist">Save</button>
-                <button id="clear-button" class="btn btn-primary btn-md" ng-click="menu_playlist_clear()" title="Clear current playlist">Clear</button>
+                <button id="clear-button" class="btn btn-primary btn-md" ng-click="clear_playlist()" title="Clear current playlist">Clear</button>
             </div>
         </div>
 
