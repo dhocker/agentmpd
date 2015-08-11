@@ -22,6 +22,7 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     // Initialization
     $scope.error = "";
     $scope.playlists = ["one"];
+    $scope.playlist_name = "";
     $("#load-button").prop("disabled", true);
     $("#load-albums-button").prop("disabled", true);
     $("#load-tracks-button").prop("disabled", true);
@@ -178,6 +179,8 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     // Launches modal dialog to save the current playlist as a named playlist
     $scope.save_playlist = function () {
         $("#save-playlist-dlg").modal('show');
+        $scope.enable_save_button();
+        $("#playlist-name").focus();
     };
 
     // Saves the current playlist in the named playlist
@@ -192,7 +195,18 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
             error(function(data, status, headers, config) {
                 $scope.error = "Save playlist failed due to server communication error";
             });
-    }
+    };
+
+    $scope.enable_save_button = function () {
+        // This prevents saving a playlist with an empty name.
+        // TODO The playlist name must be a valid file name.
+        if ($scope.playlist_name.length > 0) {
+            $("#save-playlist-btn").prop("disabled", false);
+        }
+        else {
+            $("#save-playlist-btn").prop("disabled", true);
+        }
+    };
 
     function get_current_playlist() {
         $http.get('/home/current_playlist', {}).
@@ -234,6 +248,7 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
         $scope.messagebox_header = header;
         $scope.messagebox_body = body;
         $("#menu-messagebox").modal('show');
+        $("#messagebox-close-btn").focus();
     };
 
     $scope.show_error = function() {

@@ -58,11 +58,11 @@
 
                 <div class="modal-body">
                     <label for="playlist-name">Enter playlist name. Note that this will overwrite any existing playlist.</label>
-                    <input type="text" id="playlist-name" class="" ng-model="playlist_name">
+                    <input type="text" id="playlist-name" class="" ng-model="playlist_name" ng-change="enable_save_button()">
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save_playlist_by_name()">Save</button>
+                    <button type="button" id="save-playlist-btn" class="btn btn-primary" data-dismiss="modal" ng-click="save_playlist_by_name()">Save</button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
