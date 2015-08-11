@@ -18,7 +18,7 @@
 /*
     Home page app controller
 */
-app.controller('playlistController', ["$scope", "$http", function($scope, $http) {
+app.controller('playlistController', ["$scope", "$http", "$timeout", function($scope, $http, $timeout) {
     // Initialization
     $scope.error = "";
     $scope.playlists = ["one"];
@@ -214,7 +214,11 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
     $scope.save_playlist = function () {
         $("#save-playlist-dlg").modal('show');
         $scope.enable_save_button();
-        $("#playlist-name").focus();
+        // Hack...focus has to be set after this function returns.
+        // How long to wait is a guess (500 ms in this case).
+        $timeout(function() {
+            $("#playlist-name").focus();
+        }, 500);
     };
 
     // Saves the current playlist in the named playlist

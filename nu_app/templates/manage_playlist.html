@@ -72,10 +72,10 @@
 
     {# Page specific bootstrap overrides #}
     {# TODO Consider moving this into a page specific CSS file #}
-    {# This .btn style causes problems with button alignment on the save playlist modal dialog box #}
     <style>
-        .btn {
-            margin: 10px auto;
+        .btn, .modal-footer .btn + .btn {
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
     </style>
 
