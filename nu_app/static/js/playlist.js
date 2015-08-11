@@ -232,14 +232,6 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
             });
     };
 
-    $scope.menu_playlist_edit = function() {
-        alert("Edit has been invoked");
-    };
-
-    $scope.menu_playlist_save = function() {
-        alert("Save has been invoked");
-    };
-
     $scope.menu_playlist_rename = function() {
         alert("Rename has been invoked");
     };

@@ -30,9 +30,9 @@ def playlist_clear():
     return ""
 
 
-@app.route("/playlist/build", methods=['GET'])
-def playlist_build():
-    return render_template("playlist_load.html", ngapp="agentmpd", ngcontroller="playlistController")
+@app.route("/playlist/manage", methods=['GET'])
+def playlist_manage():
+    return render_template("manage_playlist.html", ngapp="agentmpd", ngcontroller="playlistController")
 
 
 @app.route("/playlist/all", methods=['GET'])
