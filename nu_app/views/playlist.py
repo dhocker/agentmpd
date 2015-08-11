@@ -84,3 +84,11 @@ def playlist_add_tracks():
     for uri in args["tracks"]:
         playlist.add_track(uri)
     return ""
+
+
+@app.route("/playlist/save", methods=['POST'])
+def playlist_save():
+    # args is the name for the saved playlist
+    args = json.loads(request.data.decode())
+    playlist.save_current_playlist(args["name"])
+    return ""

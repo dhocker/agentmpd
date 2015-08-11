@@ -58,12 +58,12 @@
 
                 <div class="modal-body">
                     <label for="playlist-name">Enter playlist name. Note that this will overwrite any existing playlist.</label>
-                    <input type="text" id="playlist-name" class="" ng-bind="playlist_name">
+                    <input type="text" id="playlist-name" class="" ng-model="playlist_name">
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save_playlist_by_name()">Save</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
@@ -156,8 +156,9 @@
 
         <div class="row">
             <div class="col-md-4">
-                <button id="remove-button" class="btn btn-primary btn-md" ng-click="remove_selected()" title="Remove selected playlist entries">Remove Selected Playlist Entries</button>
+                <button id="remove-button" class="btn btn-primary btn-md" ng-click="remove_selected()" title="Remove selected playlist entries">Remove Selected</button>
                 <button id="save-button" class="btn btn-primary btn-md" ng-click="save_playlist()" title="Save current playlist">Save</button>
+                <button id="clear-button" class="btn btn-primary btn-md" ng-click="menu_playlist_clear()" title="Clear current playlist">Clear</button>
             </div>
         </div>
 

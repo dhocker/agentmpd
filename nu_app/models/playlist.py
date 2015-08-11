@@ -65,3 +65,16 @@ class Playlist(MPDModel):
     def add_track(self, uri):
         if self.connect_to_mpd():
             self.client.add(uri)
+
+    def save_current_playlist(self, name):
+        if self.connect_to_mpd():
+            self.remove_playlist(name)
+            self.client.save(name)
+
+    def remove_playlist(self, name):
+        # Try to delete an existing playlist. Ignore errors if one does not exist.
+        if self.connect_to_mpd():
+            try:
+                self.client.rm(name)
+            except:
+                pass

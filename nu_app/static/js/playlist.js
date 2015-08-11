@@ -182,7 +182,16 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
 
     // Saves the current playlist in the named playlist
     $scope.save_playlist_by_name = function () {
-        alert("Saved");
+        $http.post('/playlist/save', {"name" : $scope.playlist_name}).
+            success(function(data, status, headers, config) {
+                $scope.error = "";
+                // Refresh playlist listbox
+                get_playlists();
+                showMessagebox($scope, "Saved", "The current playlist has been saved as: " + $scope.playlist_name);
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Save playlist failed due to server communication error";
+            });
     }
 
     function get_current_playlist() {
