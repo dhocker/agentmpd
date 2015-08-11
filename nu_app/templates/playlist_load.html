@@ -50,7 +50,6 @@
     <div class="modal fade" id="save-playlist-dlg" role="dialog">
         <div class="modal-dialog">
 
-            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -58,12 +57,13 @@
                 </div>
 
                 <div class="modal-body">
-                    <p>Form controls go here...</p>
+                    <label for="playlist-name">Enter playlist name. Note that this will overwrite any existing playlist.</label>
+                    <input type="text" id="playlist-name" class="" ng-bind="playlist_name">
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-primary" >Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save_playlist_by_name()">Save</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
@@ -71,6 +71,8 @@
     </div>
 
     {# Page specific bootstrap overrides #}
+    {# TODO Consider moving this into a page specific CSS file #}
+    {# This .btn style causes problems with button alignment on the save playlist modal dialog box #}
     <style>
         .btn {
             margin: 10px auto;

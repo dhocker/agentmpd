@@ -175,6 +175,16 @@ app.controller('playlistController', ["$scope", "$http", function($scope, $http)
         }
     };
 
+    // Launches modal dialog to save the current playlist as a named playlist
+    $scope.save_playlist = function () {
+        $("#save-playlist-dlg").modal('show');
+    };
+
+    // Saves the current playlist in the named playlist
+    $scope.save_playlist_by_name = function () {
+        alert("Saved");
+    }
+
     function get_current_playlist() {
         $http.get('/home/current_playlist', {}).
             success(function(data, status, headers, config) {
