@@ -44,7 +44,7 @@
         </div>
     </nav>
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='manage_playlist.css') }}">
 
     {# Save playlist modal dialog #}
     <div class="modal fade" id="save-playlist-dlg" role="dialog">
@@ -69,15 +69,6 @@
 
         </div>
     </div>
-
-    {# Page specific bootstrap overrides #}
-    {# TODO Consider moving this into a page specific CSS file #}
-    <style>
-        .btn, .modal-footer .btn + .btn {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
 
 {% endblock %}
 
