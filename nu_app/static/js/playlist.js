@@ -248,7 +248,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function get_current_playlist() {
-        $http.get('/home/current_playlist', {}).
+        $http.get('/cpl/currentplaylist', {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 $scope.error = "";

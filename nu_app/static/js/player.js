@@ -97,7 +97,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function get_current_status() {
-        $http.get('/home/current_status', {}).
+        $http.get('/player/currentstatus', {}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
@@ -147,7 +147,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function get_current_playlist() {
-        $http.get('/home/current_playlist', {}).
+        $http.get('/cpl/currentplaylist', {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 update_status();
@@ -178,40 +178,53 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             });
     };
 
+    function put_transport(url, data) {
+        $http.put(url, data).
+            success(function(data, status, headers, config) {
+                $scope.currently_playing = data;
+                update_status();
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.status = "";
+                $scope.error = "Server communication error";
+            });
+    };
+
     $scope.toggle_playing = function() {
-        post_transport('/home/toggle_play', {'msg':'play'});
+        put_transport('/player/status', {'newstatus':'toggle'});
     };
 
     $scope.play_stop = function() {
-        post_transport('/home/stop_play', {'msg':'stop'});
+        put_transport('/player/status', {'newstatus':'stop'});
     };
 
     $scope.play_first = function() {
-        post_transport('/home/play_first', {'msg':'first'});
+        put_transport('/player/currentsong/first', {});
     };
 
     $scope.play_previous = function() {
-        post_transport('/home/play_previous', {'msg':'previous'});
+        put_transport('/player/currentsong/previous', {});
     };
 
     $scope.play_next = function() {
-        post_transport('/home/play_next', {'msg':'next'});
+        put_transport('/player/currentsong/next', {});
     };
 
     $scope.play_last = function() {
-        post_transport('/home/play_last', {'msg':'last'});
+        put_transport('/player/currentsong/last', {});
     };
 
     $scope.play_song = function(pos) {
-        post_transport('/home/play_song/' + pos, {'msg':'play'});
+        put_transport('/player/currentsong/' + pos, {});
     };
 
     $scope.volume_up = function() {
-        post_transport('/home/volume_change', {'amount': $scope.volume_increment});
+        put_transport('/player/volumelevel', {'amount': $scope.volume_increment});
     };
 
     $scope.volume_down = function() {
-        post_transport('/home/volume_change', {'amount': -$scope.volume_increment});
+        put_transport('/player/volumelevel', {'amount': -$scope.volume_increment});
     };
 
     // Menu functions

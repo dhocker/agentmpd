@@ -27,25 +27,29 @@ player = Player()
 
 @app.route("/")
 def root():
-    return redirect(url_for('home'))
+    """
+    Redirect to the effective home page of the app.
+    :return:
+    """
+    return redirect(url_for('mpd_player'))
 
 
-@app.route("/home", methods=['GET'])
-def home():
+@app.route("/player", methods=['GET'])
+def mpd_player():
+    """
+    Show the MPD player page.
+    :return:
+    """
     current_song = player.get_current_player_status()
-    status = current_song["state"]
-
-    return render_template('home.html', current_song=current_song, ngapp="agentmpd", ngcontroller="homeController")
+    return render_template('player.html', current_song=current_song, ngapp="agentmpd", ngcontroller="homeController")
 
 
-@app.route("/home/current_playlist", methods=['GET'])
-def current_playlist():
-    playlist = player.get_current_playlist()
-    return jsonify(**playlist)
-
-
-@app.route("/home/current_status", methods=['GET'])
+@app.route("/player/currentstatus", methods=['GET'])
 def get_current_status():
+    """
+    Return the current player status.
+    :return:
+    """
     current_status = player.get_current_player_status()
     if "pos" in current_status:
         current_status["pos1"] = int(current_status["pos"]) + 1
@@ -54,42 +58,63 @@ def get_current_status():
     return jsonify(**current_status)
 
 
-@app.route("/home/current_song", methods=['POST'])
-def get_current_song():
-    current_song = player.get_current_player_status()
-    return jsonify(**current_song)
-
-
-@app.route("/home/play_song/<int:pos>", methods=['POST'])
+@app.route("/player/currentsong/<pos>", methods=['PUT'])
 def play_song(pos):
-    player.play(pos)
+    """
+    Make the current song be current playlist[pos].
+    The value of pos can be first, previous, next, last or nnn (a number).
+    :param pos:
+    :return:
+    """
+    try:
+        n = int(pos)
+        player.play(n)
+    except:
+        # The new song is not a position number (0-n)
+        if pos == "first":
+            play_first();
+        elif pos == "previous":
+            play_previous()
+        elif pos == "next":
+            play_next()
+        elif pos == "last":
+            play_last()
+
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
 
 
-@app.route("/home/toggle_play", methods=['POST'])
+@app.route("/player/status", methods=['PUT'])
 def toggle_play():
+    """
+    Update the player status. New status values can be
+    toggle, play or stop.
+    :return:
+    """
+    new_status = json.loads(request.data)["newstatus"]
     current_status = player.get_current_player_status()
-    if current_status['state'] == 'play':
-        player.pause(1)
-    elif current_status['state'] == 'pause':
-        player.pause(0)
-    elif current_status['state'] == 'stop':
+
+    if new_status == "toggle":
+        if current_status['state'] == 'play':
+            player.pause(1)
+        elif current_status['state'] == 'pause':
+            player.pause(0)
+        elif current_status['state'] == 'stop':
+            player.play(current_status['song'])
+    elif new_status == "play":
         player.play(current_status['song'])
+    elif new_status == "stop":
+        player.stop()
 
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
 
 
-@app.route("/home/stop_play", methods=['POST'])
-def stop_play():
-    player.stop()
-    current_status = player.get_current_player_status()
-    return jsonify(**current_status)
-
-
-@app.route("/home/play_first", methods=['POST'])
 def play_first():
+    """
+    Play the first song in the current playlist.
+    :return:
+    """
     player.play(0)
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
@@ -105,8 +130,11 @@ def play_first():
 # current state of MPD
 #
 
-@app.route("/home/play_previous", methods=['POST'])
 def play_previous():
+    """
+    Play the previous song in the current playlist
+    :return:
+    """
     current_status = player.status()
     playlist_len = int(current_status[u'playlistlength'])
     song = int(current_status[u'song']);
@@ -116,8 +144,11 @@ def play_previous():
     return jsonify(**current_status)
 
 
-@app.route("/home/play_next", methods=['POST'])
 def play_next():
+    """
+    Play the next song in the current playlist
+    :return:
+    """
     current_status = player.status()
     playlist_len = int(current_status[u'playlistlength'])
     song = int(current_status[u'song']);
@@ -127,36 +158,44 @@ def play_next():
     return jsonify(**current_status)
 
 
-@app.route("/home/play_last", methods=['POST'])
 def play_last():
+    """
+    Play the last song in the current playlist
+    :return:
+    """
     current_status = player.status()
     player.play(int(current_status[u'playlistlength']) - 1)
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
 
 
-@app.route("/home/volume_change", methods=['POST'])
+@app.route("/player/volumelevel", methods=['PUT'])
 def volume_change():
+    """
+    Change the current volume setting by a +/- amount.
+    :return:
+    """
     args = json.loads(request.data)
-    vol_change = int(args["amount"])
-    current_status = player.status()
-    new_volume = int(current_status["volume"]) + vol_change
-    if new_volume > 100:
-        new_volume = 100
-    elif new_volume < 0:
-        new_volume = 0
-    player.setvol(new_volume)
+    try:
+        vol_change = int(args["amount"])
+        current_status = player.status()
+        new_volume = int(current_status["volume"]) + vol_change
+        if new_volume > 100:
+            new_volume = 100
+        elif new_volume < 0:
+            new_volume = 0
+        player.setvol(new_volume)
+    except:
+        pass
+
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
 
 
-@app.route("/home/idle", methods=['GET'])
-def idle():
-    print "Idling..."
-    response = player.idle()
-    return response
-
-
 @app.route("/about")
 def about():
+    """
+    Show the about page
+    :return:
+    """
     return render_template("about.html")

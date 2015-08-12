@@ -40,49 +40,6 @@ class Player(MPDModel):
 
         return s
 
-    def get_current_playlist(self):
-        pl = []
-        if self.connect_to_mpd():
-            info = self.client.playlistinfo()
-
-            # Normalize playlist entries. The data returned from
-            # MPD varies according to what is playing (radio stations
-            # and records).
-            for i in info:
-                pe = {}
-                pe["id"] = i["id"]
-                # 0-based position
-                pe["pos"] = i["pos"]
-                # 1-based position
-                pe["pos1"] = int(i["pos"]) + 1
-                # Pick a name based on the best available property
-                # The fall back is the file name which is always present
-                if "name" in i:
-                    pe["track"] = i["name"]
-                elif "title" in i:
-                    pe["track"] = i["title"]
-                else:
-                    pe["track"] = i["file"]
-                if "album" in i:
-                    pe["album"] = i["album"]
-                else:
-                    pe["album"] = "."
-                if "artist" in i:
-                    pe["artist"] = i["artist"]
-                else:
-                    pe["artist"] = "."
-                if "time" in i:
-                    pe["time"] = i["time"]
-                else:
-                    pe["time"] = ""
-                pe["file"] = i["file"]
-                pl.append(pe)
-
-        playlist = {}
-        playlist["playlist"] = pl
-        # TODO Figure out how to get current playlist name and add it to dict
-        return playlist
-
     def status(self):
         if self.connect_to_mpd():
             return self.client.status()

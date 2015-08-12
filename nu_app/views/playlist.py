@@ -43,13 +43,19 @@ def clear_playlist():
     return ""
 
 
-@app.route("/cpl/currentplaylist", methods=['GET'])
+@app.route("/cpl/managecurrentplaylist", methods=['GET'])
 def manage_playlist():
     """
     Show the manage current playlist page.
     :return:
     """
     return render_template("manage_playlist.html", ngapp="agentmpd", ngcontroller="playlistController")
+
+
+@app.route("/cpl/currentplaylist", methods=['GET'])
+def get_current_playlist():
+    pl = playlist.get_current_playlist()
+    return jsonify(**pl)
 
 
 @app.route("/cpl/namedplaylists", methods=['GET'])
