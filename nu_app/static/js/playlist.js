@@ -247,6 +247,27 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         }
     };
 
+    $scope.search = function () {
+        $("#search-dlg").modal('show');
+        //$scope.enable_save_button();
+        $("#search-for-btn").prop("disabled", false);
+        $("#search-cancel-btn").prop("disabled", false);
+        // Hack...focus has to be set after this function returns.
+        // How long to wait is a guess (500 ms in this case).
+        $timeout(function() {
+            $("#search-string").focus();
+        }, 500);
+    };
+
+    $scope.search_for = function () {
+        //search_what = $("input:radio[name='search-collection']:checked").val();
+        alert("Searching..." + $scope.search_collection + " for " + $scope.search_string);
+    };
+
+    $scope.reset_search = function () {
+        alert("Search has been reset");
+    };
+
     function get_current_playlist() {
         $http.get('/cpl/currentplaylist', {}).
             success(function(data, status, headers, config) {
@@ -273,7 +294,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         $http.delete('/cpl/playlist', {}).
             success(function(data, status, headers, config) {
                 get_current_playlist();
-                showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
+                // showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
             }).
             error(function(data, status, headers, config) {
                 $scope.error = "Host communication error";

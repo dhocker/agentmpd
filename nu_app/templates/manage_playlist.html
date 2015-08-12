@@ -70,6 +70,37 @@
         </div>
     </div>
 
+    {# Search modal dialog #}
+    <div class="modal fade" id="search-dlg" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Search</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="search-string">Enter search terms.</label>
+                            <input type="text" id="search-string" class="form-control" ng-model="search_string" ng-change="" style="width:100%">
+                            <label class="radio-inline"><input type="radio" name="search-collection" ng-model="search_collection" value="playlists">Playlists</label>
+                            <label class="radio-inline"><input type="radio" name="search-collection" ng-model="search_collection" value="albums">Albums</label>
+                            <label class="radio-inline"><input type="radio" name="search-collection" ng-model="search_collection" value="tracks">Tracks/Songs</label>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="search-for-btn" class="btn btn-primary" data-dismiss="modal" ng-click="search_for()">Search</button>
+                    <button type="button" id="search-cancel-btn" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block body %}
@@ -99,7 +130,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <h3>Tracks in Selected Album(s)</h3>
+                        <h3>Tracks/Songs</h3>
                             <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}">
                                 <option ng-click="track_selected()" value="{= p.uri =}" ng-repeat="p in tracks">{= p.title =}</option>
                             </select>
@@ -108,11 +139,18 @@
                             <button id="load-all-tracks-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add all tracks">Add All Tracks</button>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <label for="manual-uri">URI</label>
                         <input type="text" id="manual-uri" ng-model="manual_uri" style="width:50%" ng-change="manual_uri_change()">
                         <button id="add-uri-button" class="btn btn-primary btn-md" ng-click="add_manual_uri()"
                                 title="Add manually entered URI (good for Internet radio stations)">Add</button>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button id="search-button" class="btn btn-primary btn-md" ng-click="search()"
+                                title="Search for playlists, albums, tracks">Search</button>
+                        <button id="reset-button" class="btn btn-primary btn-md" ng-click="reset_search()"
+                                title="Reset search, refreshing playlists, albums and tracks">Reset</button>
                     </div>
                 </div>
             </div>
