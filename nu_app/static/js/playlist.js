@@ -35,7 +35,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     get_albums();
 
     function get_playlists() {
-        $http.get('/playlist/all', {}).
+        $http.get('/cpl/namedplaylists', {}).
             success(function(data, status, headers, config) {
                 $scope.playlists = data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
@@ -47,7 +47,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function get_albums() {
-        $http.get('/playlist/albums', {}).
+        $http.get('/cpl/albums', {}).
             success(function(data, status, headers, config) {
                 $scope.albums = data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
@@ -73,8 +73,9 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             // Get tracks for selected albums
             var arg_list = $("#available-albums").val() || [];
             var c = arg_list.length;
+            var json = JSON.stringify(arg_list);
 
-            $http.post('/playlist/album_tracks', {"albums" : arg_list}).
+            $http.get('/cpl/album/tracks', {"params" : arg_list}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     $scope.tracks = data.tracks;
@@ -116,7 +117,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         var arg_list = $("#available-playlists").val() || [];
         var c = arg_list.length;
 
-        $http.post('/playlist/load_selected', {"playlists" : arg_list}).
+        $http.post('/cpl/playlist', {"data" : {"playlists" : arg_list}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -131,7 +132,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         var arg_list = $("#available-tracks").val() || [];
         var c = arg_list.length;
 
-        $http.post('/playlist/load_tracks', {"tracks" : arg_list}).
+        $http.post('/cpl/playlist', {"data" : {"uris" : arg_list}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -147,7 +148,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         for (i = 0; i < $scope.tracks.length; i++) {
             all_tracks.push($scope.tracks[i].uri)
         }
-        $http.post('/playlist/load_tracks', {"tracks" : all_tracks}).
+        $http.post('/cpl/playlist', {"data" : {"uris" : all_tracks}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -159,7 +160,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     $scope.add_manual_uri = function() {
-        $http.post('/playlist/load_tracks', {"tracks" : [$scope.manual_uri]}).
+        $http.post('/cpl/playlist', {"data" : {"uris" : [$scope.manual_uri]}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -189,7 +190,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
 
         // If anything was checked, remove it with a delete
         if (ids.length > 0) {
-            $http.post('/playlist/remove_selected', {"songids" : ids}).
+            $http.delete('/cpl/playlistentry', {"data" : ids}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     get_current_playlist();
@@ -223,7 +224,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
 
     // Saves the current playlist in the named playlist
     $scope.save_playlist_by_name = function () {
-        $http.post('/playlist/save', {"name" : $scope.playlist_name}).
+        $http.post('/cpl/namedplaylists', {"data" : {"name" : $scope.playlist_name}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 // Refresh playlist listbox
@@ -269,7 +270,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     // Menu functions
 
     $scope.clear_playlist = function() {
-        $http.put('/playlist/clear', {}).
+        $http.delete('/cpl/playlist', {}).
             success(function(data, status, headers, config) {
                 get_current_playlist();
                 showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
