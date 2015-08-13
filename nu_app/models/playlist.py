@@ -15,6 +15,7 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
 from mpd_model import MPDModel
+import re
 
 
 class Playlist(MPDModel):
@@ -85,6 +86,19 @@ class Playlist(MPDModel):
 
         return lst
 
+    def search_for_playlists(self, search_pat):
+        all_pl = self.get_playlists()
+        result_pl = []
+
+        rx_pat = ".*{0}.*".format(search_pat)
+        rxo = re.compile(search_pat, flags=re.IGNORECASE + re.DOTALL)
+
+        for pl in all_pl:
+            if rxo.search(pl):
+                result_pl.append(pl)
+
+        return result_pl
+
     def load_playlist(self, pl):
         if self.connect_to_mpd():
             self.client.load(pl)
@@ -99,10 +113,39 @@ class Playlist(MPDModel):
             albums = self.client.list("album")
         return albums
 
+    def search_for_albums(self, search_pat):
+        all_albums = self.get_albums()
+        result_albums = []
+
+        rx_pat = ".*{0}.*".format(search_pat)
+        rxo = re.compile(search_pat, flags=re.IGNORECASE + re.DOTALL)
+
+        for album in all_albums:
+            if rxo.search(album):
+                result_albums.append(album)
+
+        return result_albums
+
+    def search_for_albums_by_artist(self, search_pat):
+        result_albums = []
+        if self.connect_to_mpd():
+            result_albums = self.client.list("album", "artist", search_pat)
+        return result_albums
+
     def get_album_tracks(self, title):
-        tracks = None
+        tracks = []
         if self.connect_to_mpd():
             tracks = self.client.search("album", title)
+        # It would be tempting to sort the list of tracks by title, but
+        # you usually want to see the tracks in an album by track number order.
+        return tracks
+
+    def search_for_tracks(self, search_pat):
+        tracks = []
+        if self.connect_to_mpd():
+            tracks = self.client.search("title", search_pat)
+        # Sort by title
+        tracks.sort(key=lambda s: s["title"].lower())
         return tracks
 
     def add_track(self, uri):

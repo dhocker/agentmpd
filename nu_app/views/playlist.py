@@ -61,10 +61,17 @@ def get_current_playlist():
 @app.route("/cpl/namedplaylists", methods=['GET'])
 def get_all_named_playlists():
     """
-    Return the set of all named/stored playlists.
+    Return a collection of named/stored playlists.
+    If a search/query parameter ("s") is provided, the
+    queried playlists are returned. Otherwise, all
+    playlists are returned.
     :return:
     """
-    all_playlists = playlist.get_playlists()
+    if len(request.args) > 0:
+        all_playlists = playlist.search_for_playlists(request.args["s"])
+    else:
+        all_playlists = playlist.get_playlists()
+
     return jsonify({"playlists": all_playlists})
 
 
@@ -102,10 +109,20 @@ def remove_playlist_entries():
 @app.route("/cpl/albums", methods=['GET'])
 def get_all_albums():
     """
-    Get all albums in the library.
+    Get albums in the library. If there are search args, the list of
+    albums returned will be based on queries using the search args.
     :return:
     """
-    all_albums = playlist.get_albums()
+    if len(request.args) > 0:
+        if "album" in request.args:
+            # Query for albums
+            all_albums = playlist.search_for_albums(request.args["album"])
+        elif "artist" in request.args:
+            # Query for albums by artist(s)
+            all_albums = playlist.search_for_albums_by_artist(request.args["artist"])
+    else:
+        all_albums = playlist.get_albums()
+
     all_albums.sort()
     return jsonify({"albums": all_albums})
 
@@ -124,6 +141,22 @@ def get_album_tracks():
         for t in album_tracks:
             all_tracks.append({"title":t["title"], "uri":t["file"]})
     return jsonify({"tracks": all_tracks})
+
+
+@app.route("/cpl/tracks", methods=['GET'])
+def search_for_tracks():
+    """
+    Search for tracks.
+    :return:
+    """
+    if len(request.args) > 0:
+        if "track" in request.args:
+            # Query for tracks
+            tracks = playlist.search_for_tracks(request.args["track"])
+    else:
+        tracks = []
+
+    return jsonify({"tracks": tracks})
 
 
 @app.route("/cpl/namedplaylists", methods=['POST'])

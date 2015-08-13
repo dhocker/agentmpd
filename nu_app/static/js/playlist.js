@@ -261,11 +261,74 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
 
     $scope.search_for = function () {
         //search_what = $("input:radio[name='search-collection']:checked").val();
-        alert("Searching..." + $scope.search_collection + " for " + $scope.search_string);
+        //alert("Searching..." + $scope.search_collection + " for " + $scope.search_string);
+        switch ($scope.search_collection) {
+            case "playlists":
+                search_for_playlists($scope);
+                break;
+            case "albums":
+                search_for_albums($scope);
+                break;
+            case "artistalbums":
+                search_for_albums_by_artist($scope);
+                break;
+            case "tracks":
+                search_for_tracks($scope);
+                break;
+        }
+    };
+
+    function search_for_playlists($scope) {
+        $http.get('/cpl/namedplaylists', {"params" : {"s" : $scope.search_string}}).
+            success(function(data, status, headers, config) {
+                $scope.playlists = data.playlists;
+                $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Get for playlists failed due to server error";
+            });
+    };
+
+    function search_for_albums($scope) {
+        $http.get('/cpl/albums', {"params" : {"album" : $scope.search_string}}).
+            success(function(data, status, headers, config) {
+                $scope.albums = data.albums;
+                $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Search for albums failed due to server error";
+            });
+    };
+
+    function search_for_albums_by_artist($scope) {
+        $http.get('/cpl/albums', {"params" : {"artist" : $scope.search_string}}).
+            success(function(data, status, headers, config) {
+                $scope.albums = data.albums;
+                $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Search for albums failed due to server error";
+            });
+    };
+
+    function search_for_tracks($scope) {
+        $http.get('/cpl/tracks', {"params" : {"track" : $scope.search_string}}).
+            success(function(data, status, headers, config) {
+                $scope.tracks = data.tracks;
+                $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Search for albums failed due to server error";
+            });
     };
 
     $scope.reset_search = function () {
-        alert("Search has been reset");
+        get_playlists();
+        get_albums();
     };
 
     function get_current_playlist() {
