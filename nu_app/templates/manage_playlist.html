@@ -106,12 +106,10 @@
 
 {% block body %}
     <div class="container">
-        <div class="row">
-            <h2 class="col-md-12">Manage Current Playlist</h2>
-        </div>
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-body">
+        <h2>Manage Current Playlist</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
                     <div class="col-md-4">
                         <h3>Playlists</h3>
                             <select id="available-playlists" class="form-control" multiple="multiple" size="{= playlist_size =}">
@@ -139,7 +137,9 @@
                             <button id="load-tracks-button" class="btn btn-primary btn-md" ng-click="load_selected_tracks()" title="Add selected track(s)">Add Selected Track(s)</button>
                             <button id="load-all-tracks-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add all tracks">Add All Tracks</button>
                     </div>
+                </div>
 
+                <div class="row">
                     <div class="col-md-8">
                         <label for="manual-uri">URI</label>
                         <input type="text" id="manual-uri" ng-model="manual_uri" style="width:50%" ng-change="manual_uri_change()">
