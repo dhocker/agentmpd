@@ -45,12 +45,13 @@ app.controller('settingsController', function($scope, $http) {
 
     $scope.save_settings = function() {
         if (validate_settings($scope)) {
-            $http.post("/settings",
+            $http.put("/settings", {"data" :
                     {'host': $scope.host,
                     'port': $scope.port,
                     'status_update_interval': $scope.status_update_interval,
                     'playlist_update_interval': $scope.playlist_update_interval,
-                    'volume_increment': $scope.volume_increment}).
+                    'volume_increment': $scope.volume_increment}
+                    }).
                 success(function(data, status, headers, config) {
                 }).
                 error(function(data, status, headers, config) {

@@ -23,18 +23,18 @@ import json
 
 @app.route("/settings_page", methods=['GET'])
 def settings_page():
-    if request.method == 'GET':
-        return render_template("settings.html", host="raspberrypi-fs", ngapp="agentmpd", ngcontroller="settingsController")
+    return render_template("settings.html", host="raspberrypi-fs", ngapp="agentmpd", ngcontroller="settingsController")
+
+
+@app.route("/settings", methods=['GET'])
+def get_settings():
+    # Return current settings
+    return jsonify(Settings.get())
+
+
+@app.route("/settings", methods=['PUT'])
+def save_settings():
+    # Save settings
+    args = json.loads(request.data.decode())
+    Settings.save(args["data"])
     return ""
-
-
-@app.route("/settings", methods=['GET', 'POST'])
-def settings():
-    if request.method == 'GET':
-        # Return current settings
-        return jsonify(Settings.get())
-    elif request.method == 'POST':
-        # Save settings
-        args = json.loads(request.data.decode())
-        Settings.save(args)
-        return ""
