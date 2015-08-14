@@ -141,6 +141,15 @@ class Playlist(MPDModel):
             result_albums = self.client.list("album", "artist", search_pat)
         return result_albums
 
+    def search_for_albums_by_artists(self, artists):
+        all_albums = []
+        for artist in artists:
+            albums = self.search_for_albums_by_artist(artist)
+            for a in albums:
+                all_albums.append(a)
+
+        return all_albums
+
     def get_album_tracks(self, title):
         tracks = []
         if self.connect_to_mpd():

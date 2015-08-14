@@ -129,6 +129,12 @@ def get_all_albums():
     """
     Get albums in the library. If there are search args, the list of
     albums returned will be based on queries using the search args.
+    Search args are:
+        album - name of album to search for (found albums with contain the search arg)
+        artist - search for albums by the artist (exact match on artist)
+        artists - search for albums by a list of artists (exact match on each artist)
+    Note that this behavior is somewhat inconsistent. Unfortunately, this reflects
+    the way that mpd actually works.
     :return:
     """
     if len(request.args) > 0:
@@ -143,11 +149,9 @@ def get_all_albums():
             artists = json.loads(request.args["artists"])
             if type(artists) != list:
                 artists = [request.args["artists"]]
+            all_albums = playlist.search_for_albums_by_artists(artists)
+        else:
             all_albums = []
-            for artist in artists:
-                albums = playlist.search_for_albums_by_artist(artist)
-                for a in albums:
-                    all_albums.append(a)
     else:
         all_albums = playlist.get_albums()
 

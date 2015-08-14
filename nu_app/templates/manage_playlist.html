@@ -117,6 +117,11 @@
                             </select>
 
                             <button type="button" id="load-button" class="btn btn-primary btn-md" ng-click="load_playlists()" title="Add selected playlist(s)">Add Selected Playlist(s)</button>
+                            {# Help for the named/stored playlists #}
+                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Add Selected Playlist(s)"
+                               data-content="Adds the tracks from all of the selected playlists to the current playlist.">
+                               <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                     </div>
 
                     <div class="col-md-3">
@@ -124,6 +129,11 @@
                             <select id="available-artists" class="form-control" multiple="multiple" size="{= artist_size =}" style="width:100%">
                                 <option ng-click="artist_selected()" value="{= a =}" ng-repeat="a in artists">{= a =}</option>
                             </select>
+                            {# Help for artists #}
+                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Artists"
+                               data-content="Fills the Albums list with all albums for the selected artist(s).">
+                               <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                     </div>
 
                     <div class="col-md-3">
@@ -133,6 +143,12 @@
                             </select>
 
                             <button id="load-albums-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add selected album(s)">Add Selected Album(s)</button>
+                            {# Help for albums #}
+                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Albums"
+                               data-content="Adds all of the tracks in the selected albums to the current playlist.
+                               The tracks in the selected albums can be seen in the Tracks/Song list.">
+                               <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                     </div>
 
                     <div class="col-md-3">
@@ -142,7 +158,17 @@
                             </select>
 
                             <button id="load-tracks-button" class="btn btn-primary btn-md" ng-click="load_selected_tracks()" title="Add selected track(s)">Add Selected Track(s)</button>
+                            {# Help for Tracks #}
+                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Tracks/Songs"
+                               data-content="Add the selected tracks in the Tracks/Song list to the current playlist.">
+                               <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                             <button id="load-all-tracks-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add all tracks">Add All Tracks</button>
+                            {# Help for Tracks #}
+                            <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Tracks/Songs"
+                               data-content="Add all of the tracks in the Tracks/Song list to the current playlist.">
+                               <span class="glyphicon glyphicon-question-sign"></span>
+                            </a>
                     </div>
                 </div>
 
@@ -152,13 +178,29 @@
                         <input type="text" id="manual-uri" ng-model="manual_uri" style="width:50%" ng-change="manual_uri_change()">
                         <button id="add-uri-button" class="btn btn-primary btn-md" ng-click="add_manual_uri()"
                                 title="Add manually entered URI (good for Internet radio stations)">Add</button>
+                        {# Help for arbitrary URI #}
+                        <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Tracks/Songs"
+                           data-content="Enter an arbitrary URI into the text box. Add the URI to the current playlist.
+                           This is a good way to add Internet radio station URIs (e.g.http://listen.radionomy.com/VWClassicRock).">
+                           <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
                     </div>
 
                     <div class="col-md-4">
                         <button id="search-button" class="btn btn-primary btn-md" ng-click="search()"
                                 title="Search for playlists, albums, tracks">Search</button>
+                        {# Help for Search button #}
+                        <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Search"
+                           data-content="Opens the Search dialog where you can search for playlists, artists, albums or tracks.">
+                           <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
                         <button id="reset-button" class="btn btn-primary btn-md" ng-click="reset_search()"
                                 title="Reset search, refreshing playlists, albums and tracks">Reset</button>
+                        {# Help for Reset #}
+                        <a href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" title="Reset"
+                           data-content="Reset the content of all of the list boxes to the inital state.">
+                           <span class="glyphicon glyphicon-question-sign"></span>
+                        </a>
                     </div>
                 </div>
             </div>

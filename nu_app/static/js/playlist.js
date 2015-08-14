@@ -31,6 +31,8 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     $("#remove-button").prop("disabled", true);
     $("#search-button").prop("disabled", false);
     $("#reset-button").prop("disabled", false);
+    // Initialize Bootstrap popovers, if there are any
+    $('[data-toggle="popover"]').popover();
 
     get_playlists();
     get_artists();
