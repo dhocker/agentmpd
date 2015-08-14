@@ -19,10 +19,20 @@
 Bootstrap customizations
 */
 
+
+/* Bootstrap menu bar text color */
+.navbar-inverse .navbar-brand {
+    color: #D1F0FF;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: #D1F0FF;
+}
+
 /* Bootstrap menu background color */
 .navbar-inverse {
     background: #1947A3;
 }
+
 
 /* Bootstrap override for button background color */
 .btn-primary {
