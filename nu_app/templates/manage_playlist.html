@@ -110,27 +110,34 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <h3>Playlists</h3>
-                            <select id="available-playlists" class="form-control" multiple="multiple" size="{= playlist_size =}">
+                            <select id="available-playlists" class="form-control" multiple="multiple" size="{= playlist_size =}" style="width:100%">
                                 <option ng-click="playlist_selected()" value="{= p =}" ng-repeat="p in playlists">{= p =}</option>
                             </select>
 
                             <button type="button" id="load-button" class="btn btn-primary btn-md" ng-click="load_playlists()" title="Add selected playlist(s)">Add Selected Playlist(s)</button>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <h3>Artists</h3>
+                            <select id="available-artists" class="form-control" multiple="multiple" size="{= artist_size =}" style="width:100%">
+                                <option ng-click="artist_selected()" value="{= a =}" ng-repeat="a in artists">{= a =}</option>
+                            </select>
+                    </div>
+
+                    <div class="col-md-3">
                         <h3>Albums</h3>
-                            <select id="available-albums" class="form-control" multiple="multiple" size="{= albums_size =}" style="width:300px">
+                            <select id="available-albums" class="form-control" multiple="multiple" size="{= albums_size =}" style="width:100%">
                                 <option ng-click="album_selected()" value="{= a =}" ng-repeat="a in albums">{= a =}</option>
                             </select>
 
                             <button id="load-albums-button" class="btn btn-primary btn-md" ng-click="load_all_tracks()" title="Add selected album(s)">Add Selected Album(s)</button>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <h3>Tracks/Songs</h3>
-                            <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}">
+                            <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}" style="width:100%">
                                 <option ng-click="track_selected()" value="{= p.uri =}" ng-repeat="p in tracks">{= p.title =}</option>
                             </select>
 

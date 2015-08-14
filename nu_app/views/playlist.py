@@ -75,6 +75,24 @@ def get_all_named_playlists():
     return jsonify({"playlists": all_playlists})
 
 
+@app.route("/cpl/artists", methods=['GET'])
+def get_artists():
+    """
+    Return a collection of artists.
+    If a search/query parameter ("s") is provided, the
+    queried artists are returned. Otherwise, all
+    artists are returned.
+    :return:
+    """
+    if len(request.args) > 0:
+        #all_artists = playlist.search_for_playlists(request.args["s"])
+        all_artists = []
+    else:
+        all_artists = playlist.get_artists()
+
+    return jsonify({"artists": all_artists})
+
+
 @app.route("/cpl/playlist", methods=['POST'])
 def append_stored_playlists():
     """
@@ -118,8 +136,18 @@ def get_all_albums():
             # Query for albums
             all_albums = playlist.search_for_albums(request.args["album"])
         elif "artist" in request.args:
-            # Query for albums by artist(s)
+            # Query for albums by artist
             all_albums = playlist.search_for_albums_by_artist(request.args["artist"])
+        elif "artists" in request.args:
+            # Query for albums by artist(s)
+            artists = json.loads(request.args["artists"])
+            if type(artists) != list:
+                artists = [request.args["artists"]]
+            all_albums = []
+            for artist in artists:
+                albums = playlist.search_for_albums_by_artist(artist)
+                for a in albums:
+                    all_albums.append(a)
     else:
         all_albums = playlist.get_albums()
 

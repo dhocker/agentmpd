@@ -29,8 +29,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     $("#load-all-tracks-button").prop("disabled", true);
     $("#add-uri-button").prop("disabled", true);
     $("#remove-button").prop("disabled", true);
+    $("#search-button").prop("disabled", false);
+    $("#reset-button").prop("disabled", false);
 
     get_playlists();
+    get_artists();
     get_current_playlist();
     get_albums();
 
@@ -39,6 +42,18 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             success(function(data, status, headers, config) {
                 $scope.playlists = data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
+                $scope.error = "";
+            }).
+            error(function(data, status, headers, config) {
+                $scope.error = "Server communication error";
+            });
+    };
+
+    function get_artists() {
+        $http.get('/cpl/artists', {}).
+            success(function(data, status, headers, config) {
+                $scope.artists = data.artists;
+                $scope.artist_size = $scope.artists.length > 15 ? 15 : $scope.artists.length;
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
@@ -67,13 +82,33 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         }
     };
 
+    $scope.artist_selected = function () {
+        if ($("#available-artists option:selected").length > 0) {
+            // Get albums for selected artists
+            var arg_list = $("#available-artists").val() || [];
+
+            $http.get('/cpl/albums', {"params" : {"artists" : [arg_list]}}).
+                success(function(data, status, headers, config) {
+                    $scope.error = "";
+                    $scope.albums = data.albums;
+                    $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
+                    if ($scope.tracks.length > 0) {
+                        $("#load-all-tracks-button").prop("disabled", false);
+                    }
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.error = "Artist album query failed due to server communication error";
+                });
+        }
+        else {
+        }
+    };
+
     $scope.album_selected = function () {
         if ($("#available-albums option:selected").length > 0) {
             $("#load-albums-button").prop("disabled", false);
             // Get tracks for selected albums
             var arg_list = $("#available-albums").val() || [];
-            var c = arg_list.length;
-            var json = JSON.stringify(arg_list);
 
             $http.get('/cpl/album/tracks', {"params" : arg_list}).
                 success(function(data, status, headers, config) {

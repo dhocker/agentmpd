@@ -81,9 +81,18 @@ class Playlist(MPDModel):
             for p in pd_list:
                 lst.append(p["playlist"])
 
-            # Case insensitive sort for default ordering
-            lst.sort(key=lambda s: s.lower())
+        # Case insensitive sort for default ordering
+        lst.sort(key=lambda s: s.lower())
+        return lst
 
+    def get_artists(self):
+        lst = []
+
+        if self.connect_to_mpd():
+            lst = self.client.list("artist")
+
+        # Case insensitive sort for default ordering
+        lst.sort(key=lambda s: s.lower())
         return lst
 
     def search_for_playlists(self, search_pat):
