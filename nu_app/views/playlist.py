@@ -170,8 +170,17 @@ def get_album_tracks():
     # args is a dict of album titles (the key is an array index).
     for index, album_title in request.args.iteritems():
         album_tracks = playlist.get_album_tracks(album_title)
+        # Error proofing as not every track returned has both title and file
         for t in album_tracks:
-            all_tracks.append({"title":t["title"], "uri":t["file"]})
+            if "title" in t:
+                title = t["title"]
+            else:
+                title = "**missing title**"
+            if "file" in t:
+                uri = t["file"]
+            else:
+                uri = "**missing uri**"
+            all_tracks.append({"title":title, "uri":uri})
     return jsonify({"tracks": all_tracks})
 
 
