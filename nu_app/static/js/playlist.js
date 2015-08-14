@@ -23,6 +23,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     $scope.error = "";
     $scope.playlists = ["one"];
     $scope.playlist_name = "";
+    $scope.search_collection = "albums"
     $("#load-button").prop("disabled", true);
     $("#load-albums-button").prop("disabled", true);
     $("#load-tracks-button").prop("disabled", true);
