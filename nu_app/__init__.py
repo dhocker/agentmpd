@@ -61,7 +61,8 @@ from views import playlist
 
 #logger = logging.getLogger("app")
 
-#from Version import GetVersion
+# Required to expose version
+from version import GetVersion
 #logger.info("################################################################################")
 #logger.info("Starting AHPS_Web version %s", GetVersion())
 #logger.info("Using configuration file %s", configuration.Configuration.get_configuration_file_path())

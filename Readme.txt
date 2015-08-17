@@ -2,7 +2,8 @@
 AgendMPD - mpd web client
 -------------------------
 
-This web app is designed to manage an instance of the mpd (music player daemon) app.
+This web app is designed to manage an instance of the mpd (music player daemon) app. It will also work with
+the Mopidy server (it's mpd implementation).
 
 Files
 -----
