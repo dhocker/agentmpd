@@ -402,8 +402,12 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             });
     };
 
+    $scope.menu_playlist_edit = function() {
+        showMessagebox($scope, "Edit", "Edit has been invoked");
+    };
+
     $scope.menu_playlist_rename = function() {
-        alert("Rename has been invoked");
+        showMessagebox($scope, "Rename", "Rename has been invoked");
     };
 
     function showMessagebox($scope, header, body) {
