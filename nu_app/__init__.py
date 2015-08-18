@@ -58,6 +58,7 @@ app = Flask(__name__)
 from views import views
 from views import settings
 from views import playlist
+from views import exception_handler
 
 #logger = logging.getLogger("app")
 

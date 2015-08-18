@@ -19,6 +19,25 @@ import mpd
 from datetime import datetime, timedelta
 
 
+class MPDModelException(Exception):
+    """
+    MPD error reporting exception.
+    """
+    status_code = 500
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = "An error occurred while attempting to communicate with MPD: {0}".format(self.message)
+        return rv
+
+
 class MPDModel:
     """
     Base class for models
@@ -52,6 +71,7 @@ class MPDModel:
             except Exception as ex:
                 print ex
                 self.client = None
+                raise MPDModelException(str(ex))
             return False
 
         self.last_use = datetime.now()

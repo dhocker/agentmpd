@@ -15,28 +15,12 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
 from nu_app import app
-from nu_app.views.views import reset_player
-from nu_app.models.settings import Settings
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-    render_template, jsonify
-import json
+from nu_app.models.mpd_model import MPDModelException
+from flask import jsonify
 
 
-@app.route("/settings_page", methods=['GET'])
-def settings_page():
-    return render_template("settings.html", host="raspberrypi-fs", ngapp="agentmpd", ngcontroller="settingsController")
-
-
-@app.route("/settings", methods=['GET'])
-def get_settings():
-    # Return current settings
-    return jsonify(Settings.get())
-
-
-@app.route("/settings", methods=['PUT'])
-def save_settings():
-    # Save settings
-    args = json.loads(request.data.decode())
-    Settings.save(args["data"])
-    reset_player()
-    return ""
+@app.errorhandler(MPDModelException)
+def handle_model_exception(ex):
+    response = jsonify(ex.to_dict())
+    response.status_code = ex.status_code
+    return response

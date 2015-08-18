@@ -40,8 +40,8 @@ def mpd_player():
     Show the MPD player page.
     :return:
     """
-    current_song = player.get_current_player_status()
-    return render_template('player.html', current_song=current_song, ngapp="agentmpd", ngcontroller="homeController")
+    #current_song = player.get_current_player_status()
+    return render_template('player.html', ngapp="agentmpd", ngcontroller="homeController")
 
 
 @app.route("/player/currentstatus", methods=['GET'])
@@ -199,3 +199,11 @@ def about():
     :return:
     """
     return render_template("about.html")
+
+
+def reset_player():
+    """
+    Reset the player instance when settings are changed.
+    :return:
+    """
+    player = Player()

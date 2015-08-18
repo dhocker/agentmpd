@@ -105,7 +105,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = "Server communication error";
+                $scope.error = data.message;
             });
     };
 
@@ -119,7 +119,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 $scope.volume_increment = data["volume_increment"];
             }).
             error(function(data, status, headers, config) {
-                $scope.error = "Host communication error";
+                $scope.error = data.message;
             });
     }
 
@@ -155,7 +155,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = "Server communication error";
+                $scope.error = data.message;
             });
     };
 
@@ -174,7 +174,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = "Server communication error";
+                $scope.error = data.message;
             });
     };
 
@@ -187,7 +187,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = "Server communication error";
+                $scope.error = data.message;
             });
     };
 
