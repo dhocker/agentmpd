@@ -85,26 +85,46 @@ def play_song(pos):
 
 
 @app.route("/player/status", methods=['PUT'])
-def toggle_play():
+def update_player_status():
     """
-    Update the player status. New status values can be
-    toggle, play or stop.
+    Update the player status. New status keys can be
+    playstatus - values can be toggle, play or stop.
+    random - 0 or 1
+    sonsume - 0 or 1
+    repeat - 0 or 1
+    single - 0 or 1
     :return:
     """
-    new_status = json.loads(request.data)["newstatus"]
-    current_status = player.get_current_player_status()
+    new_status_kv = json.loads(request.data)
 
-    if new_status == "toggle":
-        if current_status['state'] == 'play':
-            player.pause(1)
-        elif current_status['state'] == 'pause':
-            player.pause(0)
-        elif current_status['state'] == 'stop':
+    if "playstatus" in new_status_kv:
+        new_status = new_status_kv["playstatus"]
+        current_status = player.get_current_player_status()
+
+        if new_status == "toggle":
+            if current_status['state'] == 'play':
+                player.pause(1)
+            elif current_status['state'] == 'pause':
+                player.pause(0)
+            elif current_status['state'] == 'stop':
+                # If there is a song in the current status, we'll start
+                # playing it. Otherwise, we'll arbitrarily play the first song.
+                if "song" in current_status:
+                    player.play(current_status['song'])
+                else:
+                    player.play(0)
+        elif new_status == "play":
             player.play(current_status['song'])
-    elif new_status == "play":
-        player.play(current_status['song'])
-    elif new_status == "stop":
-        player.stop()
+        elif new_status == "stop":
+            player.stop()
+    if "random" in new_status_kv:
+        player.random(int(new_status_kv["random"]))
+    if "consume" in new_status_kv:
+        player.consume(int(new_status_kv["consume"]))
+    if "single" in new_status_kv:
+        player.single(int(new_status_kv["single"]))
+    if "repeat" in new_status_kv:
+        player.repeat(int(new_status_kv["repeat"]))
 
     current_status = player.get_current_player_status()
     return jsonify(**current_status)

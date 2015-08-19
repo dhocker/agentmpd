@@ -58,7 +58,7 @@
         <h2 class="col-md-12">MPD Player on {= host =}:{= port =}</h2>
         </div>
         <div class="row" style="margin-bottom: 20px;">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 {# Note we are using {= =} for the angularjs interpolation tag #}
                 <button class="btn btn-default btn-md" ng-click="play_first()" title="Play first">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
@@ -99,6 +99,26 @@
                 <div class="progress">
                     <div id="volumebar" class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
                       20%
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default" style="padding:6px">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="checkbox" id="random" class="" ng-model="random" ng-change="random_changed()" ng-true-value="1" ng-false-value="0"> Random
+                        </div>
+                        <div class="col-md-6">
+                            <input type="checkbox" id="consume" class="" ng-model="consume" ng-change="consume_changed()" ng-true-value="1" ng-false-value="0"> Consume
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="checkbox" id="repeat" class="" ng-model="repeat" ng-change="repeat_changed()" ng-true-value="1" ng-false-value="0"> Repeat
+                        </div>
+                        <div class="col-md-6">
+                            <input type="checkbox" id="single" class="" ng-model="single" ng-change="single_changed()" ng-true-value="1" ng-false-value="0"> Single
+                        </div>
                     </div>
                 </div>
             </div>

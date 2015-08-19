@@ -63,3 +63,19 @@ class Player(MPDModel):
     def idle(self):
         if self.connect_to_mpd():
             self.client.idle()
+
+    def random(self, state):
+        if self.connect_to_mpd():
+            self.client.random(state)
+
+    def consume(self, state):
+        if self.connect_to_mpd():
+            self.client.consume(state)
+
+    def repeat(self, state):
+        if self.connect_to_mpd():
+            self.client.repeat(state)
+
+    def single(self, state):
+        if self.connect_to_mpd():
+            self.client.single(state)

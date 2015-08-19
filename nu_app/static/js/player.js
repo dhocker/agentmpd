@@ -54,31 +54,21 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     });
 */
 
-    // Update the status of each playlist entry by assigning it a CSS
-    // class that properly styles it
+    // Update the status of the transport, now playing and playlist
     function update_status() {
         for (var i = 0; i < $scope.current_playlist.playlist.length; i++)
         {
             var pe = $scope.current_playlist.playlist[i];
             if (pe.pos == $scope.currently_playing.song)
             {
-                // Active styling overrides odd/even styling
-                // And, a lot of trial and error proved you can't apply both.
+                // Use the Bootstrap class to mark the now playing song
                 pe["class"] = "success";
             }
             else
             {
-                if (i % 2)
-                {
-                    // Odd rows
-                    // Only mark alt row if it is not the current playlist entry
-                    pe["class"] = "";
-                }
-                else
-                {
-                    // Even rows
-                    pe["class"] = "";
-                }
+                // Originally, this code managed the striping. Now, we
+                // let Bootstrap handle the striping.
+                pe["class"] = "";
             }
         }
 
@@ -87,6 +77,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.volume = parseInt($scope.currently_playing['volume']);
         //volumebar.progressbar("value", $scope.volume);
         update_volume_bar($scope.volume);
+        // Options
+        $scope.random = parseInt($scope.currently_playing['random']);
+        $scope.repeat = parseInt($scope.currently_playing['repeat']);
+        $scope.single = parseInt($scope.currently_playing['single']);
+        $scope.consume = parseInt($scope.currently_playing['consume']);
+        $scope.xfade = parseInt($scope.currently_playing['xfade']);
     };
 
     function update_volume_bar(value) {
@@ -192,11 +188,11 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     $scope.toggle_playing = function() {
-        put_transport('/player/status', {'newstatus':'toggle'});
+        put_transport('/player/status', {'playstatus':'toggle'});
     };
 
     $scope.play_stop = function() {
-        put_transport('/player/status', {'newstatus':'stop'});
+        put_transport('/player/status', {'playstatus':'stop'});
     };
 
     $scope.play_first = function() {
@@ -225,6 +221,24 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
     $scope.volume_down = function() {
         put_transport('/player/volumelevel', {'amount': -$scope.volume_increment});
+    };
+
+    // Options
+
+    $scope.random_changed = function() {
+        put_transport('/player/status', {'random':$scope.random});
+    };
+
+    $scope.consume_changed = function() {
+        put_transport('/player/status', {'consume':$scope.consume});
+    };
+
+    $scope.repeat_changed = function() {
+        put_transport('/player/status', {'repeat':$scope.repeat});
+    };
+
+    $scope.single_changed = function() {
+        put_transport('/player/status', {'single':$scope.single});
     };
 
     // Menu functions
