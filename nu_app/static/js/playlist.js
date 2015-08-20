@@ -79,9 +79,13 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     $scope.playlist_selected = function () {
         if ($("#available-playlists option:selected").length > 0) {
             $("#load-button").prop("disabled", false);
+            // Remember name of selected playlist as the suggestion for saving playlist
+            var playlists = $("#available-playlists").val() || [""];
+            $scope.playlist_name = playlists[0];
         }
         else {
             $("#load-button").prop("disabled", true);
+            $scope.playlist_name = "";
         }
     };
 
