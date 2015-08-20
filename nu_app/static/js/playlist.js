@@ -47,9 +47,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Server communication error";
-            });
+            error(http_error);
     };
 
     function get_artists() {
@@ -59,9 +57,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.artist_size = $scope.artists.length > 15 ? 15 : $scope.artists.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Server communication error";
-            });
+            error(http_error);
     };
 
     function get_albums() {
@@ -71,9 +67,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Server communication error";
-            });
+            error(http_error);
     };
 
     $scope.playlist_selected = function () {
@@ -94,18 +88,13 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             // Get albums for selected artists
             var arg_list = $("#available-artists").val() || [];
 
-            $http.get('/cpl/albums', {"params" : {"artists" : [arg_list]}}).
+            $http.get('/cpl/albums', {"params" : {"artists" : [arg_list]}, "xmessage":"Error getting albums for artist"}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     $scope.albums = data.albums;
                     $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
-                    if ($scope.tracks.length > 0) {
-                        $("#load-all-tracks-button").prop("disabled", false);
-                    }
                 }).
-                error(function(data, status, headers, config) {
-                    $scope.error = "Artist album query failed due to server communication error";
-                });
+                error(http_error);
         }
         else {
         }
@@ -126,9 +115,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                         $("#load-all-tracks-button").prop("disabled", false);
                     }
                 }).
-                error(function(data, status, headers, config) {
-                    $scope.error = "Album tracks query failed due to server communication error";
-                });
+                error(http_error);
         }
         else {
             $("#load-albums-button").prop("disabled", true);
@@ -164,10 +151,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.error = "";
                 get_current_playlist();
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Loading of playlists failed due to server communication error";
-            });
-
+            error(http_error);
     };
 
     $scope.load_selected_tracks = function() {
@@ -179,10 +163,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.error = "";
                 get_current_playlist();
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Loading of tracks failed due to server communication error";
-            });
-
+            error(http_error);
     };
 
     $scope.load_all_tracks = function() {
@@ -195,10 +176,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.error = "";
                 get_current_playlist();
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Loading of tracks failed due to server communication error";
-            });
-
+            error(http_error);
     };
 
     $scope.add_manual_uri = function() {
@@ -207,9 +185,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.error = "";
                 get_current_playlist();
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Loading of tracks failed due to server communication error";
-            });
+            error(http_error);
 
     };
 
@@ -237,9 +213,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                     $scope.error = "";
                     get_current_playlist();
                 }).
-                error(function(data, status, headers, config) {
-                    $scope.error = "Remove songs failed due to server communication error";
-                });
+                error(http_error);
         }
     };
 
@@ -273,9 +247,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 get_playlists();
                 showMessagebox($scope, "Saved", "The current playlist has been saved as: " + $scope.playlist_name);
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Save playlist failed due to server communication error";
-            });
+            error(http_error);
     };
 
     $scope.enable_save_button = function () {
@@ -327,9 +299,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Get for playlists failed due to server error";
-            });
+            error(http_error);
     };
 
     function search_for_albums($scope) {
@@ -339,9 +309,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Search for albums failed due to server error";
-            });
+            error(http_error);
     };
 
     function search_for_albums_by_artist($scope) {
@@ -351,9 +319,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Search for albums failed due to server error";
-            });
+            error(http_error);
     };
 
     function search_for_tracks($scope) {
@@ -363,9 +329,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Search for albums failed due to server error";
-            });
+            error(http_error);
     };
 
     $scope.reset_search = function () {
@@ -388,9 +352,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 }
                 $("#remove-button").prop("disabled", true);
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Server communication error";
-            });
+            error(http_error);
     };
 
     // Menu functions
@@ -401,9 +363,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
                 get_current_playlist();
                 // showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
             }).
-            error(function(data, status, headers, config) {
-                $scope.error = "Host communication error";
-            });
+            error(http_error);
     };
 
     $scope.menu_playlist_edit = function() {
@@ -420,6 +380,21 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         $("#menu-messagebox").modal('show');
         $("#messagebox-close-btn").focus();
     };
+
+    // Standard http error handling
+    function http_error(data, status, headers, config) {
+        if (data && data.message) {
+            $scope.error = data.message;
+        }
+        else {
+            if (config.xmessage) {
+                $scope.error = config.xmessage;
+            }
+            else {
+                $scope.error = "Server communication error";
+            }
+        }
+    }
 
     $scope.show_error = function() {
         // How do you clone this string???
