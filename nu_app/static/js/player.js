@@ -101,7 +101,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = data.message;
+                if (data && data.message) {
+                    $scope.error = data.message;
+                }
+                else {
+                    $scope.error = "Unable to communicate with host server";
+                }
             });
     };
 
@@ -115,7 +120,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
                 $scope.volume_increment = data["volume_increment"];
             }).
             error(function(data, status, headers, config) {
-                $scope.error = data.message;
+                if (data && data.message) {
+                    $scope.error = data.message;
+                }
+                else {
+                    $scope.error = "Unable to communicate with host server";
+                }
             });
     }
 
@@ -170,7 +180,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = data.message;
+                if (data && data.message) {
+                    $scope.error = data.message;
+                }
+                else {
+                    $scope.error = "Unable to communicate with host server";
+                }
             });
     };
 
@@ -183,7 +198,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = data.message;
+                if (data && data.message) {
+                    $scope.error = data.message;
+                }
+                else {
+                    $scope.error = "Unable to communicate with host server";
+                }
             });
     };
 
