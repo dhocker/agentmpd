@@ -38,7 +38,10 @@
                         </ul>
                     </li>
                     <li>
-                        <a id="menu-database" href="#">Music Database</a>
+                        <a id="menu-database" class="dropdown-toggle" data-toggle="dropdown" href="#">Music Database <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a id="menu-update-database" ng-click="menu_update_database()">Update</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a id="menu-settings" href="{{ url_for('settings_page') }}">Settings</a>

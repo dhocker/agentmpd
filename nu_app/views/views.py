@@ -212,6 +212,21 @@ def volume_change():
     return jsonify(**current_status)
 
 
+@app.route("/player/musicdatabase", methods=['PUT'])
+def update_music_database():
+    """
+    Change the current volume setting by a +/- amount.
+    :return:
+    """
+    try:
+        player.update_music_database()
+    except:
+        pass
+
+    current_status = player.get_current_player_status()
+    return jsonify(**current_status)
+
+
 @app.route("/about")
 def about():
     """

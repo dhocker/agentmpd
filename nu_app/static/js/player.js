@@ -263,6 +263,10 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
     // Menu functions
 
+    $scope.menu_update_database = function() {
+        put_transport('/player/musicdatabase', {});
+    };
+
     $scope.menu_playlist_rename = function() {
         alert("Rename has been invoked");
     };

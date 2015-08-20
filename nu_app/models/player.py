@@ -79,3 +79,7 @@ class Player(MPDModel):
     def single(self, state):
         if self.connect_to_mpd():
             self.client.single(state)
+
+    def update_music_database(self):
+        if self.connect_to_mpd():
+            self.client.update();
