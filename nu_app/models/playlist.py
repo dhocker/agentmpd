@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from mpd_model import MPDModel
+from mpd_model import MPDModel, mpd_client_handler
 import re
 
 
@@ -26,6 +26,7 @@ class Playlist(MPDModel):
     def __init__(self):
         MPDModel.__init__(self)
 
+    @mpd_client_handler()
     def get_current_playlist(self):
         pl = []
         if self.connect_to_mpd():
@@ -69,10 +70,12 @@ class Playlist(MPDModel):
         # TODO Figure out how to get current playlist name and add it to dict
         return playlist
 
+    @mpd_client_handler()
     def clear(self):
         if self.connect_to_mpd():
             self.client.clear()
 
+    @mpd_client_handler()
     def get_playlists(self):
         lst = []
 
@@ -85,6 +88,7 @@ class Playlist(MPDModel):
         lst.sort(key=lambda s: s.lower())
         return lst
 
+    @mpd_client_handler()
     def get_artists(self):
         lst = []
 
@@ -108,14 +112,17 @@ class Playlist(MPDModel):
 
         return result_pl
 
+    @mpd_client_handler()
     def load_playlist(self, pl):
         if self.connect_to_mpd():
             self.client.load(pl)
 
+    @mpd_client_handler()
     def remove_by_songid(self, songid):
         if self.connect_to_mpd():
             self.client.deleteid(songid)
 
+    @mpd_client_handler()
     def get_albums(self):
         albums = None
         if self.connect_to_mpd():
@@ -135,6 +142,7 @@ class Playlist(MPDModel):
 
         return result_albums
 
+    @mpd_client_handler()
     def search_for_albums_by_artist(self, search_pat):
         result_albums = []
         if self.connect_to_mpd():
@@ -150,6 +158,7 @@ class Playlist(MPDModel):
 
         return all_albums
 
+    @mpd_client_handler()
     def get_album_tracks(self, title):
         tracks = []
         if self.connect_to_mpd():
@@ -158,6 +167,7 @@ class Playlist(MPDModel):
         # you usually want to see the tracks in an album by track number order.
         return tracks
 
+    @mpd_client_handler()
     def search_for_tracks(self, search_pat):
         tracks = []
         if self.connect_to_mpd():
@@ -166,15 +176,18 @@ class Playlist(MPDModel):
         tracks.sort(key=lambda s: s["title"].lower())
         return tracks
 
+    @mpd_client_handler()
     def add_track(self, uri):
         if self.connect_to_mpd():
             self.client.add(uri)
 
+    @mpd_client_handler()
     def save_current_playlist(self, name):
         if self.connect_to_mpd():
             self.remove_playlist(name)
             self.client.save(name)
 
+    @mpd_client_handler()
     def remove_playlist(self, name):
         # Try to delete an existing playlist. Ignore errors if one does not exist.
         if self.connect_to_mpd():

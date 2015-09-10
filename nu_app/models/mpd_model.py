@@ -19,6 +19,23 @@ import mpd
 from datetime import datetime, timedelta
 
 
+# Wrapper to provide consistent error handling across all mpd client calls
+def mpd_client_handler():
+    def decorate(func):
+        def call(*args, **kwargs):
+            try:
+                result = func(*args, **kwargs)
+            except Exception as ex:
+                # args[0] should be the MPDModel instance
+                # We make the gross assumption that the exception is caused
+                # by a dropped connection to the mpd host.
+                args[0].client = None
+                raise MPDModelException(str(ex))
+            return result
+        return call
+    return decorate
+
+
 class MPDModelException(Exception):
     """
     MPD error reporting exception.
@@ -70,6 +87,7 @@ class MPDModel:
                 return True
             except Exception as ex:
                 print ex
+                self.client.close()
                 self.client = None
                 raise MPDModelException(str(ex))
             return False
