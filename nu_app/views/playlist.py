@@ -100,7 +100,7 @@ def append_stored_playlists():
     The request data contains an object/dict identfifying the playlists to be appended.
     :return:
     """
-    args = json.loads(request.data.decode())["data"]
+    args = json.loads(request.data.decode("utf-8"))["data"]
     if "playlists" in args:
         for pl in args["playlists"]:
             playlist.load_playlist(pl)
@@ -118,7 +118,7 @@ def remove_playlist_entries():
     to be removed from the current playlist.
     :return:
     """
-    songids = json.loads(request.data.decode())
+    songids = json.loads(request.data.decode("utf-8"))
     for songid in songids:
         playlist.remove_by_songid(songid)
     return ""
@@ -209,6 +209,6 @@ def save_named_playlist():
     :return:
     """
     # args is the name for the saved playlist
-    args = json.loads(request.data.decode())
+    args = json.loads(request.data.decode("utf-8"))
     playlist.save_current_playlist(args["data"]["name"])
     return ""
