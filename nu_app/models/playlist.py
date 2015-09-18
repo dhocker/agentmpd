@@ -44,12 +44,12 @@ class Playlist(MPDModel):
                 pe["pos1"] = int(i["pos"]) + 1
                 # Pick a name based on the best available property
                 # The fall back is the file name which is always present
+                pe["track"] = ""
                 if "name" in i:
                     pe["track"] = i["name"]
                 elif "title" in i:
                     pe["track"] = i["title"]
-                else:
-                    pe["track"] = i["file"]
+                pe["track"] = pe["track"] + " - " + i["file"]
                 if "album" in i:
                     pe["album"] = i["album"]
                 else:

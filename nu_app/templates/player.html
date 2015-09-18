@@ -150,10 +150,10 @@
                     <table class="table table-condensed table-striped table-hover table-fixed">
                         <thead>
                             <tr>
-                                <th class="col-xs-1">Play</th>
-                                <th>Title/Name/Stream</th>
-                                <th>Album</th>
-                                <th>Artist</th>
+                                <th class="col-xs-1 text-left">Play</th>
+                                <th class="col-xs-6 text-left">Title/Name/Stream</th>
+                                <th class="col-xs-3 text-left">Album</th>
+                                <th class="col-xs-2 text-left">Artist</th>
                             </tr>
                         </thead>
                     </table>
@@ -161,10 +161,10 @@
                         <table class="table table-condensed table-striped table-hover table-fixed">
                             <tbody>
                                 <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
-                                    <td class="col-xs-1"><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
-                                    <td>{= x.track =}</td>
-                                    <td>{= x.album =}</td>
-                                    <td>{= x.artist =}</td>
+                                    <td class="col-xs-1 text-left"><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button></td>
+                                    <td class="col-xs-6 text-left">{= x.track =}</td>
+                                    <td class="col-xs-3 text-left">{= x.album =}</td>
+                                    <td class="col-xs-2 text-left">{= x.artist =}</td>
                                 </tr>
                             </tbody>
                         </table>
