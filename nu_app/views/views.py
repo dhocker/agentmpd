@@ -40,7 +40,6 @@ def mpd_player():
     Show the MPD player page.
     :return:
     """
-    #current_song = player.get_current_player_status()
     return render_template('player.html', ngapp="agentmpd", ngcontroller="homeController")
 
 

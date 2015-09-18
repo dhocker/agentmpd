@@ -39,59 +39,82 @@ class Player(MPDModel):
             for k, v in current_song.iteritems():
                 s[k.encode('ascii','ignore')] = v.encode('ascii','ignore')
 
+            self.close_mpd_connection()
+
         return s
 
     @mpd_client_handler()
     def status(self):
         if self.connect_to_mpd():
-            return self.client.status()
+            s = self.client.status()
+            self.close_mpd_connection()
+            return s
+
+    @mpd_client_handler()
+    def mpd_version(self):
+        v = "unknown"
+        if self.connect_to_mpd():
+            v = self.client.mpd_version
+            self.client.close()
+        return v
+
 
     @mpd_client_handler()
     def play(self, pos):
         if self.connect_to_mpd():
             self.client.play(pos)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def pause(self, pos):
         if self.connect_to_mpd():
             self.client.pause(pos)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def stop(self):
         if self.connect_to_mpd():
             self.client.stop()
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def setvol(self, level):
         if self.connect_to_mpd():
             self.client.setvol(level)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def idle(self):
         if self.connect_to_mpd():
             self.client.idle()
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def random(self, state):
         if self.connect_to_mpd():
             self.client.random(state)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def consume(self, state):
         if self.connect_to_mpd():
             self.client.consume(state)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def repeat(self, state):
         if self.connect_to_mpd():
             self.client.repeat(state)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def single(self, state):
         if self.connect_to_mpd():
             self.client.single(state)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def update_music_database(self):
         if self.connect_to_mpd():
             self.client.update();
+            self.close_mpd_connection()

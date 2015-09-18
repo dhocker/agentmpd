@@ -16,6 +16,7 @@
 #
 
 from nu_app import app
+from nu_app.models.player import Player
 
 def GetVersion():
   """
@@ -23,6 +24,9 @@ def GetVersion():
   """
   return "2015.1.0.1"
 
+def GetMPDVersion():
+    player = Player()
+    return player.mpd_version()
 
 @app.context_processor
 def get_release_version():
@@ -30,4 +34,4 @@ def get_release_version():
     Exposes the variable version to jinga2 teplate renderer.
     :return:
     '''
-    return dict(release_version = GetVersion())
+    return dict(release_version = GetVersion(), mpd_version = GetMPDVersion())

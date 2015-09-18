@@ -102,13 +102,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-2">
-                    <a href="{{ url_for('mpd_player') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
+                    <a href="{{ url_for('mpd_player') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/> MPD Version {{ mpd_version }}</a>
 
                     {% block footer_links %}{% endblock %}
                 </div>
 
                 <div class="col-md-10 text-right">
-                    <a href="{{ url_for('about') }}">About AgentMPD {{ release_version }} -- © 2015 by Dave Hocker</a>
+                    <a href="{{ url_for('about') }}">About AgentMPD Version {{ release_version }} -- © 2015 by Dave Hocker</a>
                 </div>
 
             </div>

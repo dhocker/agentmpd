@@ -65,6 +65,8 @@ class Playlist(MPDModel):
                 pe["file"] = i["file"]
                 pl.append(pe)
 
+            self.close_mpd_connection()
+
         playlist = {}
         playlist["playlist"] = pl
         # TODO Figure out how to get current playlist name and add it to dict
@@ -74,6 +76,7 @@ class Playlist(MPDModel):
     def clear(self):
         if self.connect_to_mpd():
             self.client.clear()
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def get_playlists(self):
@@ -83,6 +86,7 @@ class Playlist(MPDModel):
             pd_list = self.client.listplaylists()
             for p in pd_list:
                 lst.append(p["playlist"])
+            self.close_mpd_connection()
 
         # Case insensitive sort for default ordering
         lst.sort(key=lambda s: s.lower())
@@ -94,6 +98,7 @@ class Playlist(MPDModel):
 
         if self.connect_to_mpd():
             lst = self.client.list("artist")
+            self.close_mpd_connection()
 
         # Case insensitive sort for default ordering
         lst.sort(key=lambda s: s.lower())
@@ -116,17 +121,20 @@ class Playlist(MPDModel):
     def load_playlist(self, pl):
         if self.connect_to_mpd():
             self.client.load(pl)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def remove_by_songid(self, songid):
         if self.connect_to_mpd():
             self.client.deleteid(songid)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def get_albums(self):
         albums = None
         if self.connect_to_mpd():
             albums = self.client.list("album")
+            self.close_mpd_connection()
         return albums
 
     def search_for_albums(self, search_pat):
@@ -147,6 +155,7 @@ class Playlist(MPDModel):
         result_albums = []
         if self.connect_to_mpd():
             result_albums = self.client.list("album", "artist", search_pat)
+            self.close_mpd_connection()
         return result_albums
 
     def search_for_albums_by_artists(self, artists):
@@ -163,6 +172,7 @@ class Playlist(MPDModel):
         tracks = []
         if self.connect_to_mpd():
             tracks = self.client.search("album", title)
+            self.close_mpd_connection()
         # It would be tempting to sort the list of tracks by title, but
         # you usually want to see the tracks in an album by track number order.
         return tracks
@@ -172,6 +182,7 @@ class Playlist(MPDModel):
         tracks = []
         if self.connect_to_mpd():
             tracks = self.client.search("title", search_pat)
+            self.close_mpd_connection()
         # Sort by title
         tracks.sort(key=lambda s: s["title"].lower())
         return tracks
@@ -180,12 +191,14 @@ class Playlist(MPDModel):
     def add_track(self, uri):
         if self.connect_to_mpd():
             self.client.add(uri)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def save_current_playlist(self, name):
         if self.connect_to_mpd():
             self.remove_playlist(name)
             self.client.save(name)
+            self.close_mpd_connection()
 
     @mpd_client_handler()
     def remove_playlist(self, name):
@@ -193,5 +206,6 @@ class Playlist(MPDModel):
         if self.connect_to_mpd():
             try:
                 self.client.rm(name)
+                self.close_mpd_connection()
             except:
                 pass

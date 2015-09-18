@@ -94,3 +94,7 @@ class MPDModel:
 
         self.last_use = datetime.now()
         return True
+
+    def close_mpd_connection(self):
+        self.client.close()
+        self.client = None
