@@ -195,8 +195,8 @@ class Playlist(MPDModel):
 
     @mpd_client_handler()
     def save_current_playlist(self, name):
+        self.remove_playlist(name)
         if self.connect_to_mpd():
-            self.remove_playlist(name)
             self.client.save(name)
             self.close_mpd_connection()
 
