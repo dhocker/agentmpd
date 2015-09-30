@@ -87,10 +87,10 @@
             </div>
             <div class="col-md-1">
                 <div class="row">
-                    {= status =}
+                    <span>{= status =}</span>
                 </div>
                 <div class="row">
-                    {= format_time(currently_playing.elapsed) =} / {= format_time(currently_playing.duration) =}
+                    <span ng-if="currently_playing.elapsed">{= format_time(currently_playing.elapsed) =} / <span ng-if="currently_playing.duration">{= format_time(currently_playing.duration) =}</span>
                 </div>
             </div>
             {# TODO: The layout of the volume bar could use some work. It's functional but lacks polish. #}
