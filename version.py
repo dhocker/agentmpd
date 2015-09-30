@@ -22,7 +22,7 @@ def GetVersion():
   """
   Returns the current app version
   """
-  return "2015.1.0.1"
+  return "2015.1.0.2"
 
 def GetMPDVersion():
     player = Player()

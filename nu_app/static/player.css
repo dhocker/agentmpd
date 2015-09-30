@@ -15,9 +15,17 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 */
 
+.col-transport {
+    width: auto;
+}
+
+.col-transport-switches {
+    float: right;
+}
+
 .tx-control-img {
-    width: 48px;
-    height: 48px
+    width: 32px;
+    height: 32px
 }
 
 .vol-control-img {

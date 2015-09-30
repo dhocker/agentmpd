@@ -271,6 +271,44 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         alert("Rename has been invoked");
     };
 
+    // t is in seconds (e.g. 300 = 00:05:00)
+    $scope.format_time = function(t) {
+        var hh_part = "";
+        var hh = parseInt(t / 3600);
+        if (hh > 0) {
+            hh_part = String(hh) + ":";
+        }
+
+        var mm = parseInt((t - (hh * 3600)) / 60);
+        var mm_part = String(mm) + ":";
+        if (hh_part.length > 0 && mm < 10) {
+            mm_part = "0" + mm_part;
+        }
+
+        var ss = parseInt(t % 60);
+        var ss_part = String(ss);
+        if (ss < 10) {
+            ss_part = "0" + ss_part;
+        }
+
+        return hh_part + mm_part + ss_part;
+    };
+
+    function update_play_time() {
+        if ($scope.playing) {
+            var elapsed = parseFloat($scope.currently_playing.elapsed);
+            var duration = parseFloat($scope.currently_playing.duration);
+            if (elapsed < duration) {
+                elapsed += 1.0;
+                $scope.currently_playing.elapsed = elapsed;
+            }
+            else {
+                // The song has reached the end. Move to what's next.
+                get_current_status();
+            }
+        }
+    };
+
     function showMessagebox($scope, header, body) {
         $scope.messagebox_header = header;
         $scope.messagebox_body = body;
@@ -291,5 +329,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     // MPD client app (e.g. Theremin). MPD changes the playlist
     // when it contains radio stations.
     $interval(update_view, playlist_update_interval);
-    //idle();
+
+    // Set up time to advance play time when playing
+    $interval(update_play_time, 1000);
+
 }]);

@@ -60,8 +60,8 @@
         <div class="row">
         <h2 class="col-md-12">MPD Player on {= host =}:{= port =}</h2>
         </div>
-        <div class="row" style="margin-bottom: 20px;">
-            <div class="col-md-6">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-5 col-transport">
                 {# Note we are using {= =} for the angularjs interpolation tag #}
                 <button class="btn btn-default btn-md" ng-click="play_first()" title="Play first">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
@@ -84,7 +84,14 @@
                 <button class="btn btn-default btn-md" ng-click="play_last()" title="Play last">
                     <img class="tx-control-img" src="{{ url_for('static', filename='playback-last.png') }}"/>
                 </button>
-                <span>{= status =}</span>
+            </div>
+            <div class="col-md-1">
+                <div class="row">
+                    {= status =}
+                </div>
+                <div class="row">
+                    {= format_time(currently_playing.elapsed) =} / {= format_time(currently_playing.duration) =}
+                </div>
             </div>
             {# TODO: The layout of the volume bar could use some work. It's functional but lacks polish. #}
             <div class="col-md-3">
