@@ -96,13 +96,10 @@
                     <span ng-if="!currently_playing.time">--:--</span>
                 </div>
             </div>
-            {# TODO: The layout of the volume bar could use some work. It's functional but lacks polish. #}
             <div class="col-md-3">
                 <button class="btn btn-default btn-sm" style="float:left;" ng-click="volume_down()" title="Decrease">
                     <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
                 </button>
-
-                <img class="" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/>
 
                 <button class="btn btn-default btn-sm" style="float:right;" ng-click="volume_up()" title="Increase">
                     <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>

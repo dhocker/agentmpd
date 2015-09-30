@@ -19,6 +19,10 @@
 Bootstrap customizations
 */
 
+/* Size progress bar to match volume control icons */
+.progress {
+    height: 30px;
+}
 
 /* Bootstrap menu bar text color */
 .navbar-inverse .navbar-brand {
