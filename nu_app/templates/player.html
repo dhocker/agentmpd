@@ -92,8 +92,8 @@
                 <div class="row">
                     <span ng-if="currently_playing.elapsed">{= format_time(currently_playing.elapsed) =}</span>
                     <span> / </span>
-                    <span ng-if="currently_playing.duration">{= format_time(currently_playing.duration) =}</span>
-                    <span ng-if="!currently_playing.duration">--:--</span>
+                    <span ng-if="currently_playing.time">{= format_time(currently_playing.time) =}</span>
+                    <span ng-if="!currently_playing.time">--:--</span>
                 </div>
             </div>
             {# TODO: The layout of the volume bar could use some work. It's functional but lacks polish. #}
