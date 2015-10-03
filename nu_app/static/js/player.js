@@ -273,19 +273,21 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
     // t is in seconds (e.g. 300 = 00:05:00)
     $scope.format_time = function(t) {
+        var tt = parseInt(String(t).replace(":", "."));
+
         var hh_part = "";
-        var hh = parseInt(t / 3600);
+        var hh = parseInt(tt / 3600);
         if (hh > 0) {
             hh_part = String(hh) + ":";
         }
 
-        var mm = parseInt((t - (hh * 3600)) / 60);
+        var mm = parseInt((tt - (hh * 3600)) / 60);
         var mm_part = String(mm) + ":";
         if (hh_part.length > 0 && mm < 10) {
             mm_part = "0" + mm_part;
         }
 
-        var ss = parseInt(t % 60);
+        var ss = parseInt(tt % 60);
         var ss_part = String(ss);
         if (ss < 10) {
             ss_part = "0" + ss_part;
