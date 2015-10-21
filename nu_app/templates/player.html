@@ -140,7 +140,7 @@
                 <div class="panel panel-default">
                 <table class="table">
                     <tr>
-                        <td class="now-playing-hdr">Now Playing</td>
+                        <td class="now-playing-hdr" ng-click="show_now_playing(currently_playing.pos)">Now Playing</td>
                         <td>
                             <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span></br>
                             <span class="album">{= currently_playing.album =}</span></br>
@@ -165,7 +165,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div class="table-fixed-content">
+                    <div id="playlist-content" class="table-fixed-content">
                         <table class="table table-condensed table-striped table-hover table-fixed">
                             <tbody>
                                 <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">

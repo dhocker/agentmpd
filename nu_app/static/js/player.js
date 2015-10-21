@@ -307,8 +307,17 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             else {
                 // The song has reached the end. Move to what's next.
                 get_current_status();
+                $scope.show_now_playing(currently_playing.pos);
             }
         }
+    };
+
+    // Scroll the playlist table to the given row
+    $scope.show_now_playing = function(row_id) {
+        $("#playlist-content").scrollTop(0);
+        var vpos = $("#" + row_id).position().top;
+        var h = $("#" + row_id).height() / 2;
+        $("#playlist-content").scrollTop(vpos - h);
     };
 
     function showMessagebox($scope, header, body) {

@@ -44,6 +44,7 @@
     color: #FFF;
     background: #1947A3;
     width: 20%;
+    cursor: pointer;
 }
 
 .artist-name {
