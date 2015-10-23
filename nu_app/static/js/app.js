@@ -11,3 +11,24 @@ app.config(function($interpolateProvider) {
     $interpolateProvider.startSymbol('{=');
     $interpolateProvider.endSymbol('=}');
 });
+
+// ta-scroll
+// Track scrolling on an element
+app.directive('taScroll', ['$parse', function($parse) {
+  return {
+    link: function(scope, element, attr) {
+      element.on('scroll', function(event) {
+        if (attr['taScroll']) {
+            // ta-scroll="call_fn()"
+            // Execute to attribute value
+            $parse(attr['taScroll'])(scope);
+        }
+        else {
+            // ta-scroll
+            // Defaults to fixed call as if it were ta-scroll="on_scroll()"
+            scope.on_scroll();
+        }
+      });
+    }
+  };
+}]);

@@ -34,6 +34,9 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     var status_update_interval = 10 * 1000; // 10 seconds
     var playlist_update_interval = 30 * 1000; // 30 seconds
 
+    // Scrolling is tracked by the scroll directive
+    $scope.manual_scrolling = false;
+
     $scope.playing = false;
     $scope.current_playlist = {"playlist": []};
     $scope.error = "";
@@ -83,6 +86,10 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.single = parseInt($scope.currently_playing['single']);
         $scope.consume = parseInt($scope.currently_playing['consume']);
         $scope.xfade = parseInt($scope.currently_playing['xfade']);
+        // Now playing (only if there is a playlist)
+        if (!$scope.manual_scrolling) {
+            $scope.show_now_playing($scope.currently_playing["pos"]);
+        }
     };
 
     function update_volume_bar(value) {
@@ -161,7 +168,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             }).
             error(function(data, status, headers, config) {
                 $scope.status = "";
-                $scope.error = data.message;
+                if (data && data.message) {
+                    $scope.error = data.message;
+                }
+                else {
+                    $scope.error = "Unable to get current playlist from host";
+                }
             });
     };
 
@@ -271,6 +283,11 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         alert("Rename has been invoked");
     };
 
+    // User scrolled to the playlist
+    $scope.on_scroll = function() {
+        $scope.manual_scrolling = true;
+    };
+
     // t is in seconds (e.g. 300 = 00:05:00)
     $scope.format_time = function(t) {
         var tt = parseInt(String(t).replace(":", "."));
@@ -307,17 +324,24 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
             else {
                 // The song has reached the end. Move to what's next.
                 get_current_status();
-                $scope.show_now_playing(currently_playing.pos);
             }
         }
     };
 
     // Scroll the playlist table to the given row
     $scope.show_now_playing = function(row_id) {
-        $("#playlist-content").scrollTop(0);
-        var vpos = $("#" + row_id).position().top;
-        var h = $("#" + row_id).height() / 2;
-        $("#playlist-content").scrollTop(vpos - h);
+        try {
+            var tr = $("#" + row_id);
+            $("#playlist-content").scrollTop(0);
+            var vpos = tr.position().top;
+            var h = tr.height();
+            $("#playlist-content").scrollTop(vpos - h);
+        }
+        catch(err) {
+            $scope.error = err.message;
+        }
+
+        $scope.manual_scrolling = false;
     };
 
     function showMessagebox($scope, header, body) {

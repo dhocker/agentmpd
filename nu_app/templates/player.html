@@ -165,7 +165,7 @@
                             </tr>
                         </thead>
                     </table>
-                    <div id="playlist-content" class="table-fixed-content">
+                    <div id="playlist-content" class="table-fixed-content" ta-scroll="on_scroll()">
                         <table class="table table-condensed table-striped table-hover table-fixed">
                             <tbody>
                                 <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
