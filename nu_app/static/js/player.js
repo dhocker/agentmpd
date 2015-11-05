@@ -285,7 +285,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
 
     // User scrolled to the playlist
     $scope.on_scroll = function() {
-        $scope.manual_scrolling = true;
+        //$scope.manual_scrolling = true;
     };
 
     // t is in seconds (e.g. 300 = 00:05:00)
