@@ -70,7 +70,10 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
         $scope.volume = parseInt($scope.currently_playing['volume']);
+        // This is our best guess at whether a record track or radio station is playing
+        $scope.playing_track = $scope.currently_playing['file'].substring(0, 7) != "http://";
         update_volume_bar($scope.volume);
+        update_play_time();
         // Options
         $scope.random = parseInt($scope.currently_playing['random']);
         $scope.repeat = parseInt($scope.currently_playing['repeat']);
@@ -299,18 +302,23 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         // the elapsed time is always >= duration and get_current_status gets
         // called repeatedly.
         if ($scope.playing) {
-            var elapsed = parseFloat($scope.currently_playing.elapsed);
-            var duration = parseFloat($scope.currently_playing.time);
-            if (elapsed < duration) {
-                elapsed += 1.0;
-                $scope.currently_playing.elapsed = elapsed;
-                timebar.slider("option", "max", parseInt(duration));
-                timebar.slider("value", parseInt(elapsed));
+            var elapsed = parseInt($scope.currently_playing.elapsed);
+            var duration = parseInt($scope.currently_playing.time);
+            if (duration != parseInt(timebar.slider("option", "max"))) {
+                timebar.slider("option", "max", duration);
             }
-            else {
-                // The song has reached the end. Move to what's next.
-                get_current_status();
+            timebar.slider("value", elapsed);
+        }
+    };
+
+    // Called every second...
+    function increment_play_time() {
+        if ($scope.playing) {
+            $scope.currently_playing['elapsed'] = parseFloat($scope.currently_playing['elapsed']) + 1.0;
+            if (!$scope.playing_track) {
+                $scope.currently_playing['time'] = parseFloat($scope.currently_playing['time']) + 1.0;
             }
+            update_play_time();
         }
     };
 
@@ -381,6 +389,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     $interval(update_view, playlist_update_interval);
 
     // Set up time to advance play time when playing
-    $interval(update_play_time, 1000);
+    $interval(increment_play_time, 1000);
 
 }]);
