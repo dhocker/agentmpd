@@ -41,21 +41,13 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     $scope.current_playlist = {"playlist": []};
     $scope.error = "";
 
+    // Create volume bar slider
     var volumebar = $( "#volumebar" );
-/*
-    var volumeLabel = $( ".volume-label" );
+    create_slider( "#volumebar", "vertical", 0, 100, 50, on_volumebar_change );
 
-    volumebar.progressbar({
-      max: 100,
-      value: 50,
-      change: function() {
-        volumeLabel.text( volumebar.progressbar( "value" ) + "%" );
-      },
-      complete: function() {
-        volumeLabel.text( "Complete!" );
-      }
-    });
-*/
+    // Create time bar slider
+    var timebar = $("#timebar");
+    create_slider( "#timebar", "horizontal", 0, 100, 0, on_timebar_change );
 
     // Update the status of the transport, now playing and playlist
     function update_status() {
@@ -78,7 +70,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.status = translate_state[$scope.currently_playing['state']];
         $scope.playing = ($scope.status == translate_state['play']);
         $scope.volume = parseInt($scope.currently_playing['volume']);
-        //volumebar.progressbar("value", $scope.volume);
         update_volume_bar($scope.volume);
         // Options
         $scope.random = parseInt($scope.currently_playing['random']);
@@ -93,10 +84,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function update_volume_bar(value) {
-        var label = value.toString() + "%";
-        volumebar.attr("style", "width:" + label);
-        volumebar.attr("aria-valuenow", value.toString());
-        volumebar.html(label);
+        volumebar.slider( "value", value );
     };
 
     function get_current_status() {
@@ -247,14 +235,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         put_transport('/player/currentsong/' + pos, {});
     };
 
-    $scope.volume_up = function() {
-        put_transport('/player/volumelevel', {'amount': $scope.volume_increment});
-    };
-
-    $scope.volume_down = function() {
-        put_transport('/player/volumelevel', {'amount': -$scope.volume_increment});
-    };
-
     // Options
 
     $scope.random_changed = function() {
@@ -314,12 +294,18 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function update_play_time() {
+        // TODO This does not work for radio stations.
+        // There is no notion of duration for a radio station. As a result,
+        // the elapsed time is always >= duration and get_current_status gets
+        // called repeatedly.
         if ($scope.playing) {
             var elapsed = parseFloat($scope.currently_playing.elapsed);
-            var duration = parseFloat($scope.currently_playing.duration);
+            var duration = parseFloat($scope.currently_playing.time);
             if (elapsed < duration) {
                 elapsed += 1.0;
                 $scope.currently_playing.elapsed = elapsed;
+                timebar.slider("option", "max", parseInt(duration));
+                timebar.slider("value", parseInt(elapsed));
             }
             else {
                 // The song has reached the end. Move to what's next.
@@ -349,6 +335,35 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
         $scope.messagebox_body = body;
         $("#menu-messagebox").modal('show');
     };
+
+	// Create a jQuery UI slider
+	function create_slider(id, orientation, min, max, init_value, onslide) {
+		// Create slider with initial values for min, max and value
+		$(id).slider({
+		    "animate": true,
+		    "range": "min",
+			"orientation": orientation,
+		  	"max": max,
+			"min": min,
+			"value": init_value,
+			"slide": onslide
+		});
+	}
+
+	// Handle volume bar slider changes made by user
+	function on_volumebar_change( event, ui ) {
+        var v = parseInt(ui.value);
+	    if ($scope.volume != v) {
+            put_transport('/player/volumelevel', {'amount': v});
+        }
+	}
+
+    // Handle song time changes made by user
+	function on_timebar_change(event, ui) {
+	    // The song postion in seconds into the song
+        var v = parseInt(ui.value);
+        put_transport('/player/songposition', {'time': v});
+	}
 
     // Initialize current status
     get_settings();

@@ -58,59 +58,52 @@
 {% block body %}
     <div class="container">
         <div class="row">
-        <h2 class="col-md-12">MPD Player on {= host =}:{= port =}</h2>
+        <h3 class="col-md-12">MPD Player on {= host =}:{= port =}</h3>
         </div>
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-5 col-transport">
-                {# Note we are using {= =} for the angularjs interpolation tag #}
-                <button class="btn btn-default btn-md" ng-click="play_first()" title="Play first">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="play_previous()" title="Play previous">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-previous.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-start.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-pause.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="play_stop()"  title="Stop playing">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-stop.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="play_next()"  title="Play next">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-next.png') }}"/>
-                </button>
-                <button class="btn btn-default btn-md" ng-click="play_last()" title="Play last">
-                    <img class="tx-control-img" src="{{ url_for('static', filename='playback-last.png') }}"/>
-                </button>
-            </div>
-            <div class="col-md-1">
-                <div class="row">
-                    <span>{= status =}</span>
+                <div>
+                    {# Note we are using {= =} for the angularjs interpolation tag #}
+                    <button class="btn btn-default btn-md" ng-click="play_first()" title="Play first">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-first.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="play_previous()" title="Play previous">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-previous.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Start playing" ng-hide="playing">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-start.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="toggle_playing()"  title="Pause playing" ng-show="playing">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-pause.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="play_stop()"  title="Stop playing">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-stop.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="play_next()"  title="Play next">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-next.png') }}"/>
+                    </button>
+                    <button class="btn btn-default btn-md" ng-click="play_last()" title="Play last">
+                        <img class="tx-control-img" src="{{ url_for('static', filename='playback-last.png') }}"/>
+                    </button>
                 </div>
-                <div class="row">
+                <div>
                     <span ng-if="currently_playing.elapsed">{= format_time(currently_playing.elapsed) =}</span>
                     <span ng-if="!currently_playing.elapsed">-:-</span>
                     <span> / </span>
                     <span ng-if="currently_playing.time">{= format_time(currently_playing.time) =}</span>
                     <span ng-if="!currently_playing.time">-:-</span>
+                    <span>{= status =}</span>
+                    {# Song time as a slider #}
+                    <div id="timebar"></div>
                 </div>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-default btn-sm" style="float:left;" ng-click="volume_down()" title="Decrease">
-                    <img class="vol-control-img" src="{{ url_for('static', filename='volume-down.png') }}"/>
-                </button>
-
-                <button class="btn btn-default btn-sm" style="float:right;" ng-click="volume_up()" title="Increase">
-                    <img class="vol-control-img" src="{{ url_for('static', filename='volume-up.png') }}"/>
-                </button>
-
-                {# Volume bar is a Bootstrap progressbar #}
-                <div class="progress">
-                    <div id="volumebar" class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
-                      20%
-                    </div>
+                {# Volume bar is a jQuery UI slider #}
+                <span class="ui-icon ui-icon-volume-on"></span>
+                <div id="volumebar"></div>
+            </div>
+            <div class="col-md-1">
+                <div class="row">
                 </div>
             </div>
             <div class="col-md-3">

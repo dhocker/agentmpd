@@ -191,19 +191,30 @@ def play_last():
 @app.route("/player/volumelevel", methods=['PUT'])
 def volume_change():
     """
-    Change the current volume setting by a +/- amount.
+    Change the current volume setting.
     :return:
     """
     args = json.loads(request.data)
     try:
-        vol_change = int(args["amount"])
-        current_status = player.status()
-        new_volume = int(current_status["volume"]) + vol_change
-        if new_volume > 100:
-            new_volume = 100
-        elif new_volume < 0:
-            new_volume = 0
+        new_volume = int(args["amount"])
         player.setvol(new_volume)
+    except:
+        pass
+
+    current_status = player.get_current_player_status()
+    return jsonify(**current_status)
+
+
+@app.route("/player/songposition", methods=['PUT'])
+def song_time_change():
+    """
+    Change the current song position.
+    :return:
+    """
+    args = json.loads(request.data)
+    try:
+        new_time = int(args["time"])
+        player.settime(new_time)
     except:
         pass
 

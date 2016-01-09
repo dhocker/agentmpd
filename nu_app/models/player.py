@@ -84,6 +84,12 @@ class Player(MPDModel):
             self.close_mpd_connection()
 
     @mpd_client_handler()
+    def settime(self, new_time):
+        if self.connect_to_mpd():
+            self.client.seekcur(new_time)
+            self.close_mpd_connection()
+
+    @mpd_client_handler()
     def idle(self):
         if self.connect_to_mpd():
             self.client.idle()
