@@ -177,8 +177,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     function post_transport(url, data) {
         $http.post(url, data).
             success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                update_status();
+                // After post completes, refresh status
+                get_current_status();
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
@@ -195,8 +195,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     function put_transport(url, data) {
         $http.put(url, data).
             success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
-                update_status();
+                // After put completes, refresh status
+                get_current_status();
                 $scope.error = "";
             }).
             error(function(data, status, headers, config) {
