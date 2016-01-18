@@ -97,13 +97,23 @@
                     <div id="timebar"></div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-1">
                 {# Volume bar is a jQuery UI slider #}
                 <span class="ui-icon ui-icon-volume-on"></span>
                 <div id="volumebar"></div>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-3">
                 <div class="row">
+                    <span class="now-playing-hdr" ng-click="show_now_playing(currently_playing.pos)">Now Playing</span>
+                </div>
+                <div class="row">
+                            <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span>
+                </div>
+                <div class="row">
+                            <span class="album">{= currently_playing.album =}</span></br>
+                </div>
+                <div class="row">
+                            <span class="artist-name">{= currently_playing.artist =}</span>
                 </div>
             </div>
             <div class="col-md-3">
@@ -128,6 +138,7 @@
             </div>
         </div>
 
+        {#
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -144,6 +155,7 @@
                 </div>
             </div>
         </div>
+        #}
 
         <div class="row">
             <div class="col-md-12">
