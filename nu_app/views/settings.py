@@ -17,23 +17,24 @@
 from nu_app import app
 from nu_app.views.views import reset_player
 from nu_app.models.settings import Settings
+from url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
 
 
-@app.route("/settings_page", methods=['GET'])
+@app.route(url_with_prefix("/settings_page"), methods=['GET'])
 def settings_page():
     return render_template("settings.html", host="raspberrypi-fs", ngapp="agentmpd", ngcontroller="settingsController")
 
 
-@app.route("/settings", methods=['GET'])
+@app.route(url_with_prefix("/settings"), methods=['GET'])
 def get_settings():
     # Return current settings
     return jsonify(Settings.get())
 
 
-@app.route("/settings", methods=['PUT'])
+@app.route(url_with_prefix("/settings"), methods=['PUT'])
 def save_settings():
     # Save settings
     args = json.loads(request.data.decode())

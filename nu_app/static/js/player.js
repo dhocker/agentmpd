@@ -18,7 +18,7 @@
 /*
     Home page app controller
 */
-app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", function($scope, $http, $interval, $timeout) {
+app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "UrlService", function($scope, $http, $interval, $timeout, UrlService) {
     // Initialization
 
     $scope.title = "AgentMPD";
@@ -91,7 +91,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function get_current_status() {
-        $http.get('/player/currentstatus', {}).
+        $http.get(UrlService.url_with_prefix('/player/currentstatus'), {}).
             success(function(data, status, headers, config) {
                 $scope.currently_playing = data;
                 update_status();
@@ -109,7 +109,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function get_settings() {
-        $http.get("/settings").
+        $http.get(UrlService.url_with_prefix("/settings")).
             success(function(data, status, headers, config) {
                 $scope.host = data["host"];
                 $scope.port = data["port"];
@@ -133,7 +133,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function idle() {
-        $http.get('/home/idle', {}).
+        $http.get(UrlService.url_with_prefix('/home/idle'), {}).
             success(function(data, status, headers, config) {
                 if (data == 'player')
                 {
@@ -151,7 +151,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function get_current_playlist() {
-        $http.get('/cpl/currentplaylist', {}).
+        $http.get(UrlService.url_with_prefix('/cpl/currentplaylist'), {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 update_status();
@@ -175,7 +175,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     // AJAX calls for transport functions
 
     function post_transport(url, data) {
-        $http.post(url, data).
+        $http.post(UrlService.url_with_prefix(url), data).
             success(function(data, status, headers, config) {
                 // After post completes, refresh status
                 get_current_status();
@@ -193,7 +193,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", fu
     };
 
     function put_transport(url, data) {
-        $http.put(url, data).
+        $http.put(UrlService.url_with_prefix(url), data).
             success(function(data, status, headers, config) {
                 // After put completes, refresh status
                 get_current_status();

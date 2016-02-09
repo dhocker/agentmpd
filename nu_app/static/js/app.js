@@ -1,6 +1,6 @@
 
 /*
-    AgentMPD home page app
+    AgentMPD page app
 */
 
 var app = angular.module('agentmpd', []);
@@ -32,3 +32,14 @@ app.directive('taScroll', ['$parse', function($parse) {
     }
   };
 }]);
+
+// Service for managing urls used in AJAX calls
+app.factory('UrlService', function() {
+    var factory = {};
+
+    // Apply prefix to given url
+    factory.url_with_prefix = function(url) {
+       return "/mpd" + url;
+    }
+    return factory;
+});

@@ -18,7 +18,7 @@
 /*
     Home page app controller
 */
-app.controller('playlistController', ["$scope", "$http", "$timeout", function($scope, $http, $timeout) {
+app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService", function($scope, $http, $timeout, UrlService) {
     // Initialization
     $scope.error = "";
     $scope.playlists = ["one"];
@@ -41,7 +41,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     get_albums();
 
     function get_playlists() {
-        $http.get('/cpl/namedplaylists', {}).
+        $http.get(UrlService.url_with_prefix('/cpl/namedplaylists'), {}).
             success(function(data, status, headers, config) {
                 $scope.playlists = data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
@@ -51,7 +51,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function get_artists() {
-        $http.get('/cpl/artists', {}).
+        $http.get(UrlService.url_with_prefix('/cpl/artists'), {}).
             success(function(data, status, headers, config) {
                 $scope.artists = data.artists;
                 $scope.artist_size = $scope.artists.length > 15 ? 15 : $scope.artists.length;
@@ -61,7 +61,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function get_albums() {
-        $http.get('/cpl/albums', {}).
+        $http.get(UrlService.url_with_prefix('/cpl/albums'), {}).
             success(function(data, status, headers, config) {
                 $scope.albums = data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
@@ -88,7 +88,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             // Get albums for selected artists
             var arg_list = $("#available-artists").val() || [];
 
-            $http.get('/cpl/albums', {"params" : {"artists" : [arg_list]}, "xmessage":"Error getting albums for artist"}).
+            $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"artists" : [arg_list]}, "xmessage":"Error getting albums for artist"}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     $scope.albums = data.albums;
@@ -106,7 +106,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
             // Get tracks for selected albums
             var arg_list = $("#available-albums").val() || [];
 
-            $http.get('/cpl/album/tracks', {"params" : arg_list}).
+            $http.get(UrlService.url_with_prefix('/cpl/album/tracks'), {"params" : arg_list}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     $scope.tracks = data.tracks;
@@ -146,7 +146,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         var arg_list = $("#available-playlists").val() || [];
         var c = arg_list.length;
 
-        $http.post('/cpl/playlist', {"data" : {"playlists" : arg_list}}).
+        $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"playlists" : arg_list}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -158,7 +158,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         var arg_list = $("#available-tracks").val() || [];
         var c = arg_list.length;
 
-        $http.post('/cpl/playlist', {"data" : {"uris" : arg_list}}).
+        $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : arg_list}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -171,7 +171,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
         for (i = 0; i < $scope.tracks.length; i++) {
             all_tracks.push($scope.tracks[i].uri)
         }
-        $http.post('/cpl/playlist', {"data" : {"uris" : all_tracks}}).
+        $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : all_tracks}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -180,7 +180,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     $scope.add_manual_uri = function() {
-        $http.post('/cpl/playlist', {"data" : {"uris" : [$scope.manual_uri]}}).
+        $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : [$scope.manual_uri]}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 get_current_playlist();
@@ -208,7 +208,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
 
         // If anything was checked, remove it with a delete
         if (ids.length > 0) {
-            $http.delete('/cpl/playlistentry', {"data" : ids}).
+            $http.delete(UrlService.url_with_prefix('/cpl/playlistentry'), {"data" : ids}).
                 success(function(data, status, headers, config) {
                     $scope.error = "";
                     get_current_playlist();
@@ -240,7 +240,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
 
     // Saves the current playlist in the named playlist
     $scope.save_playlist_by_name = function () {
-        $http.post('/cpl/namedplaylists', {"data" : {"name" : $scope.playlist_name}}).
+        $http.post(UrlService.url_with_prefix('/cpl/namedplaylists'), {"data" : {"name" : $scope.playlist_name}}).
             success(function(data, status, headers, config) {
                 $scope.error = "";
                 // Refresh playlist listbox
@@ -293,7 +293,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function search_for_playlists($scope) {
-        $http.get('/cpl/namedplaylists', {"params" : {"s" : $scope.search_string}}).
+        $http.get(UrlService.url_with_prefix('/cpl/namedplaylists'), {"params" : {"s" : $scope.search_string}}).
             success(function(data, status, headers, config) {
                 $scope.playlists = data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
@@ -303,7 +303,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function search_for_albums($scope) {
-        $http.get('/cpl/albums', {"params" : {"album" : $scope.search_string}}).
+        $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"album" : $scope.search_string}}).
             success(function(data, status, headers, config) {
                 $scope.albums = data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
@@ -313,7 +313,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function search_for_albums_by_artist($scope) {
-        $http.get('/cpl/albums', {"params" : {"artist" : $scope.search_string}}).
+        $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"artist" : $scope.search_string}}).
             success(function(data, status, headers, config) {
                 $scope.albums = data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
@@ -323,7 +323,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function search_for_tracks($scope) {
-        $http.get('/cpl/tracks', {"params" : {"track" : $scope.search_string}}).
+        $http.get(UrlService.url_with_prefix('/cpl/tracks'), {"params" : {"track" : $scope.search_string}}).
             success(function(data, status, headers, config) {
                 $scope.tracks = data.tracks;
                 $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
@@ -338,7 +338,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     };
 
     function get_current_playlist() {
-        $http.get('/cpl/currentplaylist', {}).
+        $http.get(UrlService.url_with_prefix('/cpl/currentplaylist'), {}).
             success(function(data, status, headers, config) {
                 $scope.current_playlist = data;
                 $scope.error = "";
@@ -358,7 +358,7 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", function($s
     // Menu functions
 
     $scope.clear_playlist = function() {
-        $http.delete('/cpl/playlist', {}).
+        $http.delete(UrlService.url_with_prefix('/cpl/playlist'), {}).
             success(function(data, status, headers, config) {
                 get_current_playlist();
                 // showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");

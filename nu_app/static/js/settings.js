@@ -18,7 +18,7 @@
 /*
     Settings page app controller
 */
-app.controller('settingsController', function($scope, $http) {
+app.controller('settingsController', ["$scope", "$http", "UrlService", function($scope, $http, UrlService) {
     // Initialization
 
     $scope.title = "AgentMPD";
@@ -31,7 +31,7 @@ app.controller('settingsController', function($scope, $http) {
 
     $("#menu-settings").hide();
 
-    $http.get("/settings").
+    $http.get(UrlService.url_with_prefix("/settings")).
         success(function(data, status, headers, config) {
             $scope.host = data["host"];
             $scope.port = data["port"];
@@ -45,7 +45,7 @@ app.controller('settingsController', function($scope, $http) {
 
     $scope.save_settings = function() {
         if (validate_settings($scope)) {
-            $http.put("/settings", {"data" :
+            $http.put(UrlService.url_with_prefix("/settings"), {"data" :
                     {'host': $scope.host,
                     'port': $scope.port,
                     'status_update_interval': $scope.status_update_interval,
@@ -109,4 +109,4 @@ app.controller('settingsController', function($scope, $http) {
         return true;
     };
 
-});
+}]);

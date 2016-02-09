@@ -25,6 +25,7 @@
 
 from nu_app import app
 from nu_app.models.playlist import Playlist
+from url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
@@ -33,7 +34,7 @@ import json
 playlist = Playlist()
 
 
-@app.route("/cpl/playlist", methods=['DELETE'])
+@app.route(url_with_prefix("/cpl/playlist"), methods=['DELETE'])
 def clear_playlist():
     """
     Remove all entries from the current playlist (collection).
@@ -43,7 +44,7 @@ def clear_playlist():
     return ""
 
 
-@app.route("/cpl/managecurrentplaylist", methods=['GET'])
+@app.route(url_with_prefix("/cpl/managecurrentplaylist"), methods=['GET'])
 def manage_playlist():
     """
     Show the manage current playlist page.
@@ -52,13 +53,13 @@ def manage_playlist():
     return render_template("manage_playlist.html", ngapp="agentmpd", ngcontroller="playlistController")
 
 
-@app.route("/cpl/currentplaylist", methods=['GET'])
+@app.route(url_with_prefix("/cpl/currentplaylist"), methods=['GET'])
 def get_current_playlist():
     pl = playlist.get_current_playlist()
     return jsonify(**pl)
 
 
-@app.route("/cpl/namedplaylists", methods=['GET'])
+@app.route(url_with_prefix("/cpl/namedplaylists"), methods=['GET'])
 def get_all_named_playlists():
     """
     Return a collection of named/stored playlists.
@@ -75,7 +76,7 @@ def get_all_named_playlists():
     return jsonify({"playlists": all_playlists})
 
 
-@app.route("/cpl/artists", methods=['GET'])
+@app.route(url_with_prefix("/cpl/artists"), methods=['GET'])
 def get_artists():
     """
     Return a collection of artists.
@@ -93,7 +94,7 @@ def get_artists():
     return jsonify({"artists": all_artists})
 
 
-@app.route("/cpl/playlist", methods=['POST'])
+@app.route(url_with_prefix("/cpl/playlist"), methods=['POST'])
 def append_stored_playlists():
     """
     Append to the current playlist the contents of one or more stored playlists.
@@ -110,7 +111,7 @@ def append_stored_playlists():
     return ""
 
 
-@app.route("/cpl/playlistentry", methods=['DELETE'])
+@app.route(url_with_prefix("/cpl/playlistentry"), methods=['DELETE'])
 def remove_playlist_entries():
     """
     Remove one or more entries from the current playlist.
@@ -124,7 +125,7 @@ def remove_playlist_entries():
     return ""
 
 
-@app.route("/cpl/albums", methods=['GET'])
+@app.route(url_with_prefix("/cpl/albums"), methods=['GET'])
 def get_all_albums():
     """
     Get albums in the library. If there are search args, the list of
@@ -159,7 +160,7 @@ def get_all_albums():
     return jsonify({"albums": all_albums})
 
 
-@app.route("/cpl/album/tracks", methods=['GET'])
+@app.route(url_with_prefix("/cpl/album/tracks"), methods=['GET'])
 def get_album_tracks():
     """
     Get the tracks contained in one or more albums.
@@ -184,7 +185,7 @@ def get_album_tracks():
     return jsonify({"tracks": all_tracks})
 
 
-@app.route("/cpl/tracks", methods=['GET'])
+@app.route(url_with_prefix("/cpl/tracks"), methods=['GET'])
 def search_for_tracks():
     """
     Search for tracks.
@@ -200,7 +201,7 @@ def search_for_tracks():
     return jsonify({"tracks": tracks})
 
 
-@app.route("/cpl/namedplaylists", methods=['POST'])
+@app.route(url_with_prefix("/cpl/namedplaylists"), methods=['POST'])
 def save_named_playlist():
     """
     Save the current playlist as a named playlist

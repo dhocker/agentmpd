@@ -17,6 +17,7 @@
 from nu_app import app
 #from nu_app.models.key_value_store import KVStore
 from nu_app.models.player import Player
+from url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
@@ -24,8 +25,7 @@ import json
 #  MPD music player model instance
 player = Player()
 
-
-@app.route("/")
+@app.route(url_with_prefix("/"))
 def root():
     """
     Redirect to the effective home page of the app.
@@ -34,7 +34,7 @@ def root():
     return redirect(url_for('mpd_player'))
 
 
-@app.route("/player", methods=['GET'])
+@app.route(url_with_prefix("/player"), methods=['GET'])
 def mpd_player():
     """
     Show the MPD player page.
@@ -43,7 +43,7 @@ def mpd_player():
     return render_template('player.html', ngapp="agentmpd", ngcontroller="homeController")
 
 
-@app.route("/player/currentstatus", methods=['GET'])
+@app.route(url_with_prefix("/player/currentstatus"), methods=['GET'])
 def get_current_status():
     """
     Return the current player status.
@@ -57,7 +57,7 @@ def get_current_status():
     return jsonify(**current_status)
 
 
-@app.route("/player/currentsong/<pos>", methods=['PUT'])
+@app.route(url_with_prefix("/player/currentsong/<pos>"), methods=['PUT'])
 def play_song(pos):
     """
     Make the current song be current playlist[pos].
@@ -83,7 +83,7 @@ def play_song(pos):
     return jsonify(**current_status)
 
 
-@app.route("/player/status", methods=['PUT'])
+@app.route(url_with_prefix("/player/status"), methods=['PUT'])
 def update_player_status():
     """
     Update the player status. New status keys can be
@@ -188,7 +188,7 @@ def play_last():
     return jsonify(**current_status)
 
 
-@app.route("/player/volumelevel", methods=['PUT'])
+@app.route(url_with_prefix("/player/volumelevel"), methods=['PUT'])
 def volume_change():
     """
     Change the current volume setting.
@@ -205,7 +205,7 @@ def volume_change():
     return jsonify(**current_status)
 
 
-@app.route("/player/songposition", methods=['PUT'])
+@app.route(url_with_prefix("/player/songposition"), methods=['PUT'])
 def song_time_change():
     """
     Change the current song position.
@@ -222,7 +222,7 @@ def song_time_change():
     return jsonify(**current_status)
 
 
-@app.route("/player/musicdatabase", methods=['PUT'])
+@app.route(url_with_prefix("/player/musicdatabase"), methods=['PUT'])
 def update_music_database():
     """
     Change the current volume setting by a +/- amount.
@@ -237,7 +237,7 @@ def update_music_database():
     return jsonify(**current_status)
 
 
-@app.route("/about")
+@app.route(url_with_prefix("/about"))
 def about():
     """
     Show the about page
