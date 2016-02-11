@@ -34,11 +34,11 @@ server {
     # Unfortuately, the app needs to properly prefix any url it
     # redirects. Also, any AJAX calls from the client must be properly
     # prefixed with the app name.
-    #location = /mpd { rewrite ^ /mpd/; }
+    location = /mpd { rewrite ^ /mpd/; }
     #location = /mpd { rewrite ^ /; }
     #location /mpd { try_files $uri @mpdapp; }
     #location / { try_files $uri @mpdapp; }
-    location = /mpd { try_files $uri @mpdapp; }
+    location /mpd/ { try_files $uri @mpdapp; }
     location @mpdapp {
         include uwsgi_params;
         uwsgi_pass unix:/var/uwsgi/mpd_web_client.sock;
