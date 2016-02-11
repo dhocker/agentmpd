@@ -18,36 +18,31 @@
 ##
 
 server {
-	#listen   80; ## listen for ipv4; this line is default and implied
-	#listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
+    #listen   80; ## listen for ipv4; this line is default and implied
+    #listen   [::]:80 default_server ipv6only=on; ## listen for ipv6
 
-	root /usr/share/nginx/www;
-	index index.html index.htm;
+    root /usr/share/nginx/www;
+    index index.html index.htm;
 
-	# Make site accessible from http://localhost/
-	server_name localhost;
+    # Make site accessible from http://localhost/
+    server_name localhost;
 
-    # This serves only a single uWsgi app. All page requests are routed
-    # to the same uWsgi app. This needs to be improved (possibly by
-    # using uWsgi emperor mode and vassals.
-	location / { try_files $uri @yourapplication; }
- 		location @yourapplication {
-                include uwsgi_params;
-                uwsgi_pass unix:///tmp/uwsgi.sock;
-        }
-
-	location /doc/ {
-		alias /usr/share/doc/;
-		autoindex on;
-		allow 127.0.0.1;
-		allow ::1;
-		deny all;
-	}
-
-	# Only for nginx-naxsi used with nginx-naxsi-ui : process denied requests
-	#location /RequestDenied {
-	#	proxy_pass http://127.0.0.1:8080;    
-	#}
+    # BUG: This does not work because url redirections by the app do
+    # not have the proper app prefix. Hence, they do not route correctly.
+    # The "location /" line below is a temporary work-around for the
+    # single app case. It will not work with multiple apps.
+    # Unfortuately, the app needs to properly prefix any url it
+    # redirects. Also, any AJAX calls from the client must be properly
+    # prefixed with the app name.
+    #location = /mpd { rewrite ^ /mpd/; }
+    #location = /mpd { rewrite ^ /; }
+    #location /mpd { try_files $uri @mpdapp; }
+    #location / { try_files $uri @mpdapp; }
+    location = /mpd { try_files $uri @mpdapp; }
+    location @mpdapp {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/uwsgi/mpd_web_client.sock;
+    }
 
 	#error_page 404 /404.html;
 
@@ -57,29 +52,7 @@ server {
 	#location = /50x.html {
 	#	root /usr/share/nginx/www;
 	#}
-
-	# pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-	#
-	#location ~ \.php$ {
-	#	fastcgi_split_path_info ^(.+\.php)(/.+)$;
-	#	# NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-	#
-	#	# With php5-cgi alone:
-	#	fastcgi_pass 127.0.0.1:9000;
-	#	# With php5-fpm:
-	#	fastcgi_pass unix:/var/run/php5-fpm.sock;
-	#	fastcgi_index index.php;
-	#	include fastcgi_params;
-	#}
-
-	# deny access to .htaccess files, if Apache's document root
-	# concurs with nginx's one
-	#
-	#location ~ /\.ht {
-	#	deny all;
-	#}
 }
-
 
 # another virtual host using mix of IP-, name-, and port-based configuration
 #

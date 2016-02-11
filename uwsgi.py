@@ -22,7 +22,7 @@ if debugging:
 
 	# show uwsgi version
 	print "uwsgi version is:"
-	print subprocess.check_output(["/home/pi/Virtualenvs/flask/bin/uwsgi", "--version"])
+	print subprocess.check_output(["/home/pi/Virtualenvs/mpd_web_client/bin/uwsgi", "--version"])
 	
 	try:
 		# Under 2.7.10 this statement produces the following error:

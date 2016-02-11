@@ -38,7 +38,8 @@ The following steps should provide a working installation.
 
    * To create: mkvirtualenv -r requirements.txt mpd_web_client
    * To activate: workon mpd_web_client
-   * You can use the -a option of mkvirtualenv to automatically switch to the correct venv when you enter the project directory.
+   * You can use the -a option of mkvirtualenv to automatically switch to the correct venv when you enter the 
+project directory.
 
 1. You can run the web app from the project directory using: python runserver.py
 1. If you use PyCharm as your IDE you can set up a test configuration that starts runserver.py.
@@ -62,7 +63,8 @@ You can run mpd\_web\_client as an application as follows.
 ## Running Under a Web Server
 
 mpd\_web\_client can be run under a web server (e.g. nginx) using the uWSGI gateway. The top project directory
-contains a uwsgi.py and uwsgi_app.ini file to facilitate this choice.
+contains a uwsgi.py and several configuration files to facilitate this choice. Readme.txt descibes the
+various configuration files.
 
 The following links discuss the details of setting up nginx and uWSGI to run a Python/Flask web application.
 
