@@ -19,12 +19,15 @@
 #import Logging
 #import logging
 from flask import Flask
+from views.url_utils import url_with_prefix
 #import configuration
 
 # Enable logging for start up. Will be changed later.
 #Logging.EnableStartupLogging()
 
-app = Flask(__name__)
+# In order for url prefixing to work, the path to static
+# must be prefixed just like any other url.
+app = Flask(__name__, static_url_path=url_with_prefix('/static'))
 
 
 # Load default config and override config from an environment variable
