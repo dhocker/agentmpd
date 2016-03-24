@@ -25,6 +25,22 @@ class Player(MPDModel):
     def __init__(self):
         MPDModel.__init__(self)
 
+    @staticmethod
+    def string_encode(encoding, s):
+        """
+        Encodes a string or list of strings
+        :param encoding: Desired encoding (e.g. utf8 or ascii)
+        :param s: string or list to be encoded
+        :return: Returns an encoded string or a list of encoded strings
+        """
+        if type(s) == type([]):
+            e = []
+            for i in s:
+                e.append(i.encode(encoding, 'ignore'))
+            return e
+
+        return s.encode(encoding, 'ignore')
+
     @mpd_client_handler()
     def get_current_player_status(self):
         s = {}
@@ -33,11 +49,17 @@ class Player(MPDModel):
             current_song = self.client.currentsong()
 
             # Translate the status and song info to a single status dict
-            # Translate keys/values from unicode to ascii
+            # Translate keys/values from unicode to utf-8
+            encoding = 'utf_8'
             for k, v in current_status.iteritems():
-                s[k.encode('ascii','ignore')] = v.encode('ascii','ignore')
+                s[k.encode(encoding,'ignore')] = v.encode(encoding,'ignore')
             for k, v in current_song.iteritems():
-                s[k.encode('ascii','ignore')] = v.encode('ascii','ignore')
+                # Some song properties (e.g. genre) can be a list
+                try:
+                    s[k.encode(encoding,'ignore')] = Player.string_encode(encoding, v)
+                except Exception as ex:
+                    # This throws away properties that fail encoding
+                    pass
 
             self.close_mpd_connection()
 
@@ -52,10 +74,16 @@ class Player(MPDModel):
 
     @mpd_client_handler()
     def mpd_version(self):
-        v = "unknown"
-        if self.connect_to_mpd():
-            v = self.client.mpd_version
-            self.client.close()
+        v = "Unknown"
+        # Every page has the MPD version on it and we don't
+        # want every page to fail if there is no MPD server
+        # accessible.
+        try:
+            if self.connect_to_mpd():
+                v = self.client.mpd_version
+                self.client.close()
+        except:
+            pass
         return v
 
 
