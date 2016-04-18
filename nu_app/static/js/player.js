@@ -34,9 +34,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
     var status_update_interval = 10 * 1000; // 10 seconds
     var playlist_update_interval = 30 * 1000; // 30 seconds
 
-    // Scrolling is tracked by the scroll directive
-    $scope.manual_scrolling = false;
-
     $scope.playing = false;
     $scope.current_playlist = {"playlist": []};
     $scope.error = "";
@@ -80,10 +77,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
         $scope.single = parseInt($scope.currently_playing['single']);
         $scope.consume = parseInt($scope.currently_playing['consume']);
         $scope.xfade = parseInt($scope.currently_playing['xfade']);
-        // Now playing (only if there is a playlist)
-        if (!$scope.manual_scrolling) {
-            $scope.show_now_playing($scope.currently_playing["pos"]);
-        }
     };
 
     function update_volume_bar(value) {
@@ -268,7 +261,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     // User scrolled to the playlist
     $scope.on_scroll = function() {
-        //$scope.manual_scrolling = true;
     };
 
     // t is in seconds (e.g. 300 = 00:05:00)
@@ -334,8 +326,6 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
         catch(err) {
             $scope.error = err.message;
         }
-
-        $scope.manual_scrolling = false;
     };
 
     function showMessagebox($scope, header, body) {
