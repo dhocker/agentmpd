@@ -41,7 +41,7 @@ server {
     location /mpd/ { try_files $uri @mpdapp; }
     location @mpdapp {
         include uwsgi_params;
-        uwsgi_pass unix:/var/uwsgi/mpd_web_client.sock;
+        uwsgi_pass unix:/var/uwsgi/agentmpd.sock;
     }
 
 	#error_page 404 /404.html;

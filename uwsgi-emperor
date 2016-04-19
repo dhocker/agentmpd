@@ -14,8 +14,8 @@
 # modified from https://gist.github.com/asmallteapot/1633492#file-init_uwsgi-sh
 #
 
-PATH=/home/pi/Virtualenvs/mpd_web_client/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/home/pi/Virtualenvs/mpd_web_client/bin/uwsgi
+PATH=/home/pi/Virtualenvs/agentmpd/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/home/pi/Virtualenvs/agentmpd/bin/uwsgi
 
 NAME=uwsgi-emperor
 DESC=uwsgi-emperor
