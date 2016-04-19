@@ -30,12 +30,10 @@
                         <a id="menu-player" href="{{ url_for('mpd_player') }}">Player</a>
                     </li>
                     <li class="dropdown">
-                        <a id="menu-playlist" class="dropdown-toggle" data-toggle="dropdown" href="#">Playlist <span class="caret"></span></a>
+                        <a id="menu-playlist" class="dropdown-toggle" data-toggle="dropdown" href="#">Playlist Actions<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a id="menu-playlist-clear" ng-click="clear_playlist()">Clear</a></li>
-                            <li><a id="menu-playlist-edit" ng-click="menu_playlist_edit()">Edit</a></li>
                             <li><a id="menu-playlist-save" ng-click="save_playlist()">Save</a></li>
-                            <li><a id="menu-playlist-rename" ng-click="menu_playlist_rename()">Rename</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -106,7 +104,7 @@
 
 {% block body %}
     <div class="container">
-        <h2>Manage Current Playlist</h2>
+        <h2>Edit Current Playlist</h2>
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
