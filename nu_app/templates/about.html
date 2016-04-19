@@ -18,6 +18,22 @@
 {% extends "layout.html" %}
 
 {% block head %}
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{{ url_for('mpd_player') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/> AgentMPD</a>
+            </div>
+
+            <div>
+                <ul class="nav navbar-nav" id="menu">
+                    <li>
+                        <a id="menu-player" href="{{ url_for('mpd_player') }}">Player</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
 {% endblock %}
 
 {% block body %}
