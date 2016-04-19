@@ -29,11 +29,12 @@ uwsgi-emperor - If you want to use emperor mode, put this file in /etc/init.d an
 NGINX
 -----
 
-The stock version of nginx that installs through apt-get is usually adequate. The mpd_web_client does not
+The stock version of nginx that installs through apt-get is usually adequate. AgentMPD does not
 present a heavy load.
 uWSGI
 -----
 
 The stock version of uWSGI that is currently installed under Raspbian Wheezy and Jessie is usually out of date. 
 It is recommended that you install the most current version of uWSGI (as identified in the requirements.txt file)
-and modify the init.d script to use the version you install in a virtualenv.
+and modify the init.d script to use the version you install in a virtualenv. The uwsgi-emperor script file
+described above does exactly that.
