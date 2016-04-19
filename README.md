@@ -6,7 +6,7 @@ Copyright © 2015, 2016 by Dave Hocker
 AgentMPD is a web server based client app for the [mpd](http://www.musicpd.org) music server.
 It will also work with the [Mopidy](https://www.mopidy.com/) music server.
 It will allow you to control one running instance of mpd from any web browser (it has been tested
-with Chrome and Firefox).
+with Chrome, Firefox, Firefox Developer Edition and Brave).
 
 AgentMPD was written in Python/Flask to run on a light weight system (e.g. a Raspberry Pi).
 While the server app was designed to run on a lightweight system, it will run on any system that
