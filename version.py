@@ -27,6 +27,15 @@ def GetVersion():
 def GetMPDVersion():
     player = Player()
     return player.mpd_version()
+import socket
+
+def GetHostName():
+  """
+  Returns the current hostname
+  """
+  # Just go for the first token in the full hostname
+  hn = socket.gethostname().split('.')
+  return hn[0]
 
 @app.context_processor
 def get_release_version():
@@ -34,4 +43,8 @@ def get_release_version():
     Exposes the variable version to jinga2 teplate renderer.
     :return:
     '''
-    return dict(release_version = GetVersion(), mpd_version = GetMPDVersion())
+    return dict(
+        release_version = GetVersion(),
+        mpd_version = GetMPDVersion(),
+        hostname = GetHostName()
+    )
