@@ -40,9 +40,12 @@
 }
 
 .now-playing-hdr {
-    font-size: 1.6em;
+    font-size: 1.3em;
     color: #FFF;
     background: #1947A3;
+    border-radius: 7px;
+    padding: 5px 8px 5px 8px;
+    border: 1px solid #A0A0A0;
     width: 20%;
     cursor: pointer;
 }
