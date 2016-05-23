@@ -152,7 +152,7 @@
                     <div class="col-md-3">
                         <h3>Tracks/Songs</h3>
                             <select id="available-tracks" class="form-control" multiple="multiple" size="{= tracks_size =}" style="width:100%">
-                                <option ng-click="track_selected()" value="{= p.uri =}" ng-repeat="p in tracks">{= p.title =}</option>
+                                <option ng-click="track_selected()" value="{= p.uri || p.file =}" ng-repeat="p in tracks">{= p.title =}</option>
                             </select>
 
                             <button id="load-tracks-button" class="btn btn-primary btn-md" ng-click="load_selected_tracks()" title="Add selected track(s)">Add Selected Track(s)</button>
