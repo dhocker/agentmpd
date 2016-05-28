@@ -178,6 +178,36 @@ class Playlist(MPDModel):
         return tracks
 
     @mpd_client_handler()
+    def get_tracks_for_albums(self, albums):
+        """
+        Get a normalized list of tracks for one or more albums.
+        The list of tracks is normalized so that either the uri
+        or file is returned as the track.
+        :param albums:
+        :return:
+        """
+        album_tracks = []
+        if self.connect_to_mpd():
+            for album in albums:
+                tracks = self.client.search("album", album)
+                for t in tracks:
+                    if "title" in t:
+                        title = t["title"]
+                    else:
+                        title = "**missing title**"
+                    if "uri" in t:
+                        uri = t["uri"]
+                    elif "file" in t:
+                        uri = t["file"]
+                    else:
+                        uri = "**missing uri/file**"
+                    album_tracks.append({"title": title, "uri": uri})
+            self.close_mpd_connection()
+        # It would be tempting to sort the list of tracks by title, but
+        # you usually want to see the tracks in an album by track number order.
+        return album_tracks
+
+    @mpd_client_handler()
     def search_for_tracks(self, search_pat):
         tracks = []
         if self.connect_to_mpd():
