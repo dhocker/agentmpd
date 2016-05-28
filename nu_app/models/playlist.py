@@ -191,17 +191,7 @@ class Playlist(MPDModel):
             for album in albums:
                 tracks = self.client.search("album", album)
                 for t in tracks:
-                    if "title" in t:
-                        title = t["title"]
-                    else:
-                        title = "**missing title**"
-                    if "uri" in t:
-                        uri = t["uri"]
-                    elif "file" in t:
-                        uri = t["file"]
-                    else:
-                        uri = "**missing uri/file**"
-                    album_tracks.append({"title": title, "uri": uri})
+                    album_tracks.append(Playlist.normalize_track(t))
             self.close_mpd_connection()
         # It would be tempting to sort the list of tracks by title, but
         # you usually want to see the tracks in an album by track number order.
@@ -211,11 +201,34 @@ class Playlist(MPDModel):
     def search_for_tracks(self, search_pat):
         tracks = []
         if self.connect_to_mpd():
-            tracks = self.client.search("title", search_pat)
+            un_tracks = self.client.search("title", search_pat)
+            for t in un_tracks:
+                tracks.append(Playlist.normalize_track(t))
             self.close_mpd_connection()
         # Sort by title
         tracks.sort(key=lambda s: s["title"].lower())
         return tracks
+
+    @staticmethod
+    def normalize_track(un_track):
+        """
+        Normalize a raw track, including only those track
+        properties that are of interest.
+        :param un_track:
+        :return: Returns a dict containing only those properties
+        of interest.
+        """
+        if "title" in un_track:
+            title = un_track["title"]
+        else:
+            title = "**missing title**"
+        if "uri" in un_track:
+            uri = un_track["uri"]
+        elif "file" in un_track:
+            uri = un_track["file"]
+        else:
+            uri = "**missing uri/file**"
+        return {"title": title, "uri": uri}
 
     @mpd_client_handler()
     def add_track(self, uri):
