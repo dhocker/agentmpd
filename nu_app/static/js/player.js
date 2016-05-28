@@ -317,11 +317,9 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
     // Scroll the playlist table to the given row
     $scope.show_now_playing = function(row_id) {
         try {
-            var tr = $("#" + row_id);
-            $("#playlist-content").scrollTop(0);
-            var vpos = tr.position().top;
-            var h = tr.height();
-            $("#playlist-content").scrollTop(vpos - h);
+            var scrollto = $("#" + row_id);
+            var listbox = $("#playlist-content");
+            listbox.scrollTop(scrollto.offset().top - listbox.offset().top + listbox.scrollTop())
         }
         catch(err) {
             $scope.error = err.message;
