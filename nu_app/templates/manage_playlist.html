@@ -228,7 +228,7 @@
                                     <td style="width: 5%"><input type="checkbox" id="check-{= x.pos =}"
                                                                  songid="{= x.id =}" ng-change="selected_changed()" ng-model="entry_selected"></td>
                                     <td style="width: 5%">{= x.pos1 =}</td>
-                                    <td>{= x.track =}</td>
+                                    <td title="{= x.file || x.uri =}">{= x.track =}</td>
                                     <td>{= x.album =}</td>
                                     <td>{= x.artist =}</td>
                                 </tr>

@@ -176,7 +176,7 @@
                                     <td class="col-xs-1 text-left"><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button>
                                         <span ng-if="x.time">{= format_time(x.time) =}</span>
                                     </td>
-                                    <td class="col-xs-6 text-left">{= x.track =}</td>
+                                    <td class="col-xs-6 text-left" title="{= x.file || x.uri =}">{= x.track =}</td>
                                     <td class="col-xs-3 text-left">{= x.album =}</td>
                                     <td class="col-xs-2 text-left">{= x.artist =}</td>
                                 </tr>

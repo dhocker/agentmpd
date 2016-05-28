@@ -49,7 +49,7 @@ class Playlist(MPDModel):
                     pe["track"] = i["name"]
                 elif "title" in i:
                     pe["track"] = i["title"]
-                pe["track"] = pe["track"] + " - " + i["file"]
+                pe["track"] = pe["track"]
                 if "album" in i:
                     pe["album"] = i["album"]
                 else:
