@@ -65,6 +65,14 @@ class MPDModel:
         self.last_use = datetime.now()
 
     def connect_to_mpd(self):
+        """
+        Get a connection to the configured mpd server.
+        This implementation strives to minimize the number of
+        connections that are made. However, if an existing connection
+        is idle for very long, mpd will close it. Hence, the error retry
+        code makes several attempts to connection before declaring failure.
+        :return: True if a connection was obtained. Otherwise, False.
+        """
         # Restart the connection periodically because eventually the connection will drop
         delta = datetime.now() - self.last_use
         if (delta.total_seconds() > 60) and self.client:
@@ -75,26 +83,36 @@ class MPDModel:
             print "Restarting connection to mpd"
             self.client = None
 
-        if not self.client:
-            # use_unicode will enable the utf-8 mode for python2
-            # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
-            self.client = mpd.MPDClient(use_unicode=True)
-            host = KVStore.get("mpd", "host", "localhost")
-            port = KVStore.get("mpd", "port", "6600")
-            try:
-                self.client.connect(host, int(port))
-                self.last_use = datetime.now()
-                return True
-            except Exception as ex:
-                print ex
-                self.client.close()
-                self.client = None
-                raise MPDModelException(str(ex))
-            return False
+        retry_max = 2
+        for retry_count in range(retry_max + 1):
+            # If the client connection is closed, reopen it
+            if not self.client:
+                # use_unicode will enable the utf-8 mode for python2
+                # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
+                self.client = mpd.MPDClient(use_unicode=True)
+                host = KVStore.get("mpd", "host", "localhost")
+                port = KVStore.get("mpd", "port", "6600")
+                try:
+                    self.client.connect(host, int(port))
+                    self.last_use = datetime.now()
+                    return True
+                except Exception as ex:
+                    print ex
+                    self.client.close()
+                    self.client = None
+                    if retry_count >= retry_max:
+                        raise MPDModelException(str(ex))
 
         self.last_use = datetime.now()
         return True
 
     def close_mpd_connection(self):
-        self.client.close()
-        self.client = None
+        """
+        Make as if the connection is closed. Originally, every mpd interaction
+        resulted in a connect/close sequence. This is here simply to surround
+        the connection use.
+        :return:
+        """
+        #self.client.close()
+        #self.client = None
+        pass
