@@ -16,6 +16,7 @@
 #
 from mpd_model import MPDModel, mpd_client_handler
 import re
+import os
 
 
 class Playlist(MPDModel):
@@ -49,15 +50,20 @@ class Playlist(MPDModel):
                     pe["track"] = i["name"]
                 elif "title" in i:
                     pe["track"] = i["title"]
+                else:
+                    # When there is no track name or title, manufacture one
+                    # from the file name
+                    base = os.path.basename(i["file"])
+                    pe["track"] = os.path.splitext(base)[0]
                 pe["track"] = pe["track"]
                 if "album" in i:
                     pe["album"] = i["album"]
                 else:
-                    pe["album"] = "."
+                    pe["album"] = "N/A"
                 if "artist" in i:
                     pe["artist"] = i["artist"]
                 else:
-                    pe["artist"] = "."
+                    pe["artist"] = "N/A"
                 if "time" in i:
                     pe["time"] = i["time"]
                 else:
