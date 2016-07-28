@@ -15,6 +15,7 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
 from mpd_model import MPDModel, mpd_client_handler
+import os
 
 
 class Player(MPDModel):
@@ -55,11 +56,22 @@ class Player(MPDModel):
                 s[k.encode(encoding,'ignore')] = v.encode(encoding,'ignore')
             for k, v in current_song.iteritems():
                 # Some song properties (e.g. genre) can be a list
+                # TODO Need to produce values for title, album and artist.
+                # Normalization needs to be like playlist normalization.
                 try:
                     s[k.encode(encoding,'ignore')] = Player.string_encode(encoding, v)
                 except Exception as ex:
                     # This throws away properties that fail encoding
                     pass
+
+            # Normalize required values
+            if "title" not in s:
+                base = os.path.basename(s["file"])
+                s["title"] = os.path.splitext(base)[0]
+            if "album" not in s:
+                s["album"] = "N/A"
+            if "artist" not in s:
+                s["artist"] = "N/A"
 
             self.close_mpd_connection()
 
@@ -91,6 +103,12 @@ class Player(MPDModel):
     def play(self, pos):
         if self.connect_to_mpd():
             self.client.play(pos)
+            self.close_mpd_connection()
+
+    @mpd_client_handler()
+    def queue(self, id):
+        if self.connect_to_mpd():
+            self.client.prioid(128, id)
             self.close_mpd_connection()
 
     @mpd_client_handler()
