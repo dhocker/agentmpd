@@ -60,6 +60,10 @@
 
 .song-title {
     font-size: 1.3em;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    -o-text-overflow: ellipsis;
 }
 
 .ui-widget-header {

@@ -104,14 +104,14 @@
                 <div class="row">
                     <span class="now-playing-hdr" ng-click="show_now_playing(currently_playing.pos)">Now Playing</span>
                 </div>
-                <div class="row">
-                            <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span>
+                <div class="row song-title">
+                    [{= currently_playing.pos1 =}] {= currently_playing.title =}
                 </div>
-                <div class="row">
-                            <span class="album">{= currently_playing.album =}</span></br>
+                <div class="row album">
+                    {= currently_playing.album =}
                 </div>
-                <div class="row">
-                            <span class="artist-name">{= currently_playing.artist =}</span>
+                <div class="row artist-name">
+                    {= currently_playing.artist =}
                 </div>
             </div>
             <div class="col-md-3">
@@ -136,25 +136,6 @@
             </div>
         </div>
 
-        {#
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                <table class="table">
-                    <tr>
-                        <td class="now-playing-hdr" ng-click="show_now_playing(currently_playing.pos)">Now Playing</td>
-                        <td>
-                            <span class="song-title">[{= currently_playing.pos1 =}] {= currently_playing.title =}</span></br>
-                            <span class="album">{= currently_playing.album =}</span></br>
-                            <span class="artist-name">{= currently_playing.artist =}</span>
-                        </td>
-                    </tr>
-                </table>
-                </div>
-            </div>
-        </div>
-        #}
-
         <div class="row">
             <div class="col-md-12">
                 <h3>Current Playlist ({= current_playlist.playlist.length =} Items)</h3>
@@ -162,8 +143,9 @@
                     <table class="table table-condensed table-striped table-hover table-fixed">
                         <thead>
                             <tr>
-                                <th class="col-xs-1 text-left">Play/Time</th>
-                                <th class="col-xs-6 text-left">Title/Name/Stream</th>
+                                <th class="col-xs-1 text-left">Play/Queue</th>
+                                <th class="col-xs-1 text-left">Time</th>
+                                <th class="col-xs-5 text-left">Title/Name/Stream</th>
                                 <th class="col-xs-3 text-left">Album</th>
                                 <th class="col-xs-2 text-left">Artist</th>
                             </tr>
@@ -173,10 +155,12 @@
                         <table class="table table-condensed table-striped table-hover table-fixed">
                             <tbody>
                                 <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
-                                    <td class="col-xs-1 text-left"><button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button>
-                                        <span ng-if="x.time">{= format_time(x.time) =}</span>
+                                    <td class="col-xs-1 text-left">
+                                        <button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button>
+                                        <button class="btn btn-primary btn-xs" ng-click="queue_song(x.pos)" title="Queue next">+</button>
                                     </td>
-                                    <td class="col-xs-6 text-left" title="{= x.file || x.uri =}">{= x.track =}</td>
+                                    <td class="col-xs-1 text-left"><span ng-if="x.time">{= format_time(x.time) =}</span></td>
+                                    <td class="col-xs-5 text-left" title="{= x.file || x.uri =}">{= x.track =}</td>
                                     <td class="col-xs-3 text-left">{= x.album =}</td>
                                     <td class="col-xs-2 text-left">{= x.artist =}</td>
                                 </tr>

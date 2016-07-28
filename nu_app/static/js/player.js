@@ -231,6 +231,12 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
         put_transport('/player/currentsong/' + pos, {});
     };
 
+    $scope.queue_song = function(pos) {
+        // Need the song ID here, not the song position
+        var id = $scope.current_playlist.playlist[pos].id;
+        put_transport('/player/nextsong/' + id, {});
+    };
+
     // Options
 
     $scope.random_changed = function() {

@@ -108,7 +108,7 @@ class Player(MPDModel):
     @mpd_client_handler()
     def queue(self, id):
         if self.connect_to_mpd():
-            self.client.prioid(128, id)
+            self.client.prioid(255, id)
             self.close_mpd_connection()
 
     @mpd_client_handler()

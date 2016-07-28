@@ -83,6 +83,23 @@ def play_song(pos):
     return jsonify(**current_status)
 
 
+@app.route(url_with_prefix("/player/nextsong/<id>"), methods=['PUT'])
+def queue_song(id):
+    """
+    Queue a song to be played next. The id is the songid, not the song position.
+    :param id:
+    :return:
+    """
+    try:
+        n = int(id)
+        player.queue(n)
+    except:
+        pass
+
+    current_status = player.get_current_player_status()
+    return jsonify(**current_status)
+
+
 @app.route(url_with_prefix("/player/status"), methods=['PUT'])
 def update_player_status():
     """
