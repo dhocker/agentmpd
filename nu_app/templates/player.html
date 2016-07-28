@@ -143,7 +143,8 @@
                     <table class="table table-condensed table-striped table-hover table-fixed">
                         <thead>
                             <tr>
-                                <th class="col-xs-1 text-left">Play/Queue</th>
+                                <th class="col-xs-1 text-left" ng-show="random">Play/Queue</th>
+                                <th class="col-xs-1 text-left" ng-show="!random">Play</th>
                                 <th class="col-xs-1 text-left">Time</th>
                                 <th class="col-xs-5 text-left">Title/Name/Stream</th>
                                 <th class="col-xs-3 text-left">Album</th>
@@ -157,7 +158,7 @@
                                 <tr id="{= x.pos =}" class="" ng-class="x.class" ng-dblclick="play_song(x.pos)" ng-repeat="x in current_playlist.playlist">
                                     <td class="col-xs-1 text-left">
                                         <button class="btn btn-primary btn-xs" ng-click="play_song(x.pos)" title="Play">{= x.pos1 =}</button>
-                                        <button class="btn btn-primary btn-xs" ng-click="queue_song(x.pos)" title="Queue next">+</button>
+                                        <button class="btn btn-primary btn-xs" ng-show="random" ng-click="queue_song(x.pos)" title="Queue next">+</button>
                                     </td>
                                     <td class="col-xs-1 text-left"><span ng-if="x.time">{= format_time(x.time) =}</span></td>
                                     <td class="col-xs-5 text-left" title="{= x.file || x.uri =}">{= x.track =}</td>
