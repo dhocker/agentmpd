@@ -40,7 +40,7 @@
 }
 
 .now-playing-hdr {
-    font-size: 1.3em;
+    font-size: 1.2em;
     color: #FFF;
     background: #1947A3;
     border-radius: 7px;
@@ -59,7 +59,7 @@
 }
 
 .song-title {
-    font-size: 1.3em;
+    font-size: 1.2em;
     overflow:hidden;
     white-space:nowrap;
     text-overflow:ellipsis;
