@@ -65,9 +65,12 @@ class Player(MPDModel):
                     pass
 
             # Normalize required values
-            if "title" not in s:
-                base = os.path.basename(s["file"])
-                s["title"] = os.path.splitext(base)[0]
+            if 'title' not in s:
+                if ('file' in s):
+                    base = os.path.basename(s['file'])
+                    s['title'] = os.path.splitext(base)[0]
+                else:
+                    s["title"] = "N/A"
             if "album" not in s:
                 s["album"] = "N/A"
             if "artist" not in s:
