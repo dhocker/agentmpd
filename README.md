@@ -1,5 +1,5 @@
 # AgentMPD
-Copyright © 2015, 2016 by Dave Hocker
+Copyright © 2015, 2018 by Dave Hocker
 
 ## Overview
 
