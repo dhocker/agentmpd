@@ -14,9 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from key_value_store import KVStore
+from nu_app.models.key_value_store import KVStore
 import mpd
 from datetime import datetime, timedelta
+import threading
 
 
 # Wrapper to provide consistent error handling across all mpd client calls
@@ -62,6 +63,10 @@ class MPDModel:
 
     def __init__(self):
         self.client = None
+        # This is a temporary fix to the threading changes that
+        # have surfaced with the latest version of Flask.
+        # A better solution would probably be a connection pool.
+        self.connection_lock = threading.Lock()
         self.last_use = datetime.now()
 
     def connect_to_mpd(self):
@@ -73,14 +78,17 @@ class MPDModel:
         code makes several attempts to connection before declaring failure.
         :return: True if a connection was obtained. Otherwise, False.
         """
+        # This is a temporary fix to the threading changes that
+        # have surfaced with the latest version of Flask.
         # Restart the connection periodically because eventually the connection will drop
+        self.connection_lock.acquire()
         delta = datetime.now() - self.last_use
         if (delta.total_seconds() > 60) and self.client:
             try:
                 self.client.close()
             except:
                 pass
-            print "Restarting connection to mpd"
+            print("Restarting connection to mpd")
             self.client = None
 
         retry_max = 2
@@ -89,7 +97,11 @@ class MPDModel:
             if not self.client:
                 # use_unicode will enable the utf-8 mode for python2
                 # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
-                self.client = mpd.MPDClient(use_unicode=True)
+                try:
+                    self.client = mpd.MPDClient(use_unicode=True)
+                except Exception as ex:
+                    print(ex)
+                    continue
                 host = KVStore.get("mpd", "host", "localhost")
                 port = KVStore.get("mpd", "port", "6600")
                 try:
@@ -97,10 +109,12 @@ class MPDModel:
                     self.last_use = datetime.now()
                     return True
                 except Exception as ex:
-                    print ex
-                    self.client.close()
+                    print(ex)
+                    if self.client:
+                        self.client.close()
                     self.client = None
                     if retry_count >= retry_max:
+                        self.connection_lock.release()
                         raise MPDModelException(str(ex))
 
         self.last_use = datetime.now()
@@ -115,4 +129,4 @@ class MPDModel:
         """
         #self.client.close()
         #self.client = None
-        pass
+        self.connection_lock.release()

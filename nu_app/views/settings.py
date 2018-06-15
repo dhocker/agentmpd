@@ -17,7 +17,7 @@
 from nu_app import app
 from nu_app.views.views import reset_player
 from nu_app.models.settings import Settings
-from url_utils import url_with_prefix
+from nu_app.views.url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json

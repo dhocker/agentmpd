@@ -25,7 +25,7 @@
 
 from nu_app import app
 from nu_app.models.playlist import Playlist
-from url_utils import url_with_prefix
+from nu_app.views.url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json

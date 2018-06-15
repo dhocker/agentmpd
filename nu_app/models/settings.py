@@ -15,7 +15,7 @@
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from key_value_store import KVStore
+from nu_app.models.key_value_store import KVStore
 
 
 class Settings:

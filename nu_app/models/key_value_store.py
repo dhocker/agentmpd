@@ -46,7 +46,7 @@ class KVStore:
             store.close()
         except Exception as ex:
             # Assume first time access
-            print ex
+            print(ex)
         return kvstore
 
 
@@ -58,7 +58,7 @@ class KVStore:
             store.write(json.dumps(kvstore))
             store.close()
         except Exception as ex:
-            print ex
+            print(ex)
 
 
     @staticmethod

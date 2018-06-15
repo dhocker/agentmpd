@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from mpd_model import MPDModel, mpd_client_handler
+from nu_app.models.mpd_model import MPDModel, mpd_client_handler
 import re
 import os
 

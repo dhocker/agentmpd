@@ -19,7 +19,7 @@
 #import Logging
 #import logging
 from flask import Flask
-from views.url_utils import url_with_prefix
+from nu_app.views.url_utils import url_with_prefix
 #import configuration
 
 # Enable logging for start up. Will be changed later.
@@ -58,10 +58,10 @@ app = Flask(__name__, static_url_path=url_with_prefix('/static'))
 #Logging.EnableServerLogging()
 
 # All views must be imported after the app is defined
-from views import views
-from views import settings
-from views import playlist
-from views import exception_handler
+from nu_app.views import views
+from nu_app.views import settings
+from nu_app.views import playlist
+from nu_app.views import exception_handler
 
 #logger = logging.getLogger("app")
 

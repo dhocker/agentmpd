@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program (the LICENSE file).  If not, see <http://www.gnu.org/licenses/>.
 #
-from mpd_model import MPDModel, mpd_client_handler
+from nu_app.models.mpd_model import MPDModel, mpd_client_handler
 import os
 
 
@@ -52,14 +52,15 @@ class Player(MPDModel):
             # Translate the status and song info to a single status dict
             # Translate keys/values from unicode to utf-8
             encoding = 'utf_8'
-            for k, v in current_status.iteritems():
-                s[k.encode(encoding,'ignore')] = v.encode(encoding,'ignore')
-            for k, v in current_song.iteritems():
+            for k in iter(current_status):
+                s[k] = current_status[k]
+
+            for k in iter(current_song):
                 # Some song properties (e.g. genre) can be a list
                 # TODO Need to produce values for title, album and artist.
                 # Normalization needs to be like playlist normalization.
                 try:
-                    s[k.encode(encoding,'ignore')] = Player.string_encode(encoding, v)
+                    s[k] = current_song[k]
                 except Exception as ex:
                     # This throws away properties that fail encoding
                     pass

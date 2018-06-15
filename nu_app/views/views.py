@@ -17,7 +17,7 @@
 from nu_app import app
 #from nu_app.models.key_value_store import KVStore
 from nu_app.models.player import Player
-from url_utils import url_with_prefix
+from nu_app.views.url_utils import url_with_prefix
 from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
