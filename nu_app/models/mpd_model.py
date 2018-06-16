@@ -17,6 +17,7 @@
 from nu_app.models.key_value_store import KVStore
 import mpd
 from datetime import datetime, timedelta
+import threading
 
 
 # Wrapper to provide consistent error handling across all mpd client calls
@@ -55,66 +56,124 @@ class MPDModelException(Exception):
         return rv
 
 
+class MPDConnection:
+    """
+    An MPD TCP/IP connection.
+    """
+    def __init__(self):
+        self.client = mpd.MPDClient(use_unicode=True)
+        self.last_use = datetime.now()
+
+
 class MPDModel:
     """
     Base class for models
     """
+    # Shared connection pool among all derived classes
+    _pool_lock = threading.Lock()
+    _connection_pool = []
+    # Timeout in seconds
+    _connection_timeout = 60
 
     def __init__(self):
+        self._cnn = None
         self.client = None
         # This is a temporary fix to the threading changes that
         # have surfaced with the latest version of Flask.
         # A better solution would probably be a connection pool.
         self.last_use = datetime.now()
 
+    @staticmethod
+    def _clean_pool():
+        """
+        Clean out all expired connections. MUST be called
+        with lock acquired.
+        :return:
+        """
+        # Traverse connection pool backwards so we can remove
+        # exoired connections without issue.
+        i = len(MPDModel._connection_pool)
+        print("Pool size:", i)
+        while i > 0:
+            i -= 1
+            cnn = MPDModel._connection_pool[i]
+            delta = datetime.now() - cnn.last_use
+            if delta.total_seconds() > MPDModel._connection_timeout:
+                try:
+                    cnn.client.close()
+                    print("Closed MPD connection:", cnn)
+                except:
+                    pass
+                MPDModel._connection_pool.pop(i)
+
+    def acquire_connection(self):
+        #============================
+        MPDModel._pool_lock.acquire()
+        #============================
+
+        # Close and remove all expired connections
+        MPDModel._clean_pool()
+
+        cnn = None
+        while not cnn:
+            # Try to get a connection out of the pool
+            if len(MPDModel._connection_pool) > 0:
+                cnn = MPDModel._connection_pool.pop(0)
+                cnn.last_use = datetime.now()
+            else:
+                # Empty pool, so create a new connection
+                try:
+                    cnn = MPDConnection()
+                except Exception as ex:
+                    print(ex)
+                    cnn = None
+                    continue
+                host = KVStore.get("mpd", "host", "localhost")
+                port = KVStore.get("mpd", "port", "6600")
+                try:
+                    cnn.client.connect(host, int(port))
+                    cnn.last_use = datetime.now()
+                    print("Create connection:", cnn)
+                except Exception as ex:
+                    # Attempt to open a new connection failed
+                    print(ex)
+                    cnn = None
+                    #============================
+                    MPDModel._pool_lock.release()
+                    #============================
+                    raise MPDModelException(str(ex))
+
+        #============================
+        MPDModel._pool_lock.release()
+        #============================
+        return cnn
+
+    def release_connection(self, cnn):
+        """
+        Put a connection back into the pool
+        :param cnn:
+        :return:
+        """
+        #============================
+        MPDModel._pool_lock.acquire()
+        #============================
+
+        MPDModel._connection_pool.append(cnn)
+
+        #============================
+        MPDModel._pool_lock.release()
+        #============================
+
     def connect_to_mpd(self):
         """
         Get a connection to the configured mpd server.
         This implementation strives to minimize the number of
         connections that are made. However, if an existing connection
-        is idle for very long, mpd will close it. Hence, the error retry
-        code makes several attempts to connection before declaring failure.
+        is idle for very long, mpd will close it.
         :return: True if a connection was obtained. Otherwise, False.
         """
-        # This is a temporary fix to the threading changes that
-        # have surfaced with the latest version of Flask.
-        # Restart the connection periodically because eventually the connection will drop
-        delta = datetime.now() - self.last_use
-        if (delta.total_seconds() > 60) and self.client:
-            try:
-                self.client.close()
-            except:
-                pass
-            print("Restarting connection to mpd")
-            self.client = None
-
-        retry_max = 2
-        for retry_count in range(retry_max + 1):
-            # If the client connection is closed, reopen it
-            if not self.client:
-                # use_unicode will enable the utf-8 mode for python2
-                # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
-                try:
-                    self.client = mpd.MPDClient(use_unicode=True)
-                except Exception as ex:
-                    print(ex)
-                    continue
-                host = KVStore.get("mpd", "host", "localhost")
-                port = KVStore.get("mpd", "port", "6600")
-                try:
-                    self.client.connect(host, int(port))
-                    self.last_use = datetime.now()
-                    return True
-                except Exception as ex:
-                    print(ex)
-                    if self.client:
-                        self.client.close()
-                    self.client = None
-                    if retry_count >= retry_max:
-                        #self.connection_lock.release()
-                        raise MPDModelException(str(ex))
-
-        self.last_use = datetime.now()
+        self._cnn = self.acquire_connection()
+        self.client = self._cnn.client
         return True
 
     def close_mpd_connection(self):
@@ -124,8 +183,6 @@ class MPDModel:
         the connection use.
         :return:
         """
-        try:
-            self.client.close()
-        except Exception as ex:
-            print(ex)
+        self.release_connection(self._cnn)
+        self._cnn = None
         self.client = None
