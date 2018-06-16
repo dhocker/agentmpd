@@ -22,8 +22,6 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
 
-#  MPD music player model instance
-player = Player()
 
 @app.route(url_with_prefix("/"))
 def root():
@@ -49,6 +47,7 @@ def get_current_status():
     Return the current player status.
     :return:
     """
+    player = Player()
     current_status = player.get_current_player_status()
     if "pos" in current_status:
         current_status["pos1"] = int(current_status["pos"]) + 1
@@ -65,6 +64,7 @@ def play_song(pos):
     :param pos:
     :return:
     """
+    player = Player()
     try:
         n = int(pos)
         player.play(n)
@@ -90,6 +90,7 @@ def queue_song(id):
     :param id:
     :return:
     """
+    player = Player()
     try:
         n = int(id)
         player.queue(n)
@@ -111,6 +112,7 @@ def update_player_status():
     single - 0 or 1
     :return:
     """
+    player = Player()
     new_status_kv = json.loads(request.data)
 
     if "playstatus" in new_status_kv:
@@ -151,6 +153,7 @@ def play_first():
     Play the first song in the current playlist.
     :return:
     """
+    player = Player()
     player.play(0)
     current_status = player.get_current_player_status()
     return jsonify(**current_status)
@@ -171,6 +174,7 @@ def play_previous():
     Play the previous song in the current playlist
     :return:
     """
+    player = Player()
     current_status = player.status()
     playlist_len = int(current_status[u'playlistlength'])
     song = int(current_status[u'song']);
@@ -185,6 +189,7 @@ def play_next():
     Play the next song in the current playlist
     :return:
     """
+    player = Player()
     current_status = player.status()
     playlist_len = int(current_status[u'playlistlength'])
     song = int(current_status[u'song']);
@@ -199,6 +204,7 @@ def play_last():
     Play the last song in the current playlist
     :return:
     """
+    player = Player()
     current_status = player.status()
     player.play(int(current_status[u'playlistlength']) - 1)
     current_status = player.get_current_player_status()
@@ -211,6 +217,7 @@ def volume_change():
     Change the current volume setting.
     :return:
     """
+    player = Player()
     args = json.loads(request.data)
     try:
         new_volume = int(args["amount"])
@@ -228,6 +235,7 @@ def song_time_change():
     Change the current song position.
     :return:
     """
+    player = Player()
     args = json.loads(request.data)
     try:
         new_time = int(args["time"])
@@ -245,6 +253,7 @@ def update_music_database():
     Change the current volume setting by a +/- amount.
     :return:
     """
+    player = Player()
     try:
         player.update_music_database()
     except:
@@ -268,4 +277,4 @@ def reset_player():
     Reset the player instance when settings are changed.
     :return:
     """
-    player = Player()
+    pass

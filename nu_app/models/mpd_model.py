@@ -17,7 +17,6 @@
 from nu_app.models.key_value_store import KVStore
 import mpd
 from datetime import datetime, timedelta
-import threading
 
 
 # Wrapper to provide consistent error handling across all mpd client calls
@@ -66,7 +65,6 @@ class MPDModel:
         # This is a temporary fix to the threading changes that
         # have surfaced with the latest version of Flask.
         # A better solution would probably be a connection pool.
-        self.connection_lock = threading.Lock()
         self.last_use = datetime.now()
 
     def connect_to_mpd(self):
@@ -81,7 +79,6 @@ class MPDModel:
         # This is a temporary fix to the threading changes that
         # have surfaced with the latest version of Flask.
         # Restart the connection periodically because eventually the connection will drop
-        self.connection_lock.acquire()
         delta = datetime.now() - self.last_use
         if (delta.total_seconds() > 60) and self.client:
             try:
@@ -114,7 +111,7 @@ class MPDModel:
                         self.client.close()
                     self.client = None
                     if retry_count >= retry_max:
-                        self.connection_lock.release()
+                        #self.connection_lock.release()
                         raise MPDModelException(str(ex))
 
         self.last_use = datetime.now()
@@ -127,6 +124,8 @@ class MPDModel:
         the connection use.
         :return:
         """
-        #self.client.close()
-        #self.client = None
-        self.connection_lock.release()
+        try:
+            self.client.close()
+        except Exception as ex:
+            print(ex)
+        self.client = None

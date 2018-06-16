@@ -30,9 +30,6 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
     render_template, jsonify
 import json
 
-#  MPD music player model instance
-playlist = Playlist()
-
 
 @app.route(url_with_prefix("/cpl/playlist"), methods=['DELETE'])
 def clear_playlist():
@@ -40,6 +37,7 @@ def clear_playlist():
     Remove all entries from the current playlist (collection).
     :return:
     """
+    playlist = Playlist()
     playlist.clear()
     return ""
 
@@ -55,6 +53,7 @@ def manage_playlist():
 
 @app.route(url_with_prefix("/cpl/currentplaylist"), methods=['GET'])
 def get_current_playlist():
+    playlist = Playlist()
     pl = playlist.get_current_playlist()
     return jsonify(**pl)
 
@@ -68,6 +67,7 @@ def get_all_named_playlists():
     playlists are returned.
     :return:
     """
+    playlist = Playlist()
     if len(request.args) > 0:
         all_playlists = playlist.search_for_playlists(request.args["s"])
     else:
@@ -85,6 +85,7 @@ def get_artists():
     artists are returned.
     :return:
     """
+    playlist = Playlist()
     if len(request.args) > 0:
         #all_artists = playlist.search_for_playlists(request.args["s"])
         all_artists = []
@@ -102,6 +103,7 @@ def append_stored_playlists():
     :return:
     """
     args = json.loads(request.data.decode("utf-8"))["data"]
+    playlist = Playlist()
     if "playlists" in args:
         for pl in args["playlists"]:
             playlist.load_playlist(pl)
@@ -120,6 +122,7 @@ def remove_playlist_entries():
     :return:
     """
     songids = json.loads(request.data.decode("utf-8"))
+    playlist = Playlist()
     for songid in songids:
         playlist.remove_by_songid(songid)
     return ""
@@ -138,6 +141,7 @@ def get_all_albums():
     the way that mpd actually works.
     :return:
     """
+    playlist = Playlist()
     if len(request.args) > 0:
         if "album" in request.args:
             # Query for albums
@@ -167,8 +171,9 @@ def get_album_tracks():
     The request data is an array of album titles.
     :return:
     """
+    playlist = Playlist()
     # args is a dict of album titles (the key is an array index).
-    albums = [album_title for index, album_title in request.args.iteritems()]
+    albums = [album_title for album_title in request.args.values()]
     album_tracks = playlist.get_tracks_for_albums(albums)
     return jsonify({"tracks": album_tracks})
 
@@ -179,6 +184,7 @@ def search_for_tracks():
     Search for tracks.
     :return:
     """
+    playlist = Playlist()
     if len(request.args) > 0:
         if "track" in request.args:
             # Query for tracks
@@ -197,6 +203,7 @@ def save_named_playlist():
     The request data contains the name for the new named playlist.
     :return:
     """
+    playlist = Playlist()
     # args is the name for the saved playlist
     args = json.loads(request.data.decode("utf-8"))
     playlist.save_current_playlist(args["data"]["name"])
