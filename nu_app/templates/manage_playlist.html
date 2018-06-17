@@ -214,10 +214,18 @@
                                 <th style="width: 5%">
                                     <button id="select-button" class="btn btn-primary btn-xs" ng-click="select_all()" title="Select all entries">Select</button>
                                 </th>
-                                <th style="width: 5%">#</th>
-                                <th>Title/Name/Stream</th>
-                                <th>Album</th>
-                                <th>Artist</th>
+                                <th style="width: 5%">
+                                    <button id="seq-button" class="btn btn-primary btn-md" ng-click="sort_by_seq()" title="Sort by sequence">#</button>
+                                </th>
+                                <th>
+                                    <button id="title-button" class="btn btn-primary btn-md" ng-click="sort_by_title()" title="Sort by title/name/stream">Title/Name/Stream</button>
+                                </th>
+                                <th>
+                                    <button id="album-button" class="btn btn-primary btn-md" ng-click="sort_by_album()" title="Sort by album">Album</button>
+                                </th>
+                                <th>
+                                    <button id="artist-button" class="btn btn-primary btn-md" ng-click="sort_by_artist()" title="Sort by artist">Artist</button>
+                                </th>
                             </tr>
                         </thead>
                     </table>
