@@ -24,6 +24,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
     $scope.playlists = ["one"];
     $scope.playlist_name = "";
     $scope.search_collection = "albums"
+    // Default to ascending sorts
+    $scope.sort_seq_desc = false;
+    $scope.sort_title_desc = false;
+    $scope.sort_album_desc = false;
+    $scope.sort_artist_desc = false;
     $("#load-button").prop("disabled", true);
     $("#load-albums-button").prop("disabled", true);
     $("#load-tracks-button").prop("disabled", true);
@@ -196,6 +201,52 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         });
         $scope.selected_changed();
     };
+
+    $scope.sort_by_seq = function() {
+        $scope.current_playlist.playlist.sort(sort_array_by("pos1", $scope.sort_seq_desc));
+        $scope.sort_seq_desc = !$scope.sort_seq_desc;
+        update_playlist($scope.current_playlist.playlist);
+    };
+
+    $scope.sort_by_title = function() {
+        $scope.current_playlist.playlist.sort(sort_array_by("track", $scope.sort_title_desc));
+        $scope.sort_title_desc = !$scope.sort_title_desc;
+        update_playlist($scope.current_playlist.playlist);
+    };
+
+    $scope.sort_by_album = function() {
+        $scope.current_playlist.playlist.sort(sort_array_by("album", $scope.sort_album_desc));
+        $scope.sort_album_desc = !$scope.sort_album_desc;
+        update_playlist($scope.current_playlist.playlist);
+    };
+
+    $scope.sort_by_artist = function() {
+        $scope.current_playlist.playlist.sort(sort_array_by("artist", $scope.sort_artist_desc));
+        $scope.sort_artist_desc = !$scope.sort_artist_desc;
+        update_playlist($scope.current_playlist.playlist);
+    };
+
+    function update_playlist(pl) {
+        // Replace the entire mpd playlist with an updated
+        // playlist. Typically, the playlist will be sorted.
+        // Clear the mpd playlist
+        $http.delete(UrlService.url_with_prefix('/cpl/playlist'), {}).
+            success(function(data, status, headers, config) {
+                // Send the updated playlist
+                var all_tracks = []
+                for (i = 0; i < pl.length; i++) {
+                    all_tracks.push(pl[i].file || pl[i].uri);
+                }
+                $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : all_tracks}}).
+                    success(function(data, status, headers, config) {
+                        $scope.error = "";
+                        // Reload the displayed playlist
+                        get_current_playlist();
+                    }).
+                    error(http_error);
+            }).
+            error(http_error);
+    }
 
     $scope.selected_changed = function () {
         var ids = get_selected_playlist_ids();
@@ -400,5 +451,36 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         // How do you clone this string???
         return $scope.error;
     };
+
+    /*
+    Returns a comparator function that compares the specified
+    property of an object. This is useful for sorting an
+    array of objects by an object property.
+    */
+    function sort_array_by(propname, desc) {
+        var reverse = 1;
+        // If desc is truthy, the sort is descending or reversed
+        if (typeof(desc) != 'undefined') {
+            reverse = (desc) ? -1 : 1;
+        }
+        return function(a, b) {
+            // Make the sort case insensitive
+            if (typeof(a[propname]) != 'string') {
+                a = a[propname];
+                b = b[propname];
+            }
+            else {
+                a = a[propname].toLowerCase();
+                b = b[propname].toLowerCase();
+            }
+            if (a < b) {
+                return reverse * -1;
+            }
+            if (a > b) {
+                return reverse * 1;
+            }
+            return 0;
+        }
+    }
 
 }]);
