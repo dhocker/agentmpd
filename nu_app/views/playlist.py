@@ -168,7 +168,7 @@ def get_album_tracks():
     :return:
     """
     # args is a dict of album titles (the key is an array index).
-    albums = [album_title for index, album_title in request.args.iteritems()]
+    albums = [request.args[index] for index in iter(request.args)]
     album_tracks = playlist.get_tracks_for_albums(albums)
     return jsonify({"tracks": album_tracks})
 
