@@ -54,7 +54,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
             if (pe.pos == $scope.currently_playing.song)
             {
                 // Use the Bootstrap class to mark the now playing song
-                pe["class"] = "success";
+                pe["class"] = "table-primary";
             }
             else
             {

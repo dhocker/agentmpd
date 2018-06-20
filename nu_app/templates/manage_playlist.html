@@ -18,28 +18,36 @@
 {% extends "layout.html" %}
 
 {% block head %}
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{{ url_for('mpd_player') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/> AgentMPD</a>
-            </div>
+    <nav class="navbar navbar-inverse navbar-expand-md">
+        <a class="navbar-brand" href="{{ url_for('mpd_player') }}"><img src="{{ url_for('static', filename='agentmpd64.png') }}" width="24"/> AgentMPD</a>
 
-            <div>
-                <ul class="nav navbar-nav" id="menu">
-                    <li>
-                        <a id="menu-player" href="{{ url_for('mpd_player') }}">Player</a>
-                    </li>
-                    <li class="dropdown">
-                        <a id="menu-playlist" class="dropdown-toggle" data-toggle="dropdown" href="#">Playlist Actions<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a id="menu-playlist-clear" ng-click="clear_playlist()">Clear</a></li>
-                            <li><a id="menu-playlist-save" ng-click="save_playlist()">Save</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
+        <div class="" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a id="menu-playlist" class="nav-link dropdown-toggle" id="playlistDropdown" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="false"
+                       href="#">Playlist Actions<span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="playlistDropdown">
+                        <a class="dropdown-item" id="menu-playlist-clear" ng-click="clear_playlist()" href="#">Clear</a>
+                        <a class="dropdown-item" id="menu-playlist-save" ng-click="save_playlist()" href="#">Save</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a id="menu-database" class="nav-link dropdown-toggle" id="databaseDropdown" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false"
+                       href="#">Music Database <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="databaseDropdown">
+                        <a class="dropdown-item" id="menu-update-database" ng-click="menu_update_database()" href="#">Update</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a id="menu-settings" class="nav-link" href="{{ url_for('settings_page') }}">Settings</a>
+                </li>
+            </ul>
         </div>
+
     </nav>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='manage_playlist.css') }}">
@@ -105,8 +113,8 @@
 {% block body %}
     <div class="container">
         <h2>Edit Current Playlist</h2>
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-body">
                 <div class="row">
                     <div class="col-md-3">
                         <h3>Playlists</h3>
@@ -205,50 +213,48 @@
         </div>
 
         <div class="row">
-            <div class="col-md-12">
-                <h3>Current Playlist ({= current_playlist.playlist.length =} Items)</h3>
-                <div class="panel panel-default" style="margin-bottom: 0">
+            <h3>Current Playlist ({= current_playlist.playlist.length =} Items)</h3>
+            <div class="card" style="margin-bottom: 0">
+                <table class="table table-condensed table-striped table-hover table-fixed">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">
+                                <button id="select-button" class="btn btn-primary btn-sm" ng-click="select_all()" title="Select all entries">Select</button>
+                            </th>
+                            <th style="width: 5%">
+                                #
+                            </th>
+                            <th>
+                                <button id="title-button" class="btn btn-primary btn-sm" ng-click="sort_by_title()" title="Sort by title/name/stream">Title/Name/Stream</button>
+                            </th>
+                            <th>
+                                <button id="album-button" class="btn btn-primary btn-sm" ng-click="sort_by_album()" title="Sort by album">Album</button>
+                            </th>
+                            <th>
+                                <button id="artist-button" class="btn btn-primary btn-sm" ng-click="sort_by_artist()" title="Sort by artist">Artist</button>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="table-fixed-content">
                     <table class="table table-condensed table-striped table-hover table-fixed">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%">
-                                    <button id="select-button" class="btn btn-primary btn-xs" ng-click="select_all()" title="Select all entries">Select</button>
-                                </th>
-                                <th style="width: 5%">
-                                    <button id="seq-button" class="btn btn-primary btn-md" ng-click="sort_by_seq()" title="Sort by sequence">#</button>
-                                </th>
-                                <th>
-                                    <button id="title-button" class="btn btn-primary btn-md" ng-click="sort_by_title()" title="Sort by title/name/stream">Title/Name/Stream</button>
-                                </th>
-                                <th>
-                                    <button id="album-button" class="btn btn-primary btn-md" ng-click="sort_by_album()" title="Sort by album">Album</button>
-                                </th>
-                                <th>
-                                    <button id="artist-button" class="btn btn-primary btn-md" ng-click="sort_by_artist()" title="Sort by artist">Artist</button>
-                                </th>
+                        <tbody>
+                            <tr id="{= x.pos =}" ng-repeat="x in current_playlist.playlist">
+                                <td style="width: 5%"><input type="checkbox" id="check-{= x.pos =}"
+                                                             songid="{= x.id =}" ng-change="selected_changed()" ng-model="entry_selected"></td>
+                                <td style="width: 5%">{= x.pos1 =}</td>
+                                <td title="{= x.file || x.uri =}">{= x.track =}</td>
+                                <td>{= x.album =}</td>
+                                <td>{= x.artist =}</td>
                             </tr>
-                        </thead>
+                        </tbody>
                     </table>
-                    <div class="table-fixed-content">
-                        <table class="table table-condensed table-striped table-hover table-fixed">
-                            <tbody>
-                                <tr id="{= x.pos =}" ng-repeat="x in current_playlist.playlist">
-                                    <td style="width: 5%"><input type="checkbox" id="check-{= x.pos =}"
-                                                                 songid="{= x.id =}" ng-change="selected_changed()" ng-model="entry_selected"></td>
-                                    <td style="width: 5%">{= x.pos1 =}</td>
-                                    <td title="{= x.file || x.uri =}">{= x.track =}</td>
-                                    <td>{= x.album =}</td>
-                                    <td>{= x.artist =}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="">
                 <button id="remove-button" class="btn btn-primary btn-md" ng-click="remove_selected()" title="Remove selected playlist entries">Remove Selected</button>
                 <button id="save-button" class="btn btn-primary btn-md" ng-click="save_playlist()" title="Save current playlist">Save</button>
                 <button id="clear-button" class="btn btn-primary btn-md" ng-click="clear_playlist()" title="Clear current playlist">Clear</button>
