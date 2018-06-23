@@ -14,14 +14,14 @@
 # modified from https://gist.github.com/asmallteapot/1633492#file-init_uwsgi-sh
 #
 
-PATH=/home/pi/Virtualenvs/agentmpd/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/home/pi/Virtualenvs/agentmpd/bin/uwsgi
+PATH=/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/bin/uwsgi
 
 NAME=uwsgi-emperor
 DESC=uwsgi-emperor
 
 # modify as needed
-VASALS=/etc/uwsgi/vassals
+VASSALS=/etc/uwsgi/vassals
 EMPEROR_LOGS=/var/log/uwsgi/emperor.log
 EMPEROR_INI=/etc/uwsgi/emperor.ini
 

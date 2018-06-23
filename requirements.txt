@@ -4,5 +4,4 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==0.23
 python-mpd2==1.0.0
-uWSGI==2.0.17
 Werkzeug==0.14.1

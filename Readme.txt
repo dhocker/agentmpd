@@ -15,8 +15,8 @@ nginx_site - nginx configuration file for the app. This file should go in /etc/n
     Edit this file based on your nginx server installation. If AgentMPD is the only web app running
     under nginx, you might not need to make any changes. AgentMPD urls are all prefixed with /mpd so
     they can be routed easily within nginx. The nginx_site file does exactly this.
-emperor.ini - If you want to run emperor mode, put this file in /etc/uwsgi/vassals.
-uwsgi_app.ini - uwsgi configuration file for the app. This file should go in /etc/uwsgi/apps-available.
+emperor.ini - If you want to run emperor mode, put this file in /etc/uwsgi.
+uwsgi_mpd.ini - uwsgi configuration file for the app. This file should go in /etc/uwsgi/apps-available.
     To activate the app for non-Emperor mode, put a symbolic link in /etc/uwsgi/apps-enabled.
     For emperor mode, put this file in /etc/uwsgi/vassals.
     Edit this file based on how you set up your virtualenv. If you rename the file, make sure it ends
@@ -31,10 +31,16 @@ NGINX
 
 The stock version of nginx that installs through apt-get is usually adequate. AgentMPD does not
 present a heavy load.
+
 uWSGI
 -----
 
-The stock version of uWSGI that is currently installed under Raspbian Wheezy and Jessie is usually out of date. 
-It is recommended that you install the most current version of uWSGI (as identified in the requirements.txt file)
-and modify the init.d script to use the version you install in a virtualenv. The uwsgi-emperor script file
-described above does exactly that.
+The stock version of uWSGI that is currently available under Raspbian is usually out of date. 
+And, it does not support multiple versions of Python. It is recommended that you install the most 
+current version of uWSGI and modify the uwsgi-emperor init.d script to use the version you install. 
+If you want to run multiple web apps and multiple versions of Python, you should build uwsgi 
+from source. This includes building the uwsgi executable and a uwsgi plugin for each version of Python.
+
+See the following: 
+	https://uwsgi-docs.readthedocs.io/en/latest/Install.html#
+	https://serverfault.com/questions/633437/different-python-versions-under-the-same-uwsgi-emperor
