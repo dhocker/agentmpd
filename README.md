@@ -10,7 +10,7 @@ with Chrome, Firefox, Firefox Developer Edition and Brave).
 
 AgentMPD was written in Python/Flask to run on a light weight system (e.g. a Raspberry Pi).
 While the server app was designed to run on a lightweight system, it will run on any system that
-supports Python 2.7 (including Windows) and the Flask framework. The mpd music server can be running
+supports Python 3.6 (including Windows) and the Flask framework. The mpd music server can be running
 anywhere as long as you can get to it via a TCP/IP connection.
 
 AgentMPD is open source. Anyone can fork it and build upon it.
@@ -26,7 +26,12 @@ The full source is maintained on [GitHub](https://www.github.com/dhocker/agentmp
 
 ## Build Environment
 
-AgentMPD is written in Python 2.7. It uses the popular Flask framework.
+AgentMPD was originally written in Python 2.7 and subsequently migrated to Python 3.6.
+While it will still run on Python 2.7, support for that version will be
+dropped in the near future. Only Python 3.6+ will be supported going forward.
+
+AgendtMPD uses the popular Flask framework.
+
 A suitable development environment would use virtualenv and virtualenvwrapper to create a working virtual environment.
 The requirements.txt file can be used with pip to create the required virtual environment with all dependencies.
 
@@ -50,7 +55,7 @@ of your choice is all that is really required.
 
 All configuration is done through the Settings page of the web app. The only setting that usually requires change is the
 hostname or IP address of the mpd music server. You can get to the settings page by going to the home page
-(e.g. http://localhost:5000) and clicking on the Settings menu item.
+(e.g. http://localhost:5000/mpd) and clicking on the Settings menu item.
 
 ## Running as an Application
 
@@ -63,11 +68,9 @@ You can run AgentMPD as an application as follows.
 
 AgentMPD can be run under a web server (e.g. nginx) using the uWSGI gateway. The top project directory
 contains a uwsgi.py and several configuration files to facilitate this choice. Readme.txt descibes the
-various configuration files.
+various configuration files for nginx and uWSGI.
 
 The following links discuss the details of setting up nginx and uWSGI to run a Python/Flask web application.
 
-* [http://vladikk.com/2013/09/12/serving-flask-with-nginx-on-ubuntu/]
-(http://vladikk.com/2013/09/12/serving-flask-with-nginx-on-ubuntu/)
-* [https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04]
-(https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04)
+* [serving-flask-with-nginx-on-ubuntu](http://vladikk.com/2013/09/12/serving-flask-with-nginx-on-ubuntu/)
+* [how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04)
