@@ -48,32 +48,32 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
 
     function get_playlists() {
         $http.get(UrlService.url_with_prefix('/cpl/namedplaylists'), {}).
-            success(function(data, status, headers, config) {
-                $scope.playlists = data.playlists;
+            then(function(response) {
+                $scope.playlists = response.data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     function get_artists() {
         $http.get(UrlService.url_with_prefix('/cpl/artists'), {}).
-            success(function(data, status, headers, config) {
-                $scope.artists = data.artists;
+            then(function(response) {
+                $scope.artists = response.data.artists;
                 $scope.artist_size = $scope.artists.length > 15 ? 15 : $scope.artists.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     function get_albums() {
         $http.get(UrlService.url_with_prefix('/cpl/albums'), {}).
-            success(function(data, status, headers, config) {
-                $scope.albums = data.albums;
+            then(function(response) {
+                $scope.albums = response.data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.playlist_selected = function () {
@@ -95,12 +95,12 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
             var arg_list = $("#available-artists").val() || [];
 
             $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"artists" : [arg_list]}, "xmessage":"Error getting albums for artist"}).
-                success(function(data, status, headers, config) {
+                then(function(response) {
                     $scope.error = "";
-                    $scope.albums = data.albums;
+                    $scope.albums = response.data.albums;
                     $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
-                }).
-                error(http_error);
+                },
+                http_error);
         }
         else {
         }
@@ -113,15 +113,15 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
             var arg_list = $("#available-albums").val() || [];
 
             $http.get(UrlService.url_with_prefix('/cpl/album/tracks'), {"params" : arg_list}).
-                success(function(data, status, headers, config) {
+                then(function(response) {
                     $scope.error = "";
-                    $scope.tracks = data.tracks;
+                    $scope.tracks = response.data.tracks;
                     $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
                     if ($scope.tracks.length > 0) {
                         $("#load-all-tracks-button").prop("disabled", false);
                     }
-                }).
-                error(http_error);
+                },
+                http_error);
         }
         else {
             $("#load-albums-button").prop("disabled", true);
@@ -153,11 +153,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         var c = arg_list.length;
 
         $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"playlists" : arg_list}}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 $scope.error = "";
                 get_current_playlist();
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.load_selected_tracks = function() {
@@ -165,11 +165,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         var c = arg_list.length;
 
         $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : arg_list}}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 $scope.error = "";
                 get_current_playlist();
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.load_all_tracks = function() {
@@ -178,21 +178,20 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
             all_tracks.push($scope.tracks[i].uri)
         }
         $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : all_tracks}}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 $scope.error = "";
                 get_current_playlist();
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.add_manual_uri = function() {
         $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : [$scope.manual_uri]}}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 $scope.error = "";
                 get_current_playlist();
-            }).
-            error(http_error);
-
+            },
+            http_error);
     };
 
     $scope.select_all = function () {
@@ -232,21 +231,21 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         // playlist. Typically, the playlist will be sorted.
         // Clear the mpd playlist
         $http.delete(UrlService.url_with_prefix('/cpl/playlist'), {}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 // Send the updated playlist
                 var all_tracks = []
                 for (i = 0; i < pl.length; i++) {
                     all_tracks.push(pl[i].file || pl[i].uri);
                 }
                 $http.post(UrlService.url_with_prefix('/cpl/playlist'), {"data" : {"uris" : all_tracks}}).
-                    success(function(data, status, headers, config) {
+                    then(function(response) {
                         $scope.error = "";
                         // Reload the displayed playlist
                         get_current_playlist();
-                    }).
-                    error(http_error);
-            }).
-            error(http_error);
+                    },
+                    http_error);
+            },
+            http_error);
     }
 
     $scope.selected_changed = function () {
@@ -261,11 +260,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
         // If anything was checked, remove it with a delete
         if (ids.length > 0) {
             $http.delete(UrlService.url_with_prefix('/cpl/playlistentry'), {"data" : ids}).
-                success(function(data, status, headers, config) {
+                then(function(response) {
                     $scope.error = "";
                     get_current_playlist();
-                }).
-                error(http_error);
+                },
+                http_error);
         }
     };
 
@@ -293,13 +292,13 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
     // Saves the current playlist in the named playlist
     $scope.save_playlist_by_name = function () {
         $http.post(UrlService.url_with_prefix('/cpl/namedplaylists'), {"data" : {"name" : $scope.playlist_name}}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 $scope.error = "";
                 // Refresh playlist listbox
                 get_playlists();
                 showMessagebox($scope, "Saved", "The current playlist has been saved as: " + $scope.playlist_name);
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.enable_save_button = function () {
@@ -346,42 +345,42 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
 
     function search_for_playlists($scope) {
         $http.get(UrlService.url_with_prefix('/cpl/namedplaylists'), {"params" : {"s" : $scope.search_string}}).
-            success(function(data, status, headers, config) {
-                $scope.playlists = data.playlists;
+            then(function(response) {
+                $scope.playlists = response.data.playlists;
                 $scope.playlist_size = $scope.playlists.length > 15 ? 15 : $scope.playlists.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     function search_for_albums($scope) {
         $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"album" : $scope.search_string}}).
-            success(function(data, status, headers, config) {
-                $scope.albums = data.albums;
+            then(function(response) {
+                $scope.albums = response.data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     function search_for_albums_by_artist($scope) {
         $http.get(UrlService.url_with_prefix('/cpl/albums'), {"params" : {"artist" : $scope.search_string}}).
-            success(function(data, status, headers, config) {
-                $scope.albums = data.albums;
+            then(function(response) {
+                $scope.albums = response.data.albums;
                 $scope.albums_size = $scope.albums.length > 15 ? 15 : $scope.albums.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     function search_for_tracks($scope) {
         $http.get(UrlService.url_with_prefix('/cpl/tracks'), {"params" : {"track" : $scope.search_string}}).
-            success(function(data, status, headers, config) {
-                $scope.tracks = data.tracks;
+            then(function(response) {
+                $scope.tracks = response.data.tracks;
                 $scope.tracks_size = $scope.tracks.length > 15 ? 15 : $scope.tracks.length;
                 $scope.error = "";
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.reset_search = function () {
@@ -391,8 +390,8 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
 
     function get_current_playlist() {
         $http.get(UrlService.url_with_prefix('/cpl/currentplaylist'), {}).
-            success(function(data, status, headers, config) {
-                $scope.current_playlist = data;
+            then(function(response) {
+                $scope.current_playlist = response.data;
                 $scope.error = "";
                 if ($scope.current_playlist.playlist.length > 0) {
                     $("#save-button").prop("disabled", false);
@@ -403,19 +402,19 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
                     $("#clear-button").prop("disabled", true);
                 }
                 $("#remove-button").prop("disabled", true);
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     // Menu functions
 
     $scope.clear_playlist = function() {
         $http.delete(UrlService.url_with_prefix('/cpl/playlist'), {}).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 get_current_playlist();
                 // showMessagebox($scope, "Clear Playlist", "Playlist has been cleared.");
-            }).
-            error(http_error);
+            },
+            http_error);
     };
 
     $scope.menu_playlist_edit = function() {
@@ -434,13 +433,13 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
     };
 
     // Standard http error handling
-    function http_error(data, status, headers, config) {
-        if (data && data.message) {
-            $scope.error = data.message;
+    function http_error(response) {
+        if (response.data && response.data.message) {
+            $scope.error = response.data.message;
         }
         else {
-            if (config.xmessage) {
-                $scope.error = config.xmessage;
+            if (response.config.xmessage) {
+                $scope.error = response.config.xmessage;
             }
             else {
                 $scope.error = "Server communication error";

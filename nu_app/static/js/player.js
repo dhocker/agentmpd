@@ -85,15 +85,14 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function get_current_status() {
         $http.get(UrlService.url_with_prefix('/player/currentstatus'), {}).
-            success(function(data, status, headers, config) {
-                $scope.currently_playing = data;
+            then(function(response) {
+                $scope.currently_playing = response.data;
                 update_status();
                 $scope.error = "";
-            }).
-            error(function(data, status, headers, config) {
+            }, function(response) {
                 $scope.status = "";
-                if (data && data.message) {
-                    $scope.error = data.message;
+                if (response.data && response.data.message) {
+                    $scope.error = response.data.message;
                 }
                 else {
                     $scope.error = "Unable to communicate with host server";
@@ -103,22 +102,21 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function get_settings() {
         $http.get(UrlService.url_with_prefix("/settings")).
-            success(function(data, status, headers, config) {
-                $scope.host = data["host"];
-                $scope.port = data["port"];
-                $scope.status_update_interval = data["status_update_interval"];
-                $scope.playlist_update_interval = data["playlist_update_interval"];
-                $scope.volume_increment = data["volume_increment"];
-            }).
-            error(function(data, status, headers, config) {
-                if (data && data.message) {
-                    $scope.error = data.message;
+            then(function(response) {
+                $scope.host = response.data["host"];
+                $scope.port = response.data["port"];
+                $scope.status_update_interval = response.data["status_update_interval"];
+                $scope.playlist_update_interval = response.data["playlist_update_interval"];
+                $scope.volume_increment = response.data["volume_increment"];
+            }, function(response) {
+                if (response.data && response.data.message) {
+                    $scope.error = response.data.message;
                 }
                 else {
                     $scope.error = "Unable to communicate with host server";
                 }
             });
-    }
+    };
 
     $scope.show_error = function() {
         // How do you clone this string???
@@ -127,17 +125,17 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function idle() {
         $http.get(UrlService.url_with_prefix('/home/idle'), {}).
-            success(function(data, status, headers, config) {
-                if (data == 'player')
+            then(function(response) {
+                if (response.data == 'player')
                 {
                 }
-                else if (data == 'playlist')
+                else if (response.data == 'playlist')
                 {
                 }
                 // Restart idle. Is this accidentally recursive???
                 idle();
-            }).
-            error(function(data, status, headers, config) {
+            },
+            function(response) {
                 $scope.status = "";
                 $scope.error = "Server communication error";
             });
@@ -145,15 +143,15 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function get_current_playlist() {
         $http.get(UrlService.url_with_prefix('/cpl/currentplaylist'), {}).
-            success(function(data, status, headers, config) {
-                $scope.current_playlist = data;
+            then(function(response) {
+                $scope.current_playlist = response.data;
                 update_status();
                 $scope.error = "";
-            }).
-            error(function(data, status, headers, config) {
+            },
+            function(data, status, headers, config) {
                 $scope.status = "";
-                if (data && data.message) {
-                    $scope.error = data.message;
+                if (response.data && response.data.message) {
+                    $scope.error = response.data.message;
                 }
                 else {
                     $scope.error = "Unable to get current playlist from host";
@@ -169,15 +167,15 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function post_transport(url, data) {
         $http.post(UrlService.url_with_prefix(url), data).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 // After post completes, refresh status
                 get_current_status();
                 $scope.error = "";
-            }).
-            error(function(data, status, headers, config) {
+            },
+            function(response) {
                 $scope.status = "";
-                if (data && data.message) {
-                    $scope.error = data.message;
+                if (response.data && response.data.message) {
+                    $scope.error = response.data.message;
                 }
                 else {
                     $scope.error = "Unable to communicate with host server";
@@ -187,15 +185,15 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
 
     function put_transport(url, data) {
         $http.put(UrlService.url_with_prefix(url), data).
-            success(function(data, status, headers, config) {
+            then(function(response) {
                 // After put completes, refresh status
                 get_current_status();
                 $scope.error = "";
             }).
-            error(function(data, status, headers, config) {
+            error(function(response) {
                 $scope.status = "";
-                if (data && data.message) {
-                    $scope.error = data.message;
+                if (response.data && response.data.message) {
+                    $scope.error = response.data.message;
                 }
                 else {
                     $scope.error = "Unable to communicate with host server";

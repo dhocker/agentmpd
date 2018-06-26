@@ -32,15 +32,15 @@ app.controller('settingsController', ["$scope", "$http", "UrlService", function(
     $("#menu-settings").hide();
 
     $http.get(UrlService.url_with_prefix("/settings")).
-        success(function(data, status, headers, config) {
-            $scope.host = data["host"];
-            $scope.port = data["port"];
-            $scope.status_update_interval = data["status_update_interval"];
-            $scope.playlist_update_interval = data["playlist_update_interval"];
-            $scope.volume_increment = data["volume_increment"];
-        }).
-        error(function(data, status, headers, config) {
-            $scope.error = "Host communication error";
+        then(function(response) {
+            $scope.host = response.data["host"];
+            $scope.port = response.data["port"];
+            $scope.status_update_interval = response.data["status_update_interval"];
+            $scope.playlist_update_interval = response.data["playlist_update_interval"];
+            $scope.volume_increment = response.data["volume_increment"];
+        },
+        function(response) {
+            $scope.error = "Host communication error: " + response.data.message;
         });
 
     $scope.save_settings = function() {
@@ -52,10 +52,10 @@ app.controller('settingsController', ["$scope", "$http", "UrlService", function(
                     'playlist_update_interval': $scope.playlist_update_interval,
                     'volume_increment': $scope.volume_increment}
                     }).
-                success(function(data, status, headers, config) {
-                }).
-                error(function(data, status, headers, config) {
-                    $scope.error = "Host communication error";
+                then(function(response) {
+                },
+                function(response) {
+                    $scope.error = "Host communication error: " + response.data.message;
                 });
         }
     };
