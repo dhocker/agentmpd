@@ -32,7 +32,10 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
     translate_state['stop'] = 'Stopped';
 
     var status_update_interval = 10 * 1000; // 10 seconds
+    var status_update_timer = null
     var playlist_update_interval = 30 * 1000; // 30 seconds
+    var playlist_update_timer = null
+    var play_timer = null
 
     $scope.playing = false;
     $scope.current_playlist = {"playlist": []};
@@ -108,6 +111,30 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
                 $scope.status_update_interval = response.data["status_update_interval"];
                 $scope.playlist_update_interval = response.data["playlist_update_interval"];
                 $scope.volume_increment = response.data["volume_increment"];
+                // Convert intervals to ms
+                status_update_interval = parseInt($scope.status_update_interval) * 1000;
+                playlist_update_interval = parseInt($scope.playlist_update_interval) * 1000;
+
+                // Cancel existing timers
+                if (status_update_timer != null) {
+                    $interval.cancel(status_update_timer);
+                }
+                if (playlist_update_timer != null) {
+                    $interval.cancel(playlist_update_timer);
+                }
+                // If the status timer is set to 1 sec, don't use the play timer
+                if (status_update_interval <= 1000 && play_timer != null) {
+                    $interval.cancel(play_timer);
+                    play_timer = null;
+                }
+                else if (status_update_interval > 1000 && update_play_time == null) {
+                    // Restart the play timer if the status interval is above 1 sec
+                    play_timer = $interval(increment_play_time, 1000);
+                }
+
+                // Reload timers
+                status_update_timer = $interval(get_current_status, status_update_interval);
+                playlist_update_timer = $interval(update_view, playlist_update_interval);
             }, function(response) {
                 if (response.data && response.data.message) {
                     $scope.error = response.data.message;
@@ -373,14 +400,14 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
     // Polled status update every 10 seconds
     // This isn't very efficient, but for now it will have to do.
     // We'll need to figure out how to use the MPD idle API.
-    $interval(get_current_status, status_update_interval);
+    status_update_timer = $interval(get_current_status, status_update_interval);
     // Update the playlist every 30 sec. This is here strictly to
     // catch changes to the playlist made by MPD or by another
     // MPD client app (e.g. Theremin). MPD changes the playlist
     // when it contains radio stations.
-    $interval(update_view, playlist_update_interval);
+    playlist_update_timer = $interval(update_view, playlist_update_interval);
 
     // Set up time to advance play time when playing
-    $interval(increment_play_time, 1000);
+    play_timer = $interval(increment_play_time, 1000);
 
 }]);
