@@ -102,15 +102,23 @@
             <div class="row">
                 <div class="col-md-3">
                     <a href="{{ url_for('mpd_player') }}"><img class="logo" src="{{ url_for('static', filename='agentmpd64.png') }}" width="16"/></a>
-                    <a href="http://www.musicpd.org"">MPD Protocol Version {{ mpd_version }}</a>
+                    {# This is a bit of a hack, but we can't depend on getting a connection to MPD on this page #}
+                    {% if ngcontroller != 'settingsController' %}
+                        <a href="http://www.musicpd.org">MPD Protocol Version {{ mpd_version }}</a>
+                    {% endif %}
 
                     {% block footer_links %}{% endblock %}
                 </div>
 
                 <div class="col-md-9 text-right">
-                    <a href="{{ url_for('about') }}">About AgentMPD Version {{ release_version }} on {{ hostname }}</a>
-                    </br>
-                    <span>&copy; 2015, 2018 by Dave Hocker</span>
+                    {# This is a bit of a hack, but we can't depend on getting a connection to MPD on this page #}
+                    {% if ngcontroller != 'settingsController' %}
+                        <a href="{{ url_for('about') }}">About AgentMPD Version {{ release_version }} on {{ hostname }}</a>
+                    {% else %}
+                        <a href="{{ url_for('about') }}">About AgentMPD</a>
+                        </br>
+                    {% endif %}
+                    <span>&copy; 2015, 2019 by Dave Hocker</span>
                 </div>
 
             </div>
