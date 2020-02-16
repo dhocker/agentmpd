@@ -175,7 +175,7 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
                 update_status();
                 $scope.error = "";
             },
-            function(data, status, headers, config) {
+            function(response) {
                 $scope.status = "";
                 if (response.data && response.data.message) {
                     $scope.error = response.data.message;
