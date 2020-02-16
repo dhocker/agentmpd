@@ -216,8 +216,8 @@ app.controller('homeController', ["$scope", "$http", "$interval", "$timeout", "U
                 // After put completes, refresh status
                 get_current_status();
                 $scope.error = "";
-            }).
-            error(function(response) {
+            },
+            function(response) {
                 $scope.status = "";
                 if (response.data && response.data.message) {
                     $scope.error = response.data.message;
