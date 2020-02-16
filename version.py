@@ -1,6 +1,6 @@
 #
 # AgentMPD - web app for controlling an mpd instance
-# Copyright (C) 2015, 2018  Dave Hocker (email: AtHomeX10@gmail.com)
+# Copyright (C) 2015, 2019  Dave Hocker (email: AtHomeX10@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ def GetVersion():
   """
   Returns the current app version
   """
-  return "2018.0.0.3"
+  return "2019.0.0.1"
 
 def GetMPDVersion():
     player = Player()

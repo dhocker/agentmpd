@@ -417,6 +417,11 @@ app.controller('playlistController', ["$scope", "$http", "$timeout", "UrlService
             http_error);
     };
 
+    $scope.menu_update_database = function() {
+        $http.put(UrlService.url_with_prefix('/player/musicdatabase'), {}).
+            then(function(response) {});
+    };
+
     $scope.menu_playlist_edit = function() {
         showMessagebox($scope, "Edit", "Edit has been invoked");
     };
