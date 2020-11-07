@@ -52,7 +52,7 @@ body {
 /* Bootstrap override for color */
 .progress-bar {
     color: #FFF;
-    background: #1947A3;
+    background: #1947a3;
 }
 
 /* Bootstrap override to change vertical alignment of text in cells. */
