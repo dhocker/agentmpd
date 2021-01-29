@@ -103,7 +103,8 @@ class Playlist(MPDModel):
         lst = []
 
         if self.connect_to_mpd():
-            lst = self.client.list("artist")
+            artist_lst = self.client.list("artist")
+            lst = self._list_from_key(artist_lst, "artist")
             self.close_mpd_connection()
 
         # Case insensitive sort for default ordering
@@ -140,8 +141,9 @@ class Playlist(MPDModel):
         albums = None
         if self.connect_to_mpd():
             albums = self.client.list("album")
+            album_list = self._list_from_key(albums, "album")
             self.close_mpd_connection()
-        return albums
+        return album_list
 
     def search_for_albums(self, search_pat):
         all_albums = self.get_albums()
@@ -161,6 +163,7 @@ class Playlist(MPDModel):
         result_albums = []
         if self.connect_to_mpd():
             result_albums = self.client.list("album", "artist", search_pat)
+            result_albums = self._list_from_key(result_albums, "album")
             self.close_mpd_connection()
         return result_albums
 
@@ -258,3 +261,12 @@ class Playlist(MPDModel):
                 self.close_mpd_connection()
             except:
                 pass
+
+    def _list_from_key(self, key_dict, key):
+        """
+        Create a list from a single key of a list of dicts.
+        """
+        the_list = []
+        for d in key_dict:
+            the_list.append(d[key])
+        return the_list
